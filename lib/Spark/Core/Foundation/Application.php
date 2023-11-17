@@ -22,7 +22,7 @@
 
 namespace Spark\Core\Foundation;
 
-use Spark\Contracts\Foundation\ApplicationContract;
+use Spark\Contract\Foundation\ApplicationContract;
 
 /**
  * Application
