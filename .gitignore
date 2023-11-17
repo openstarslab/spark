@@ -1,0 +1,16 @@
+## IDE
+ .idea/
+ .vscode/
+
+## Composer
+composer.lock
+vendor/
+
+## QA Tools
+phpcs.xml.dist
+phpstan.neon
+phpunit.xml
+psalm.xml
+
+## Cache
+.build/
