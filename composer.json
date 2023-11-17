@@ -69,6 +69,8 @@
     "test": [
       "@test:unit"
     ],
-    "test:unit": "phpunit --testsuite units"
+    "test:unit": "phpunit --testsuite units",
+    "test:coverage:ci": "phpunit --colors=always --coverage-text --coverage-xml .build/coverage/coverage-xml tests",
+    "test:coverage:html": "phpunit --colors=always --coverage-html .build/coverage/coverage-html tests"
   }
 }

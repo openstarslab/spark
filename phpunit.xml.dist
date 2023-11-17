@@ -11,6 +11,8 @@
          failOnWarning="true"
          colors="true"
 >
+    <coverage/>
+
     <testsuites>
         <testsuite name="units">
             <directory>./tests/Unit/</directory>
