@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<psalm
+        errorLevel="1"
+        cacheDirectory=".build/cache/psalm"
+        resolveFromConfigFile="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        autoloader="vendor/autoload.php"
+>
+    <projectFiles>
+        <directory name="lib" />
+        <directory name="tests" />
+
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <InvalidReturnType errorLevel="suppress"/>
+        <PropertyNotSetInConstructor errorLevel="suppress"/>
+        <UnusedParam errorLevel="suppress"/>
+        <UndefinedDocblockClass>
+            <errorLevel type="suppress">
+                <referencedClass name="BackedEnum"/>
+                <referencedClass name="ReflectionIntersectionType"/>
+                <referencedClass name="UnitEnum"/>
+            </errorLevel>
+        </UndefinedDocblockClass>
+       <UndefinedClass>
+            <errorLevel type="suppress">
+                <referencedClass name="BackedEnum"/>
+                <referencedClass name="ReflectionIntersectionType"/>
+                <referencedClass name="UnitEnum"/>
+                <referencedClass name="Random\*"/>
+            </errorLevel>
+        </UndefinedClass>
+        <UnusedClass>
+            <errorLevel type="suppress">
+                <directory name="lib/" />
+            </errorLevel>
+        </UnusedClass>
+        <UnusedConstructor>
+            <errorLevel type="suppress">
+                <directory name="lib/" />
+            </errorLevel>
+        </UnusedConstructor>
+        <UndefinedAttributeClass>
+            <errorLevel type="suppress">
+                <referencedClass name="SensitiveParameter"/>
+            </errorLevel>
+        </UndefinedAttributeClass>
+    </issueHandlers>
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+    </plugins>
+</psalm>
