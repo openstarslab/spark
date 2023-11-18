@@ -64,7 +64,7 @@
       "@lint:fix",
       "@lint:style"
     ],
-    "lint:fix": "phpcbf | true",
+    "lint:fix": "phpcbf",
     "lint:style": "phpcs",
     "test": [
       "@test:unit"
