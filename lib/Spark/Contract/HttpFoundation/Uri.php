@@ -20,31 +20,51 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Contract\HttpFoundation\Factory;
-
-use Spark\Contract\HttpFoundation\Request;
-use Spark\Contract\HttpFoundation\Uri;
+namespace Spark\Contract\HttpFoundation;
 
 /**
- * Request factory contract.
+ * Uri contract.
  *
  * @since       2023-11-19
- * @package     Spark\Contract\HttpFoundation\Factory
+ * @package     Spark\Contract\HttpFoundation
  * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
  * @license     https://opensource.org/license/lgpl-2-1/
  * @link        https://github.com/openstarslab/spark-core
  */
-interface RequestFactory
+interface Uri
 {
     /**
-     * Creates new request instance.
+     * Retrieve the scheme component of the URI.
      *
-     * @param string $method
-     *  HTTP method.
-     * @param string|\Spark\Contract\HttpFoundation\Uri $uri
-     *  The URI.
-     *
-     * @return \Spark\Contract\HttpFoundation\Request
+     * @return string
      */
-    public function createRequest(string $method, string|Uri $uri): Request;
+    public function getScheme(): string;
+
+    /**
+     * Retrieve the host component of the URI.
+     *
+     * @return string
+     */
+    public function getHost(): string;
+
+    /**
+     * Retrieve the port component of the URI.
+     *
+     * @return int|null
+     */
+    public function getPort(): ?int;
+
+    /**
+     * Retrieve the path component of the URI.
+     *
+     * @return string
+     */
+    public function getPath(): string;
+
+    /**
+     * Retrieve the query string of the URI.
+     *
+     * @return string
+     */
+    public function getQuery(): string;
 }

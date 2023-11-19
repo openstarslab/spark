@@ -20,31 +20,40 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Contract\HttpFoundation\Factory;
+namespace Spark\Core\HttpFoundation\Factory;
 
-use Spark\Contract\HttpFoundation\Request;
 use Spark\Contract\HttpFoundation\Uri;
+use Spark\Core\HttpFoundation\HeaderBag;
+use Spark\Core\HttpFoundation\Request;
 
 /**
- * Request factory contract.
+ * Request factory.
  *
  * @since       2023-11-19
- * @package     Spark\Contract\HttpFoundation\Factory
+ * @package     Spark\Core\HttpFoundation\Factory
  * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
  * @license     https://opensource.org/license/lgpl-2-1/
  * @link        https://github.com/openstarslab/spark-core
  */
-interface RequestFactory
+class RequestFactory implements \Spark\Contract\HttpFoundation\Factory\RequestFactory
 {
+    public function __construct(
+        protected UriFactory $uriFactory = new UriFactory(),
+        protected StreamFactory $streamFactory = new StreamFactory()
+    ) {
+    }
+
     /**
-     * Creates new request instance.
-     *
-     * @param string $method
-     *  HTTP method.
-     * @param string|\Spark\Contract\HttpFoundation\Uri $uri
-     *  The URI.
-     *
-     * @return \Spark\Contract\HttpFoundation\Request
+     * {@inheritDoc}
      */
-    public function createRequest(string $method, string|Uri $uri): Request;
+    public function createRequest(string $method, string|Uri $uri): Request
+    {
+        if (\is_string($uri)) {
+            $uri = $this->uriFactory->createUri($uri);
+        }
+
+        $stream = $this->streamFactory->createStream();
+
+        return new Request($method, $uri, new HeaderBag([]), $stream);
+    }
 }

@@ -20,31 +20,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Contract\HttpFoundation\Factory;
+namespace Spark\Core\HttpFoundation\Factory;
 
-use Spark\Contract\HttpFoundation\Request;
-use Spark\Contract\HttpFoundation\Uri;
+use Spark\Core\HttpFoundation\Uri;
 
 /**
- * Request factory contract.
+ * Uri factory
  *
  * @since       2023-11-19
- * @package     Spark\Contract\HttpFoundation\Factory
+ * @package     Spark\Core\HttpFoundation\Factory
  * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
  * @license     https://opensource.org/license/lgpl-2-1/
  * @link        https://github.com/openstarslab/spark-core
  */
-interface RequestFactory
+class UriFactory implements \Spark\Contract\HttpFoundation\Factory\UriFactory
 {
     /**
-     * Creates new request instance.
-     *
-     * @param string $method
-     *  HTTP method.
-     * @param string|\Spark\Contract\HttpFoundation\Uri $uri
-     *  The URI.
-     *
-     * @return \Spark\Contract\HttpFoundation\Request
+     * {@inheritDoc}
      */
-    public function createRequest(string $method, string|Uri $uri): Request;
+    public function createUri(string $uri = ''): Uri
+    {
+        $parts = \parse_url($uri);
+
+        if ($parts === false) {
+            throw new \RuntimeException("URI cannot be parsed.");
+        }
+
+        return new Uri(
+            $parts['scheme'] ?? '',
+            $parts['host'] ?? '',
+            $parts['port'] ?? null,
+            $parts['path'] ?? '',
+            $parts['query'] ?? ''
+        );
+    }
 }

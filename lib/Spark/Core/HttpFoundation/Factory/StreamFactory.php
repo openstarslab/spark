@@ -20,31 +20,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Contract\HttpFoundation\Factory;
+namespace Spark\Core\HttpFoundation\Factory;
 
-use Spark\Contract\HttpFoundation\Request;
-use Spark\Contract\HttpFoundation\Uri;
+use Spark\Contract\HttpFoundation\Stream as StreamContract;
+use Spark\Core\HttpFoundation\Stream;
 
 /**
- * Request factory contract.
+ * Stream factory
  *
  * @since       2023-11-19
- * @package     Spark\Contract\HttpFoundation\Factory
+ * @package     Spark\Core\HttpFoundation\Factory
  * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
  * @license     https://opensource.org/license/lgpl-2-1/
  * @link        https://github.com/openstarslab/spark-core
  */
-interface RequestFactory
+class StreamFactory implements \Spark\Contract\HttpFoundation\Factory\StreamFactory
 {
     /**
-     * Creates new request instance.
-     *
-     * @param string $method
-     *  HTTP method.
-     * @param string|\Spark\Contract\HttpFoundation\Uri $uri
-     *  The URI.
-     *
-     * @return \Spark\Contract\HttpFoundation\Request
+     * {@inheritDoc}
      */
-    public function createRequest(string $method, string|Uri $uri): Request;
+    public function createStream(string $content = ''): StreamContract
+    {
+        $resource = \fopen('php://temp', 'rw+');
+
+        if (!\is_resource($resource)) {
+            throw new \RuntimeException('StreamFactory::createStream() could not open temporary file stream.');
+        }
+
+        \fwrite($resource, $content);
+        \rewind($resource);
+
+        return new Stream($resource);
+    }
 }
