@@ -24,6 +24,7 @@ namespace Spark\Core\Foundation;
 
 use Nulldark\Container\Container;
 use Spark\Contract\Foundation\Application as ApplicationContract;
+use Spark\Core\Foundation\Providers\ConnectionProvider;
 use Spark\Core\Foundation\Providers\RoutingServiceProvider;
 use Spark\Core\Foundation\Providers\ServiceProvider;
 
@@ -174,5 +175,6 @@ final class Application extends Container implements ApplicationContract
     private function registerBaseProviders(): void
     {
         $this->register(new RoutingServiceProvider($this));
+        $this->register(new ConnectionProvider($this));
     }
 }
