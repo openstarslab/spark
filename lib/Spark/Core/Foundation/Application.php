@@ -32,12 +32,12 @@ use Spark\Core\Foundation\Providers\ServiceProvider;
  *
  * The main class that orchestrates of the Framework functionality of the library.
  *
- * @since       2023-11-17
- * @version     0.1.0-alpha
- * @package     Spark\Core\Foundation
- * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license     https://opensource.org/license/lgpl-2-1/
- * @link        https://github.com/openstarslab/spark-core
+ * @since   2023-11-17
+ * @version 0.1.0-alpha
+ * @package Spark\Core\Foundation
+ * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
+ * @license https://opensource.org/license/lgpl-2-1/
+ * @link    https://github.com/openstarslab/spark-core
  */
 final class Application extends Container implements ApplicationContract
 {

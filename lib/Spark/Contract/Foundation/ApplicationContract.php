@@ -26,9 +26,9 @@ namespace Spark\Contract\Foundation;
  * ApplicationContract
  *
  * @package Spark\Contract\Foundation
- * @since 2023-11-17
- * @author Dominik Szamburski <dominikszamburski99@gmail.com>
- * @link https://github.com/openstarslab/spark-core
+ * @since   2023-11-17
+ * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
+ * @link    https://github.com/openstarslab/spark-core
  * @license https://opensource.org/license/lgpl-2-1/
  */
 interface ApplicationContract

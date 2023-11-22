@@ -27,12 +27,12 @@ use Spark\Contract\Foundation\Application;
 /**
  * Service Provider
  *
- * @since       2023-11-17
- * @version     0.1.0-alpha
- * @package     Spark\Core\Foundation\Providers
- * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license     https://opensource.org/license/lgpl-2-1/
- * @link        https://github.com/openstarslab/spark-core
+ * @since   2023-11-17
+ * @version 0.1.0-alpha
+ * @package Spark\Core\Foundation\Providers
+ * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
+ * @license https://opensource.org/license/lgpl-2-1/
+ * @link    https://github.com/openstarslab/spark-core
  */
 abstract class ServiceProvider
 {

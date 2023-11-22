@@ -25,12 +25,12 @@ namespace Spark\Core\Routing;
 /**
  * Callable resolver
  *
- * @since       2023-11-20
- * @version     0.1.0-alpha
- * @package     Spark\Core\Routing
- * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license     https://opensource.org/license/lgpl-2-1/
- * @link        https://github.com/openstarslab/spark-core
+ * @since   2023-11-20
+ * @version 0.1.0-alpha
+ * @package Spark\Core\Routing
+ * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
+ * @license https://opensource.org/license/lgpl-2-1/
+ * @link    https://github.com/openstarslab/spark-core
  */
 class CallableResolver implements \Spark\Contract\Routing\CallableResolver
 {

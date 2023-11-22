@@ -25,11 +25,11 @@ namespace Spark\Contract\HttpFoundation;
 /**
  * Request factory contract.
  *
- * @since       2023-11-19
- * @package     Spark\Contract\HttpFoundation
- * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license     https://opensource.org/license/lgpl-2-1/
- * @link        https://github.com/openstarslab/spark-core
+ * @since   2023-11-19
+ * @package Spark\Contract\HttpFoundation
+ * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
+ * @license https://opensource.org/license/lgpl-2-1/
+ * @link    https://github.com/openstarslab/spark-core
  */
 interface RequestFactory
 {

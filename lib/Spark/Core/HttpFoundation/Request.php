@@ -28,11 +28,11 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Request
  *
- * @since       2023-11-19
- * @package     Spark\Core\HttpFoundation
- * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license     https://opensource.org/license/lgpl-2-1/
- * @link        https://github.com/openstarslab/spark-core
+ * @since   2023-11-19
+ * @package Spark\Core\HttpFoundation
+ * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
+ * @license https://opensource.org/license/lgpl-2-1/
+ * @link    https://github.com/openstarslab/spark-core
  */
 class Request implements \Spark\Contract\HttpFoundation\Request
 {

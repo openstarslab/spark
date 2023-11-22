@@ -27,11 +27,11 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * Response contract.
  *
- * @since       2023-11-19
- * @package     Spark\Contract\HttpFoundation
- * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license     https://opensource.org/license/lgpl-2-1/
- * @link        https://github.com/openstarslab/spark-core
+ * @since   2023-11-19
+ * @package Spark\Contract\HttpFoundation
+ * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
+ * @license https://opensource.org/license/lgpl-2-1/
+ * @link    https://github.com/openstarslab/spark-core
  */
 interface Response
 {
@@ -60,7 +60,7 @@ interface Response
      *
      * @param string $header
      *  HTTP header name.
-     * @param mixed $value
+     * @param mixed  $value
      *  HTTP header value.
      *
      * @return self

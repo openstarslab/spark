@@ -28,11 +28,11 @@ use Spark\Core\Foundation\Providers\ServiceProvider;
 /**
  * Application
  *
- * @since       2023-11-17
- * @package     Spark\Contract\Foundation
- * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license     https://opensource.org/license/lgpl-2-1/
- * @link        https://github.com/openstarslab/spark-core
+ * @since   2023-11-17
+ * @package Spark\Contract\Foundation
+ * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
+ * @license https://opensource.org/license/lgpl-2-1/
+ * @link    https://github.com/openstarslab/spark-core
  */
 interface Application extends ContainerInterface
 {

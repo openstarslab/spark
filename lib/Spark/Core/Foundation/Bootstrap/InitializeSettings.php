@@ -29,18 +29,18 @@ use Spark\Contract\Foundation\Application;
  *
  * Initialize some environment settings.
  *
- * @since       2023-11-18
- * @package     Spark\Core\Foundation\Bootstrap
- * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license     https://opensource.org/license/lgpl-2-1/
- * @link        https://github.com/openstarslab/spark-core
+ * @since   2023-11-18
+ * @package Spark\Core\Foundation\Bootstrap
+ * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
+ * @license https://opensource.org/license/lgpl-2-1/
+ * @link    https://github.com/openstarslab/spark-core
  */
 final class InitializeSettings
 {
     /**
      * Bootstrap the application.
      *
-     * @param \Spark\Contract\Foundation\Application $app
+     * @param  \Spark\Contract\Foundation\Application $app
      * @return void
      */
     public function bootstrap(Application $app): void
