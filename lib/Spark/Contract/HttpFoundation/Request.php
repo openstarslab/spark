@@ -22,6 +22,9 @@
 
 namespace Spark\Contract\HttpFoundation;
 
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\StreamInterface;
+
 /**
  * Request contract.
  *
@@ -84,10 +87,10 @@ interface Request
     /**
      * Returns a raw request body as a stream.
      *
-     * @return \Spark\Contract\HttpFoundation\Stream
+     * @return StreamInterface
      *  Raw request body.
      */
-    public function raw(): Stream;
+    public function raw(): StreamInterface;
 
     /**
      * Returns a request body as JSON.
@@ -107,4 +110,11 @@ interface Request
      *  Decoded request body.
      */
     public function text(): string;
+
+    /**
+     * Returns a original psr7 request.
+     *
+     * @return RequestInterface
+     */
+    public function getOriginalRequest(): RequestInterface;
 }

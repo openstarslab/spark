@@ -22,107 +22,79 @@
 
 namespace Spark\Core\HttpFoundation;
 
-use Spark\Contract\HttpFoundation\Stream as StreamContract;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Response
  *
  * @since       2023-11-19
- * @package     Spark\Core\Http
+ * @package     Spark\Core\HttpFoundation
  * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
  * @license     https://opensource.org/license/lgpl-2-1/
  * @link        https://github.com/openstarslab/spark-core
  */
 class Response implements \Spark\Contract\HttpFoundation\Response
 {
-    protected string $version;
-    protected StreamContract $content;
-    protected HeaderBag $headers;
-    protected int $statusCode;
-    protected string $statusText;
+    protected ResponseInterface $response;
 
-    public function __construct(string $content = '', int $statusCode = 200, array $headers = [])
+    public function __construct(ResponseInterface $response = null)
     {
-        $this->headers = new HeaderBag($headers);
-
-        $this->content($content);
-        $this->status($statusCode);
-        $this->setProtocolVersion('2.0');
+        $this->response = $response ?: new \Nyholm\Psr7\Response();
+        $this->response->withHeader('Content-Type', 'text/html');
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function content(array|string $content): self
+    public function status(int $statusCode): \Spark\Contract\HttpFoundation\Response
     {
-        $this->content = new Stream((string)(\is_array($content) ? json_encode($content) : $content));
+        $this->response->withStatus($statusCode);
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function content(array|string $content): \Spark\Contract\HttpFoundation\Response
+    {
+        if (\is_array($content)) {
+            $content = (string) json_encode($content);
+        }
+
+        $body = $this->response->getBody();
+        $body->write($content);
+
+        $this->response->withBody($body);
 
         return $this;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function status(int $statusCode): self
+    public function set(string $header, mixed $value): \Spark\Contract\HttpFoundation\Response
     {
-        $this->statusCode = $statusCode;
-        $this->statusText = StatusCodes::statusText($statusCode);
-
+        $this->response->withHeader($header, $value);
         return $this;
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function setProtocolVersion(string $version): self
-    {
-        $this->version = $version;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __toString(): string
-    {
-        return
-            sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText) . "\r\n" .
-            $this->headers . "\r\n" .
-            $this->content->getContents();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function set(string $header, mixed $value): self
-    {
-        $this->headers->setHeader($header, $value);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function get(string $header): array
     {
-        return $this->headers->getHeader($header);
+        return $this->response->getHeader($header);
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function getProtocolVersion(): string
+    public function send(): ResponseInterface
     {
-        return $this->version;
-    }
+        $sapiEmitter = new SapiEmitter();
+        $sapiEmitter->emit($this->response);
 
-    /**
-     * {@inheritDoc}
-     */
-    public function send(): void
-    {
-        // TODO: Implement send() method.
+        return $this->response;
     }
 }

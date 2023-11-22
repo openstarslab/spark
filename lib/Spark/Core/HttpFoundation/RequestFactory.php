@@ -20,31 +20,39 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Contract\HttpFoundation\Factory;
+namespace Spark\Core\HttpFoundation;
 
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7Server\ServerRequestCreator;
 use Spark\Contract\HttpFoundation\Request;
-use Spark\Contract\HttpFoundation\Uri;
 
 /**
- * Request factory contract.
+ * Response
  *
  * @since       2023-11-19
- * @package     Spark\Contract\HttpFoundation\Factory
+ * @package     Spark\Core\HttpFoundation
  * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
  * @license     https://opensource.org/license/lgpl-2-1/
  * @link        https://github.com/openstarslab/spark-core
  */
-interface RequestFactory
+class RequestFactory implements \Spark\Contract\HttpFoundation\RequestFactory
 {
     /**
-     * Creates new request instance.
-     *
-     * @param string $method
-     *  HTTP method.
-     * @param string|\Spark\Contract\HttpFoundation\Uri $uri
-     *  The URI.
-     *
-     * @return \Spark\Contract\HttpFoundation\Request
+     * @inheritDoc
      */
-    public function createRequest(string $method, string|Uri $uri): Request;
+    public function createRequest(): Request
+    {
+        $factory = new Psr17Factory();
+
+        $creator = new ServerRequestCreator(
+            $factory, // ServerRequestFactory
+            $factory, // UriFactory
+            $factory, // UploadedFileFactory
+            $factory  // StreamFactory
+        );
+
+        return new \Spark\Core\HttpFoundation\Request(
+            $creator->fromGlobals()
+        );
+    }
 }

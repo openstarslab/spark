@@ -22,6 +22,8 @@
 
 namespace Spark\Contract\HttpFoundation;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Response contract.
  *
@@ -31,7 +33,7 @@ namespace Spark\Contract\HttpFoundation;
  * @license     https://opensource.org/license/lgpl-2-1/
  * @link        https://github.com/openstarslab/spark-core
  */
-interface Response extends \Stringable
+interface Response
 {
     /**
      * Sets the HTTP status for the response.
@@ -78,25 +80,7 @@ interface Response extends \Stringable
     /**
      * Sends HTTP headers and content.
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function send(): void;
-
-    /**
-     * Sets the HTTP protocol version.
-     *
-     * @param string $version
-     *  HTTP protocol version.
-     *
-     * @return self
-     */
-    public function setProtocolVersion(string $version): self;
-
-    /**
-     * Gets the HTTP protocol version.
-     *
-     * @return string
-     *  HTTP protocol version.
-     */
-    public function getProtocolVersion(): string;
+    public function send(): ResponseInterface;
 }

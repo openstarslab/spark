@@ -22,95 +22,89 @@
 
 namespace Spark\Core\HttpFoundation;
 
-use Spark\Contract\HttpFoundation\Stream;
-use Spark\Contract\HttpFoundation\Uri;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Request
  *
  * @since       2023-11-19
- * @package     Spark\Core\Http
+ * @package     Spark\Core\HttpFoundation
  * @author      Dominik Szamburski <dominikszamburski99@gmail.com>
  * @license     https://opensource.org/license/lgpl-2-1/
  * @link        https://github.com/openstarslab/spark-core
  */
 class Request implements \Spark\Contract\HttpFoundation\Request
 {
-    protected Uri $uri;
-    protected string $method;
-    protected HeaderBag $headers;
-    protected Stream $body;
+    protected RequestInterface $request;
 
-    public function __construct(string $method, Uri $uri, HeaderBag $headers, Stream $body)
+    public function __construct(RequestInterface $request)
     {
-        $this->method = $method;
-        $this->uri = $uri;
-        $this->headers = $headers;
-        $this->body = $body;
+        $this->request = $request;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function host(): string
     {
-        return $this->uri->getHost();
+        return $this->request->getUri()->getHost();
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function method(): string
     {
-        return $this->method;
+        return $this->request->getMethod();
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function path(): string
     {
-        return $this->uri->getPath();
+        return $this->request->getUri()->getPath();
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function scheme(): string
     {
-        return $this->uri->getScheme();
+        return $this->request->getUri()->getScheme();
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function query(): string
     {
-        return $this->uri->getQuery();
+        return $this->request->getUri()->getQuery();
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function secure(): bool
     {
-        return $this->uri->getScheme() === 'HTTPS';
+        return $this->scheme() === 'HTTPS';
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function raw(): Stream
+    public function raw(): StreamInterface
     {
-        return $this->body;
+        return $this->request->getBody();
     }
 
     /**
-     * @{@inheritDoc}
+     * @inheritDoc
      */
-    public function json(bool $returnAsArray = true): array
+    public function json(bool $returnAsArray = true): object|array
     {
-        $content = $this->body->getContents();
+        $content = $this->raw()->getContents();
 
         try {
             $content = json_decode(
@@ -137,10 +131,18 @@ class Request implements \Spark\Contract\HttpFoundation\Request
     }
 
     /**
-     * @{@inheritDoc}
+     * @inheritDoc
      */
     public function text(): string
     {
-        return $this->body->getContents();
+        return $this->raw()->getContents();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getOriginalRequest(): RequestInterface
+    {
+        return $this->request;
     }
 }
