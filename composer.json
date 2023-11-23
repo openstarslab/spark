@@ -11,6 +11,7 @@
     "nulldark/stdlib": "^2.0",
     "nyholm/psr7": "^1.8",
     "nyholm/psr7-server": "^1.1",
+    "psr/cache": "^3.0",
     "psr/log": "^3.0"
   },
   "require-dev": {
