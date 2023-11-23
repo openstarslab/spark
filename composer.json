@@ -10,7 +10,8 @@
     "nulldark/routing": "^2.1",
     "nulldark/stdlib": "^2.0",
     "nyholm/psr7": "^1.8",
-    "nyholm/psr7-server": "^1.1"
+    "nyholm/psr7-server": "^1.1",
+    "psr/log": "^3.0"
   },
   "require-dev": {
     "mockery/mockery": "2.0.x-dev",
