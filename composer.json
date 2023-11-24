@@ -4,6 +4,7 @@
   "license": "LGPL-2.1-or-later",
   "type": "library",
   "require": {
+    "ext-apcu": "*",
     "composer/composer": "^2.6",
     "laminas/laminas-httphandlerrunner": "^2.9",
     "nulldark/container": "^0.4.0",
@@ -12,8 +13,8 @@
     "nyholm/psr7": "^1.8",
     "nyholm/psr7-server": "^1.1",
     "psr/cache": "^3.0",
-    "psr/log": "^3.0",
-    "ext-apcu": "*"
+    "psr/event-dispatcher": "^1.0",
+    "psr/log": "^3.0"
   },
   "require-dev": {
     "mockery/mockery": "2.0.x-dev",
