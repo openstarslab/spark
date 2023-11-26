@@ -20,45 +20,40 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\Log;
+namespace Spark\Core\Routing;
 
-use Psr\Log\LoggerInterface;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+use Nulldark\Routing\Route;
+use Psr\Http\Message\ResponseInterface;
 use Spark\Core\DependencyInjection\ContainerAwareInterface;
 use Spark\Core\DependencyInjection\ContainerAwareTrait;
 
-/**
- * A logger factor.
- *
- * @see \Spark\Core\Log\Logger
- */
-class LoggerFactory implements ContainerAwareInterface
+class RouteRunner implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
+    public function __construct(
+        protected CallableResolver $resolver,
+        protected CallableDispatcher $dispatcher,
+    ) {
+    }
 
     /**
-     * The registered loggers.
+     * Resolves and emits a response.
      *
-     * @var LoggerInterface[] $loggers
+     * @param Route $route
+     *  The route
+     *
+     * @return ResponseInterface
+     *  Returns emitted response.
      */
-    protected array $loggers = [];
-
-    /**
-     * Gets a logger for requested channel.
-     *
-     * @param string $channel
-     *  The channel name for this instance.
-     *
-     * @return \Psr\Log\LoggerInterface
-     */
-    public function get(string $channel): LoggerInterface
+    public function run(Route $route): ResponseInterface
     {
-        if (!isset($this->loggers[$channel])) {
-            $this->loggers[$channel] = new Logger(
-                $channel,
-                $this->container->get('kernel.logs_path')
-            );
-        }
+        $resolve = $this->resolver->resolve($route);
+        $response = $this->dispatcher->dispatch($route, $resolve);
 
-        return $this->loggers[$channel];
+        $emitter = new SapiEmitter();
+        $emitter->emit($response);
+
+        return $response;
     }
 }

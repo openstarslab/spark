@@ -20,21 +20,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\Foundation\Providers;
+namespace Spark\Core\Events;
 
-use Spark\Core\DependencyInjection\ContainerAwareInterface;
-use Spark\Core\DependencyInjection\ContainerAwareTrait;
+use Spark\Core\Foundation\Providers\ServiceProvider;
 
-abstract class ServiceProvider implements ContainerAwareInterface
+class EventServiceProvider extends ServiceProvider
 {
-    use ContainerAwareTrait;
-
-    /**
-     * Registers any services into application.
-     *
-     * @return void
-     */
     public function register(): void
     {
+        $this->container->singleton('event_dispatcher', new EventDispatcher());
     }
 }

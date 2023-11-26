@@ -20,39 +20,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\HttpFoundation;
+namespace Spark\Core\Foundation\HttpKernel;
 
-use Nyholm\Psr7\Factory\Psr17Factory;
-use Nyholm\Psr7Server\ServerRequestCreator;
-use Spark\Contract\HttpFoundation\Request;
+use Nulldark\Container\ContainerInterface;
+use Nulldark\Routing\RouterInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Spark\Core\Routing\RouteRunner;
 
-/**
- * Response
- *
- * @since   2023-11-19
- * @package Spark\Core\HttpFoundation
- * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license https://opensource.org/license/lgpl-2-1/
- * @link    https://github.com/openstarslab/spark-core
- */
-class RequestFactory implements \Spark\Contract\HttpFoundation\RequestFactory
+class HttpKernel implements HttpKernelInterface
 {
+    protected RouteRunner $routeRunner;
+
+    public function __construct(
+        protected ContainerInterface $container,
+        protected RouterInterface $router
+    ) {
+        $this->routeRunner = $this->container->get('route_runner');
+    }
+
     /**
      * @inheritDoc
      */
-    public function createRequest(): Request
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $factory = new Psr17Factory();
+        return $this->handleRequest($request);
+    }
 
-        $creator = new ServerRequestCreator(
-            $factory, // ServerRequestFactory
-            $factory, // UriFactory
-            $factory, // UploadedFileFactory
-            $factory  // StreamFactory
-        );
-
-        return new \Spark\Core\HttpFoundation\Request(
-            $creator->fromGlobals()
+    protected function handleRequest(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->routeRunner->run(
+            $this->router->match($request)
         );
     }
 }

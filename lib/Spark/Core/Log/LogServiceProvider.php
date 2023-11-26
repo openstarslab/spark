@@ -20,20 +20,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\Routing;
+namespace Spark\Core\Log;
 
-use Nulldark\Routing\Route as BaseRoute;
+use Nulldark\Container\Concrete\Factory;
+use Nulldark\Container\ContainerInterface;
+use Spark\Core\Foundation\Providers\ServiceProvider;
 
-/**
- * Route
- *
- * @since   2023-11-20
- * @version 0.1.0-alpha
- * @package Spark\Core\Routing
- * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license https://opensource.org/license/lgpl-2-1/
- * @link    https://github.com/openstarslab/spark-core
- */
-class Route extends BaseRoute
+class LogServiceProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        $this->container->singleton('logger.factory', new Factory(function (ContainerInterface $container) {
+            $logger = new LoggerFactory();
+            $logger->setContainer($container);
+
+            return $logger;
+        }));
+    }
 }

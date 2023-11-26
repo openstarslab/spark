@@ -20,21 +20,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\Foundation\Providers;
+namespace Spark\Core\Extension\Discovery;
 
-use Spark\Core\DependencyInjection\ContainerAwareInterface;
-use Spark\Core\DependencyInjection\ContainerAwareTrait;
-
-abstract class ServiceProvider implements ContainerAwareInterface
+class RecursiveCallbackFilter
 {
-    use ContainerAwareTrait;
-
-    /**
-     * Registers any services into application.
-     *
-     * @return void
-     */
-    public function register(): void
+    public function accept(\RecursiveDirectoryIterator $directory): bool
     {
+        $name = $directory->getFilename();
+
+        if (\str_starts_with(".", $name)) {
+            return false;
+        }
+
+        if ($directory->isDir()) {
+            return true;
+        }
+
+        return \str_ends_with($name, 'composer.json');
     }
 }

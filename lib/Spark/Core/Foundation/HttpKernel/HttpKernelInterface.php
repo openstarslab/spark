@@ -20,30 +20,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Contract\Routing;
+namespace Spark\Core\Foundation\HttpKernel;
 
-use Spark\Core\Routing\Route;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-/**
- * Callable resolver contract
- *
- * @since   2023-11-20
- * @version 0.1.0-alpha
- * @package Spark\Contract\Routing
- * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license https://opensource.org/license/lgpl-2-1/
- * @link    https://github.com/openstarslab/spark-core
- */
-interface CallableResolver
+interface HttpKernelInterface
 {
     /**
-     * Tries resolve route callback.
+     * Handles incoming HTTP request.
      *
-     * @param Route $route
-     *  Instance of route.
+     * @param ServerRequestInterface $request
+     *  HTTP request
      *
-     * @return callable
-     *  Returns callable.
+     * @return ResponseInterface
      */
-    public function resolve(Route $route): callable;
+    public function handle(ServerRequestInterface $request): ResponseInterface;
 }

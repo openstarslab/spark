@@ -20,23 +20,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Contract\HttpFoundation;
+namespace Spark\Core\Cache;
 
-/**
- * Request factory contract.
- *
- * @since   2023-11-19
- * @package Spark\Contract\HttpFoundation
- * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license https://opensource.org/license/lgpl-2-1/
- * @link    https://github.com/openstarslab/spark-core
- */
-interface RequestFactory
+use Spark\Core\Cache\Backend\ApcuBackend;
+use Spark\Core\Cache\Backend\MemoryBackend;
+use Spark\Core\Foundation\Providers\ServiceProvider;
+
+class CacheServiceProvider extends ServiceProvider
 {
-    /**
-     * Creates new request instance.
-     *
-     * @return \Spark\Contract\HttpFoundation\Request
-     */
-    public function createRequest(): Request;
+    public function register(): void
+    {
+        $this->container->singleton('cache.backend.apcu', ApcuBackend::class);
+        $this->container->singleton('cache.backend.memory', MemoryBackend::class);
+        $this->container->singleton('cache.default', 'cache.backend.memory');
+    }
 }

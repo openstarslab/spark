@@ -20,22 +20,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Contract\Foundation;
+namespace Spark\Core\Foundation;
 
-use Nulldark\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Spark\Core\Foundation\Providers\ServiceProvider;
 
-/**
- * Application
- *
- * @since   2023-11-17
- * @package Spark\Contract\Foundation
- * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license https://opensource.org/license/lgpl-2-1/
- * @link    https://github.com/openstarslab/spark-core
- */
-interface Application extends ContainerInterface
+interface SparkInterface
 {
+    /**
+     * Boots the current application.
+     *
+     * @return void
+     */
+    public function boot(): void;
+
+    /**
+     * Handles incoming request.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     *  HTTP Request.
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function handle(ServerRequestInterface $request): ResponseInterface;
+
     /**
      * Registers a service provider with the application.
      *
@@ -51,6 +60,7 @@ interface Application extends ContainerInterface
      * Sets given service provider as registered.
      *
      * @param \Spark\Core\Foundation\Providers\ServiceProvider $provider
+     *  An service provider.
      *
      * @return void
      */
@@ -75,37 +85,4 @@ interface Application extends ContainerInterface
      * @return void
      */
     public function bootProvider(ServiceProvider $provider): void;
-
-    /**
-     * Boots an application service providers.
-     *
-     * @return $this
-     */
-    public function boot(): self;
-
-    /**
-     * Runs given bootstrap classes.
-     *
-     * @param string[] $bootstrappers
-     *  Array of bootstrap classes.
-     *
-     * @return void
-     */
-    public function bootstrapWith(array $bootstrappers): void;
-
-    /**
-     * Determine if the application is booted.
-     *
-     * @return bool
-     *  Returns `TRUE` if application is booted, otherwise `FALSE`.
-     */
-    public function isBooted(): bool;
-
-    /**
-     * Determine if the application has been bootstrapped.
-     *
-     * @return bool
-     *  Returns `TRUE` if application has been bootstrapped, otherwise `FALSE`.
-     */
-    public function hasBeenBootstrapped(): bool;
 }

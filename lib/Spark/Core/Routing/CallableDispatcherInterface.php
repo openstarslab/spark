@@ -20,17 +20,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Contract\Foundation;
+namespace Spark\Core\Routing;
 
-/**
- * ApplicationContract
- *
- * @package Spark\Contract\Foundation
- * @since   2023-11-17
- * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
- * @link    https://github.com/openstarslab/spark-core
- * @license https://opensource.org/license/lgpl-2-1/
- */
-interface ApplicationContract
+use Nulldark\Routing\Route;
+use Psr\Http\Message\ResponseInterface;
+
+interface CallableDispatcherInterface
 {
+    /**
+     * Dispatchs and returns prepared response.
+     *
+     * @param Route $route
+     *  Matched route.
+     * @param callable $callable
+     *  Prepared callable to dispatch.
+     *
+     * @return ResponseInterface
+     *  Returns a response.
+     *
+     */
+    public function dispatch(Route $route, callable $callable): ResponseInterface;
 }

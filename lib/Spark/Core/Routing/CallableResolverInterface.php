@@ -20,31 +20,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\Foundation\Bootstrap;
+namespace Spark\Core\Routing;
 
-use Spark\Contract\Foundation\Application;
+use Nulldark\Routing\Route;
 
-/**
- * Boot Provider
- *
- * Boot the application
- *
- * @since   2023-11-18
- * @package Spark\Core\Foundation\Bootstrap
- * @author  Dominik Szamburski <dominikszamburski99@gmail.com>
- * @license https://opensource.org/license/lgpl-2-1/
- * @link    https://github.com/openstarslab/spark-core
- */
-final class BootProvider
+interface CallableResolverInterface
 {
     /**
-     * Bootstrap the application.
+     * Resolves a route callback.
      *
-     * @param  \Spark\Contract\Foundation\Application $app
-     * @return void
+     * @param Route $route
+     *  Matched route.
+     *
+     * @return callable
      */
-    public function bootstrap(Application $app): void
-    {
-        $app->boot();
-    }
+    public function resolve(Route $route): callable;
+
 }
