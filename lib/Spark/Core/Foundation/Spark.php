@@ -22,6 +22,7 @@
 
 namespace Spark\Core\Foundation;
 
+use Composer\Autoload\ClassLoader;
 use Nulldark\Container\Container;
 use Nulldark\Container\ContainerInterface;
 use Nyholm\Psr7\Response;
@@ -29,6 +30,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Spark\Core\Events\EventServiceProvider;
+use Spark\Core\Extension\ExtensionServiceProvider;
 use Spark\Core\Foundation\HttpKernel\HttpKernel;
 use Spark\Core\Foundation\Providers\CoreServiceProvider;
 use Spark\Core\Foundation\Providers\ServiceProvider;
@@ -65,15 +67,22 @@ class Spark implements SparkInterface
      */
     protected ContainerInterface $container;
 
-    public function __construct(string $rootDir)
+    public function __construct(string $rootDir, ClassLoader $classLoader)
     {
         $this->basePath = rtrim($rootDir, '\/');
+
         $this->container = new Container();
+        $this->container->singleton('class_loader', $classLoader);
     }
 
     public function getBasePath(): string
     {
         return $this->basePath;
+    }
+
+    public function getAppPath(): string
+    {
+        return $this->getBasePath() . '/app';
     }
 
     public function getLogsPath(): string
@@ -169,7 +178,8 @@ class Spark implements SparkInterface
             CoreServiceProvider::class,
             LogServiceProvider::class,
             EventServiceProvider::class,
-            RoutingServiceProvider::class
+            RoutingServiceProvider::class,
+            ExtensionServiceProvider::class
         ] as $provider) {
             yield new $provider();
         }
@@ -177,11 +187,12 @@ class Spark implements SparkInterface
 
     protected function initializeContainer(): void
     {
-        $this->container = new Container();
+        $this->container = $this->container ?: new Container();
         $this->container->singleton(ContainerInterface::class, $this->container);
 
         foreach ([
             'kernel.base_path' => $this->getBasePath(),
+            'kernel.app_path' => $this->getAppPath(),
             'kernel.cache_path' => $this->getCachePath(),
             'kernel.logs_path' => $this->getLogsPath()
         ] as $key => $value) {

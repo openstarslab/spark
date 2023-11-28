@@ -20,34 +20,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\Extension;
+namespace Spark\Core\Extension\Exception;
 
-use Composer\IO\IOInterface;
-use SplFileInfo;
+use RuntimeException;
 
-interface ExtensionFinderInterface
+class UnknownExtensionException extends RuntimeException
 {
-    /**
-     * Loads extensions from given path.
-     *
-     * @param string $extensionPath
-     *  Path where extensions are located.
-     * @param IOInterface|null $io
-     *  The Input/Output instance.
-     *
-     * @return iterable<string, array>
-     *  Returns a list of all matching extensions.
-     */
-    public function loadExtenesions(string $extensionPath, IOInterface $io = null): iterable;
-
-    /**
-     * Scans given directory.
-     *
-     * @param string $directory
-     *  Directory to scan.
-     *
-     * @return iterable<SplFileInfo>
-     *   Returns a list of all matching files.
-     */
-    public function scanDirectory(string $directory): iterable;
+    public function __construct(string $extenesion)
+    {
+        parent::__construct("The `$extenesion` does not exist.");
+    }
 }

@@ -20,22 +20,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\Extension\Discovery;
+namespace Spark\Core\Extension\Exception;
 
-class RecursiveCallbackFilter
+use RuntimeException;
+
+class ExtenesionLoaderException extends RuntimeException
 {
-    public function accept(\RecursiveDirectoryIterator $directory): bool
+    public function __construct(string $extenesion, string $reason)
     {
-        $name = $directory->getFilename();
-
-        if (\str_starts_with(".", $name)) {
-            return false;
-        }
-
-        if ($directory->isDir()) {
-            return true;
-        }
-
-        return \str_ends_with($name, 'composer.json');
+        parent::__construct("Failed to load `$extenesion`: $reason");
     }
 }

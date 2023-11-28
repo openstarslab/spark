@@ -24,19 +24,18 @@ namespace Spark\Core\Extension\Composer;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
+use function dirname;
 
 class Factory
 {
     public static function createComposerPackage(string $composerPath, IOInterface $io): Composer
     {
-        $composerJsonPath = $composerPath . '/composer.json';
-
         return (new \Composer\Factory())
             ->createComposer(
                 $io,
-                $composerJsonPath,
+                $composerPath,
                 false,
-                $composerPath
+                dirname($composerPath)
             );
     }
 }

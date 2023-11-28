@@ -22,32 +22,28 @@
 
 namespace Spark\Core\Extension;
 
-use Composer\IO\IOInterface;
-use SplFileInfo;
+use Nulldark\Container\ContainerInterface;
+use Spark\Core\Extension\Loader\FilesystemExtenesionLoader;
+use Spark\Core\Foundation\Providers\ServiceProvider;
 
-interface ExtensionFinderInterface
+class ExtensionServiceProvider extends ServiceProvider
 {
-    /**
-     * Loads extensions from given path.
-     *
-     * @param string $extensionPath
-     *  Path where extensions are located.
-     * @param IOInterface|null $io
-     *  The Input/Output instance.
-     *
-     * @return iterable<string, array>
-     *  Returns a list of all matching extensions.
-     */
-    public function loadExtenesions(string $extensionPath, IOInterface $io = null): iterable;
+    public function register(): void
+    {
+        $this->container->singleton('module_handler', function (ContainerInterface $container) {
+            return new ModuleHandler(
+                $container->get('kernel.base_path'),
+                $container->get('class_loader')
+            );
+        });
+    }
 
-    /**
-     * Scans given directory.
-     *
-     * @param string $directory
-     *  Directory to scan.
-     *
-     * @return iterable<SplFileInfo>
-     *   Returns a list of all matching files.
-     */
-    public function scanDirectory(string $directory): iterable;
+    public function boot(): void
+    {
+        $extenesions = $this->container->get('module_handler')->getList();
+
+        foreach ($extenesions as $extension) {
+            $extension->boot($this->container);
+        }
+    }
 }

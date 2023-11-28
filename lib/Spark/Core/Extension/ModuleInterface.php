@@ -22,32 +22,17 @@
 
 namespace Spark\Core\Extension;
 
-use Composer\IO\IOInterface;
-use SplFileInfo;
+use Nulldark\Container\ContainerInterface;
 
-interface ExtensionFinderInterface
+interface ModuleInterface extends ExtensionInterface
 {
     /**
-     * Loads extensions from given path.
+     * Boots an module.
      *
-     * @param string $extensionPath
-     *  Path where extensions are located.
-     * @param IOInterface|null $io
-     *  The Input/Output instance.
+     * @param \Nulldark\Container\ContainerInterface $container
+     *  Container instance.
      *
-     * @return iterable<string, array>
-     *  Returns a list of all matching extensions.
+     * @return void
      */
-    public function loadExtenesions(string $extensionPath, IOInterface $io = null): iterable;
-
-    /**
-     * Scans given directory.
-     *
-     * @param string $directory
-     *  Directory to scan.
-     *
-     * @return iterable<SplFileInfo>
-     *   Returns a list of all matching files.
-     */
-    public function scanDirectory(string $directory): iterable;
+    public function boot(ContainerInterface $container): void;
 }

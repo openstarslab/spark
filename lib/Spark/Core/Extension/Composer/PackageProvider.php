@@ -24,6 +24,7 @@ namespace Spark\Core\Extension\Composer;
 
 use Composer\IO\IOInterface;
 use Composer\Package\CompletePackageInterface;
+use InvalidArgumentException;
 use Spark\Core\Extension\Exception\InvalidComposerException;
 
 class PackageProvider
@@ -32,8 +33,8 @@ class PackageProvider
     {
         try {
             return Factory::createComposerPackage($extenesionPath, $io)->getPackage();
-        } catch (\InvalidArgumentException) {
-            throw new InvalidComposerException($extenesionPath . '/composer.json');
+        } catch (InvalidArgumentException) {
+            throw new InvalidComposerException($extenesionPath);
         }
     }
 }

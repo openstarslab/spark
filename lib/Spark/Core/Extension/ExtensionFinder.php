@@ -31,7 +31,6 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Spark\Core\Extension\Composer\PackageProvider;
 use Spark\Core\Extension\Exception\InvalidComposerException;
-
 use function in_array;
 use function str_ends_with;
 use function str_starts_with;

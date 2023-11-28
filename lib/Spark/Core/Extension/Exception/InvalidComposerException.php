@@ -22,7 +22,9 @@
 
 namespace Spark\Core\Extension\Exception;
 
-class InvalidComposerException extends \RuntimeException
+use RuntimeException;
+
+class InvalidComposerException extends RuntimeException
 {
     public function __construct(string $composerJsonPath)
     {

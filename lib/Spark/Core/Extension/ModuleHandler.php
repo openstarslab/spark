@@ -22,32 +22,12 @@
 
 namespace Spark\Core\Extension;
 
-use Composer\IO\IOInterface;
-use SplFileInfo;
+use Composer\Autoload\ClassLoader;
 
-interface ExtensionFinderInterface
+class ModuleHandler extends ExtenesionHandler
 {
-    /**
-     * Loads extensions from given path.
-     *
-     * @param string $extensionPath
-     *  Path where extensions are located.
-     * @param IOInterface|null $io
-     *  The Input/Output instance.
-     *
-     * @return iterable<string, array>
-     *  Returns a list of all matching extensions.
-     */
-    public function loadExtenesions(string $extensionPath, IOInterface $io = null): iterable;
-
-    /**
-     * Scans given directory.
-     *
-     * @param string $directory
-     *  Directory to scan.
-     *
-     * @return iterable<SplFileInfo>
-     *   Returns a list of all matching files.
-     */
-    public function scanDirectory(string $directory): iterable;
+    public function __construct(string $root, ClassLoader $classLoader)
+    {
+        parent::__construct($root, ExtensionType::MODULE, $classLoader);
+    }
 }
