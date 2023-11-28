@@ -41,8 +41,7 @@ final readonly class ExtensionFinder implements ExtensionFinderInterface
 
     public function __construct(
         private string $root
-    )
-    {
+    ) {
         $this->packageProvider = new PackageProvider();
     }
 
@@ -122,10 +121,12 @@ final readonly class ExtensionFinder implements ExtensionFinderInterface
 
     private function isSparkExtenesionType(CompletePackageInterface $package): bool
     {
-        return in_array($package->getType(), [
+        return in_array(
+            $package->getType(), [
             ExtensionType::EXTENESION_COMPOSER_TYPE,
             ExtensionType::PLUGIN_COMPOSER_TYPE
-        ]);
+            ]
+        );
     }
 
     private function isExtenesionComposerValid(CompletePackageInterface $package): bool

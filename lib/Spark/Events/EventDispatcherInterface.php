@@ -32,11 +32,11 @@ interface EventDispatcherInterface extends \Psr\EventDispatcher\EventDispatcherI
     /**
      * Registers an event listener with the event dispatcher.
      *
-     * @param string $eventName
+     * @param string   $eventName
      *  An event name.
      * @param callable $listener
      *  A listener for given event.
-     * @param int $priority
+     * @param int      $priority
      *  The higher the priority, the earlier the listener will be triggered.
      *
      * @return void
@@ -59,7 +59,7 @@ interface EventDispatcherInterface extends \Psr\EventDispatcher\EventDispatcherI
      *
      * @template T of object
      *
-     * @param T $event
+     * @param T      $event
      *  The event to pass to the event listeners
      * @param string $eventName
      *  An event name.

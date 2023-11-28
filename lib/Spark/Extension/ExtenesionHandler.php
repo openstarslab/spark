@@ -35,8 +35,7 @@ abstract class ExtenesionHandler
         protected string                    $root,
         protected ExtensionType             $type,
         protected ClassLoader $classLoader
-    )
-    {
+    ) {
         $this->extensionLoader = new FilesystemExtenesionLoader($this->root, $this->classLoader, $this->type);
         $this->extensionLoader->initializeExtenesions();
     }

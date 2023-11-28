@@ -55,10 +55,12 @@ class RoutingServiceProvider extends ServiceProvider
 
     public function registerRouteRunner(): void
     {
-        $this->container->singleton('route_runner', new RouteRunner(
-            $this->container->get('callable_resolver'),
-            $this->container->get('callable_dispatcher')
-        ));
+        $this->container->singleton(
+            'route_runner', new RouteRunner(
+                $this->container->get('callable_resolver'),
+                $this->container->get('callable_dispatcher')
+            )
+        );
     }
 
     /**
@@ -68,9 +70,11 @@ class RoutingServiceProvider extends ServiceProvider
      */
     private function registerCallableResolver(): void
     {
-        $this->container->singleton('callable_resolver', function () {
-            return new CallableResolver();
-        });
+        $this->container->singleton(
+            'callable_resolver', function () {
+                return new CallableResolver();
+            }
+        );
     }
 
     /**
@@ -80,9 +84,11 @@ class RoutingServiceProvider extends ServiceProvider
      */
     private function registerCallableDispatcher(): void
     {
-        $this->container->singleton('callable_dispatcher', function (ContainerInterface $container) {
-            return new CallableDispatcher($container);
-        });
+        $this->container->singleton(
+            'callable_dispatcher', function (ContainerInterface $container) {
+                return new CallableDispatcher($container);
+            }
+        );
     }
 
     /**
@@ -92,17 +98,19 @@ class RoutingServiceProvider extends ServiceProvider
      */
     private function registerRequest(): void
     {
-        $this->container->bind(ServerRequestInterface::class, function (ContainerInterface $container) {
-            $psr17Factory = new Psr17Factory();
-            $serverRequestCreator = new ServerRequestCreator(
-                $psr17Factory,
-                $psr17Factory,
-                $psr17Factory,
-                $psr17Factory
-            );
+        $this->container->bind(
+            ServerRequestInterface::class, function (ContainerInterface $container) {
+                $psr17Factory = new Psr17Factory();
+                $serverRequestCreator = new ServerRequestCreator(
+                    $psr17Factory,
+                    $psr17Factory,
+                    $psr17Factory,
+                    $psr17Factory
+                );
 
-            return $serverRequestCreator->fromGlobals();
-        });
+                return $serverRequestCreator->fromGlobals();
+            }
+        );
     }
 
     /**
@@ -112,8 +120,10 @@ class RoutingServiceProvider extends ServiceProvider
      */
     private function registerResponse(): void
     {
-        $this->container->bind(ResponseInterface::class, function () {
-            return new Response();
-        });
+        $this->container->bind(
+            ResponseInterface::class, function () {
+                return new Response();
+            }
+        );
     }
 }

@@ -29,12 +29,14 @@ class ExtensionServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->container->singleton('module_handler', function (ContainerInterface $container) {
-            return new ModuleHandler(
-                $container->get('kernel.base_path'),
-                $container->get('class_loader')
-            );
-        });
+        $this->container->singleton(
+            'module_handler', function (ContainerInterface $container) {
+                return new ModuleHandler(
+                    $container->get('kernel.base_path'),
+                    $container->get('class_loader')
+                );
+            }
+        );
     }
 
     public function boot(): void

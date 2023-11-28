@@ -30,14 +30,13 @@ interface CallableDispatcherInterface
     /**
      * Dispatchs and returns prepared response.
      *
-     * @param Route $route
+     * @param Route    $route
      *  Matched route.
      * @param callable $callable
      *  Prepared callable to dispatch.
      *
      * @return ResponseInterface
      *  Returns a response.
-     *
      */
     public function dispatch(Route $route, callable $callable): ResponseInterface;
 }

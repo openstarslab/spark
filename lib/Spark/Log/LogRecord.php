@@ -32,8 +32,7 @@ class LogRecord
         public readonly string             $channel,
         public readonly string             $level,
         public readonly string             $message
-    )
-    {
+    ) {
 
     }
 }

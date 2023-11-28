@@ -30,11 +30,15 @@ class LogServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->container->singleton('logger.factory', new Factory(function (ContainerInterface $container) {
-            $logger = new LoggerFactory();
-            $logger->setContainer($container);
+        $this->container->singleton(
+            'logger.factory', new Factory(
+                function (ContainerInterface $container) {
+                    $logger = new LoggerFactory();
+                    $logger->setContainer($container);
 
-            return $logger;
-        }));
+                    return $logger;
+                }
+            )
+        );
     }
 }

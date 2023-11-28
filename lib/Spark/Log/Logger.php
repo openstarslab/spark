@@ -69,7 +69,8 @@ class Logger extends AbstractLogger
             $message
         );
 
-        $filepath = sprintf('%s/%s.log',
+        $filepath = sprintf(
+            '%s/%s.log',
             rtrim($this->path . '/'),
             $this->channel
         );
@@ -78,11 +79,13 @@ class Logger extends AbstractLogger
             \mkdir(\dirname($filepath), 0777, true);
         }
 
-        $message = \strtr('[%date%][%level%] %message%', [
+        $message = \strtr(
+            '[%date%][%level%] %message%', [
             '%date%' => $record->datetime->format('Y-m-d'),
             '%level%' => $record->level,
             '%message%' => $record->message
-        ]);
+            ]
+        );
 
 
         \file_put_contents($filepath, $message . PHP_EOL, \FILE_APPEND);

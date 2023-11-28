@@ -19,7 +19,11 @@ class FilesystemExtenesionLoader extends ExtensionLoader
         $this->extensionInfos = [];
 
         foreach ($extenesions as $extenesion) {
-            /** @var CompletePackageInterface $package */
+            /**
+* 
+             *
+ * @var CompletePackageInterface $package 
+*/
             $package = $extenesion['composerPackage'];
 
             $nameParts = explode('\\', (string)$extenesion['baseClass']);

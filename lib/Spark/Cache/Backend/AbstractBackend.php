@@ -36,18 +36,25 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
 {
     protected static \Closure $createCacheItem;
 
-    /** @var array<string, CacheItem> $deferred */
+    /**
+     * 
+     *
+     * @var array<string, CacheItem> $deferred 
+     */
     protected array $deferred = [];
 
-    public function __construct() {
-        self::$createCacheItem ??= \Closure::bind(static function (string $key, mixed $value, bool $isHit) {
-            $item = new CacheItem();
-            $item->key = $key;
-            $item->value = $value;
-            $item->isHit = $isHit;
+    public function __construct()
+    {
+        self::$createCacheItem ??= \Closure::bind(
+            static function (string $key, mixed $value, bool $isHit) {
+                $item = new CacheItem();
+                $item->key = $key;
+                $item->value = $value;
+                $item->isHit = $isHit;
 
-            return $item;
-        }, null, CacheItem::class);
+                return $item;
+            }, null, CacheItem::class
+        );
     }
 
     /**

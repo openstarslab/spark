@@ -37,7 +37,7 @@ class ApcuBackend extends AbstractBackend
         $values = [];
 
         foreach (\apcu_fetch($keys, $ok) as $key => $value) {
-            if ($ok && $value !== null)  {
+            if ($ok && $value !== null) {
                 $values[$key] = unserialize($value)['data'];
             }
         }

@@ -14,7 +14,7 @@ class Spark
     }
     public static function getContainer(): ContainerInterface
     {
-        if (static::$container === NULL) {
+        if (static::$container === null) {
             throw new \RuntimeException('\Spark::$container is not initialized yet. ');
         }
 

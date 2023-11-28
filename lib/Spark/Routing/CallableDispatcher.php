@@ -31,7 +31,8 @@ class CallableDispatcher implements CallableDispatcherInterface
 {
     public function __construct(
         protected ContainerInterface $container
-    ) {}
+    ) {
+    }
 
     /**
      * @inheritDoc

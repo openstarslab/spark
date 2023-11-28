@@ -43,12 +43,14 @@ class CoreServiceProvider extends ServiceProvider
      */
     private function registerHttpKernel(): void
     {
-        $this->container->bind('http_kernel', function (ContainerInterface $container) {
-            return new HttpKernel(
-                $container,
-                $container->get('router')
-            );
-        });
+        $this->container->bind(
+            'http_kernel', function (ContainerInterface $container) {
+                return new HttpKernel(
+                    $container,
+                    $container->get('router')
+                );
+            }
+        );
     }
 
     /**

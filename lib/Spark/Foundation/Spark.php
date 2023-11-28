@@ -153,9 +153,11 @@ class Spark implements SparkInterface
         $this->initializeContainer();
         $this->initializeServiceProviders();
 
-        \array_walk($this->serviceProviders, function ($provider) {
-            $this->bootProvider($provider);
-        });
+        \array_walk(
+            $this->serviceProviders, function ($provider) {
+                $this->bootProvider($provider);
+            }
+        );
 
         $this->booted = true;
     }

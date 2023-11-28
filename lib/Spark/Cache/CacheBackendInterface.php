@@ -32,7 +32,7 @@ interface CacheBackendInterface
      *
      * @template T
      *
-     * @param string $key
+     * @param string                                           $key
      *  The key of item to gets from cache.
      * @param (callable(\Psr\Cache\CacheItemInterface,bool):T) $callback
      *  On cache misses, a callback is called that should return missing value.
@@ -44,9 +44,9 @@ interface CacheBackendInterface
     /**
      * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
      *
-     * @param string $key
+     * @param string                 $key
      *  The key of the item to store.
-     * @param mixed $value
+     * @param mixed                  $value
      *  The value of the item to store, must be serializable.
      * @param int|\DateInterval|null $tls
      *  The TTL value of this item.

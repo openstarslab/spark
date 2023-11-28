@@ -31,8 +31,7 @@ abstract class Extension implements ExtensionInterface
         protected bool   $active,
         protected string $basePath,
         string           $projectDir = null
-    )
-    {
+    ) {
         if ($projectDir && mb_strpos($this->basePath, '/') !== 0) {
             $this->basePath = rtrim($projectDir, '/') . '/' . $this->basePath;
         }

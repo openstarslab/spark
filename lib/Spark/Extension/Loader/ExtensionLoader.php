@@ -43,8 +43,7 @@ abstract class ExtensionLoader implements ExtenesionLoaderInterface
         protected readonly string        $root,
         protected readonly ClassLoader   $classLoader,
         protected readonly ExtensionType $type
-    )
-    {
+    ) {
 
     }
 
@@ -158,7 +157,8 @@ abstract class ExtensionLoader implements ExtenesionLoaderInterface
             $extenesion = new $className((bool)$extenesionData['active'], $extenesionData['path']);
 
             if (!$extenesion instanceof ExtensionInterface) {
-                $reason = sprintf("Extenesion class %s must implements %s",
+                $reason = sprintf(
+                    "Extenesion class %s must implements %s",
                     $extenesion::class,
                     ExtensionInterface::class
                 );
