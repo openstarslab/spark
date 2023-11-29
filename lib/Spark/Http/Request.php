@@ -29,7 +29,7 @@ use Psr\Http\Message\UriInterface;
 
 class Request implements ServerRequestInterface
 {
-   use MessageTrait;
+    use MessageTrait;
 
     public function __construct(ServerRequestInterface $message)
     {
@@ -53,7 +53,7 @@ class Request implements ServerRequestInterface
         );
 
         return new self(
-          $serverRequestCreator->fromGlobals()
+            $serverRequestCreator->fromGlobals()
         );
     }
 
