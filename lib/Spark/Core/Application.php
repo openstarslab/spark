@@ -176,7 +176,7 @@ class Application implements ApplicationInterface, HttpKernelInterface
         $container->singleton(ApplicationInterface::class, $this);
         $container->singleton(self::class, $this);
 
-        $container->singleton('class_loader', require $this->getProjectDir() . '/vendor/autoload.php');
+        $container->singleton('class_loader', include $this->getProjectDir() . '/vendor/autoload.php');
 
         foreach ($this->getKernelParameters() as $key => $value) {
             $container->scalar($key, $value);

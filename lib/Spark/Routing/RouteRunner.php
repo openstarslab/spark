@@ -37,7 +37,7 @@ final class RouteRunner implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if ($request->getAttribute(RouteContext::ROUTE_FOUND->value) === NULL) {
+        if ($request->getAttribute(RouteContext::ROUTE_FOUND->value) === null) {
             $routingMiddleware = new RoutingMiddleware();
             $request = $routingMiddleware->findRoute($request);
         }
