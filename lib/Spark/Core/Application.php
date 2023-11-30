@@ -204,6 +204,12 @@ class Application implements ApplicationInterface, HttpKernelInterface
         return $this->getProjectDir() . '/app';
     }
 
+    /**
+     * Returns the project directory.
+     *
+     * @return string
+     *  The absolute path of the project directory.
+     */
     public function getProjectDir(): string
     {
         if (!isset($this->projectDir)) {
@@ -213,16 +219,46 @@ class Application implements ApplicationInterface, HttpKernelInterface
         return $this->projectDir;
     }
 
+    /**
+     * Sets the project directory.
+     *
+     * @param string $projectDir
+     *  The path to the project directory.
+     *
+     * @return $this
+     */
+    public function setProjectDir(string $projectDir): self
+    {
+        $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        return $this;
+    }
+
+    /**
+     * Returns the path to the logs directory.
+     *
+     * @return string
+     *  The absolute path to the logs directory.
+     */
     public function getLogsDir(): string
     {
         return $this->getProjectDir() . '/var/log';
     }
 
+
+    /**
+     * Returns the absolute path to the cache directory.
+     *
+     * @return string
+     *  The absolute path to the cache directory.
+     */
     public function getCacheDir(): string
     {
         return $this->getProjectDir() . '/var/cache';
     }
 
+    /**
+     * @inheritDoc
+     */
     public function run(ServerRequestInterface $request): ResponseInterface
     {
         if ($this->booted === false) {
