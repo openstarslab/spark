@@ -20,25 +20,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Log;
+namespace Spark\Core\Providers;
 
-use Nulldark\Container\Concrete\Factory;
 use Nulldark\Container\ContainerInterface;
-use Spark\Foundation\Providers\ServiceProvider;
+use Nulldark\Routing\Router;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7\Response;
+use Nyholm\Psr7Server\ServerRequestCreator;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Spark\Core\ServiceProvider;
+use Spark\Routing\CallableDispatcher;
+use Spark\Routing\CallableResolver;
+use Spark\Routing\RouteRunner;
 
-class LogServiceProvider extends ServiceProvider
+class RoutingServiceProvider extends ServiceProvider
 {
-    public function register(): void
+    public function register(ContainerInterface $container): void
     {
-        $this->container->singleton(
-            'logger.factory', new Factory(
-                function (ContainerInterface $container) {
-                    $logger = new LoggerFactory();
-                    $logger->setContainer($container);
-
-                    return $logger;
-                }
-            )
-        );
+        $container->singleton('router', new Router());
     }
+
 }

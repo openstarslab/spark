@@ -20,37 +20,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Foundation\HttpKernel;
+namespace Spark\Core\Providers;
 
 use Nulldark\Container\ContainerInterface;
-use Nulldark\Routing\RouterInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Spark\Routing\RouteRunner;
+use Spark\Core\ServiceProvider;
+use Spark\Events\EventDispatcher;
 
-class HttpKernel implements HttpKernelInterface
+class EventServiceProvider extends ServiceProvider
 {
-    protected RouteRunner $routeRunner;
-
-    public function __construct(
-        protected ContainerInterface $container,
-        protected RouterInterface $router
-    ) {
-        $this->routeRunner = $this->container->get('route_runner');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function register(ContainerInterface $container): void
     {
-        return $this->handleRequest($request);
-    }
-
-    protected function handleRequest(ServerRequestInterface $request): ResponseInterface
-    {
-        return $this->routeRunner->run(
-            $this->router->match($request)
-        );
+        $container->singleton('event_dispatcher', new EventDispatcher());
     }
 }

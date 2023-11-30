@@ -20,43 +20,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Http;
+namespace Spark\Core;
 
-use Psr\Http\Message\ResponseInterface;
+use Nulldark\Container\ContainerInterface;
+use Spark\DependencyInjection\ContainerAwareInterface;
+use Spark\DependencyInjection\ContainerAwareTrait;
 
-class Response implements ResponseInterface
+abstract class ServiceProvider implements ContainerAwareInterface
 {
-    use MessageTrait;
+    use ContainerAwareTrait;
 
-    public function __construct(ResponseInterface $message = new \Nyholm\Psr7\Response())
+    /**
+     * Registers any services into application.
+     *
+     * @param \Nulldark\Container\ContainerInterface $container
+     *  The container.
+     *
+     * @return void
+     */
+    public function register(ContainerInterface $container): void
     {
-        $this->message = $message;
     }
 
     /**
-     * @inheritDoc
+     * Boots a service provider.
+     *
+     * @return void
      */
-    public function getStatusCode(): int
+    public function boot(): void
     {
-        return $this->message->getStatusCode();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withStatus(int $code, string $reasonPhrase = ''): ResponseInterface
-    {
-        $new = clone $this;
-        $new->message = $this->withStatus($code, $reasonPhrase);
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getReasonPhrase(): string
-    {
-        return $this->message->getReasonPhrase();
     }
 }

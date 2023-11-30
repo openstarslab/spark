@@ -22,6 +22,7 @@
 
 namespace Spark\Extension;
 
+use Nulldark\Container\ContainerInterface;
 use function mb_strpos;
 use function rtrim;
 
@@ -35,5 +36,10 @@ abstract class Extension implements ExtensionInterface
         if ($projectDir && mb_strpos($this->basePath, '/') !== 0) {
             $this->basePath = rtrim($projectDir, '/') . '/' . $this->basePath;
         }
+    }
+
+    public function build(ContainerInterface $container): void
+    {
+
     }
 }

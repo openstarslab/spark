@@ -20,21 +20,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Foundation\Providers;
+namespace Spark\Routing;
 
-use Spark\DependencyInjection\ContainerAwareInterface;
-use Spark\DependencyInjection\ContainerAwareTrait;
-
-abstract class ServiceProvider implements ContainerAwareInterface
+enum RouteContext: string
 {
-    use ContainerAwareTrait;
-
-    /**
-     * Registers any services into application.
-     *
-     * @return void
-     */
-    public function register(): void
-    {
-    }
+    case ROUTE = '__ROUTE__';
+    case ROUTE_FOUND = '__ROUTE_FOUND__';
 }

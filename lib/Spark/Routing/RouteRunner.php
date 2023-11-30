@@ -22,37 +22,42 @@
 
 namespace Spark\Routing;
 
-use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
-use Nulldark\Routing\Route;
 use Psr\Http\Message\ResponseInterface;
-use Spark\DependencyInjection\ContainerAwareInterface;
-use Spark\DependencyInjection\ContainerAwareTrait;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Spark\Http\Middleware\RoutingMiddleware;
+use Spark\Http\Response;
 
-class RouteRunner implements ContainerAwareInterface
+final class RouteRunner implements RequestHandlerInterface
 {
-    use ContainerAwareTrait;
     public function __construct(
-        protected CallableResolver $resolver,
-        protected CallableDispatcher $dispatcher,
+        protected CallableResolverInterface $callableResolver = new CallableResolver()
     ) {
     }
 
-    /**
-     * Resolves and emits a response.
-     *
-     * @param Route $route
-     *  The route
-     *
-     * @return ResponseInterface
-     *  Returns emitted response.
-     */
-    public function run(Route $route): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $resolve = $this->resolver->resolve($route);
-        $response = $this->dispatcher->dispatch($route, $resolve);
+        if ($request->getAttribute(RouteContext::ROUTE_FOUND->value) === NULL) {
+            $routingMiddleware = new RoutingMiddleware();
+            $request = $routingMiddleware->findRoute($request);
+        }
 
-        $emitter = new SapiEmitter();
-        $emitter->emit($response);
+        $callable = $this->callableResolver->resolve(
+            $route = $request->getAttribute(RouteContext::ROUTE->value)
+        );
+
+        $response = new Response();
+        $response = $callable($request, $response, ...$route->getParameters());
+
+        if (!($response instanceof ResponseInterface)) {
+            $msg = 'The controller must return a "\Psr\Http\Message\ResponseInterface" (%s given)' ;
+
+            if ($response === null) {
+                $msg .= ' Did you forget to add a return statement somewhere in your controller?';
+            }
+
+            throw new \RuntimeException(\sprintf($msg, \gettype($response)));
+        }
 
         return $response;
     }

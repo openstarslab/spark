@@ -20,31 +20,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Extension;
+namespace Spark\Core;
 
-use Nulldark\Container\ContainerInterface;
-use Spark\Foundation\Providers\ServiceProvider;
+use Psr\Http\Server\MiddlewareInterface;
 
-class ExtensionServiceProvider extends ServiceProvider
+interface ApplicationInterface
 {
-    public function register(): void
-    {
-        $this->container->singleton(
-            'module_handler', function (ContainerInterface $container) {
-                return new ModuleHandler(
-                    $container->get('kernel.base_path'),
-                    $container->get('class_loader')
-                );
-            }
-        );
-    }
+    /**
+     * Boots the current application.
+     *
+     * @return void
+     */
+    public function boot(): void;
 
-    public function boot(): void
-    {
-        $extenesions = $this->container->get('module_handler')->getList();
-
-        foreach ($extenesions as $extension) {
-            $extension->boot($this->container);
-        }
-    }
+    /**
+     * Gets an middleware stack.
+     *
+     * @return MiddlewareInterface[]
+     */
+    public function middlewares(): iterable;
 }

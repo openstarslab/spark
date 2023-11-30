@@ -20,18 +20,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Cache;
+namespace Spark\Core\Providers;
 
+use Nulldark\Container\ContainerInterface;
 use Spark\Cache\Backend\ApcuBackend;
 use Spark\Cache\Backend\MemoryBackend;
-use Spark\Foundation\Providers\ServiceProvider;
+use Spark\Core\ServiceProvider;
 
 class CacheServiceProvider extends ServiceProvider
 {
-    public function register(): void
+    public function register(ContainerInterface $container): void
     {
-        $this->container->singleton('cache.backend.apcu', ApcuBackend::class);
-        $this->container->singleton('cache.backend.memory', MemoryBackend::class);
-        $this->container->singleton('cache.default', 'cache.backend.memory');
+        $container->singleton('cache.backend.apcu', ApcuBackend::class);
+        $container->singleton('cache.backend.memory', MemoryBackend::class);
+        $container->singleton('cache.default', 'cache.backend.memory');
     }
 }

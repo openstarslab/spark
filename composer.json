@@ -35,7 +35,10 @@
   "autoload": {
     "psr-4": {
       "Spark\\": "lib/Spark"
-    }
+    },
+    "classmap": [
+      "lib/Spark.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {

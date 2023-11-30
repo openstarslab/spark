@@ -20,14 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Events;
+namespace Spark\Core\Providers;
 
-use Spark\Foundation\Providers\ServiceProvider;
+use Nulldark\Container\Concrete\Factory;
+use Nulldark\Container\ContainerInterface;
+use Spark\Core\ServiceProvider;
+use Spark\Log\LoggerFactory;
 
-class EventServiceProvider extends ServiceProvider
+class LogServiceProvider extends ServiceProvider
 {
-    public function register(): void
+    public function register(ContainerInterface $container): void
     {
-        $this->container->singleton('event_dispatcher', new EventDispatcher());
+        $container->singleton(
+            'logger.factory', new Factory(
+                function (ContainerInterface $container) {
+                    $logger = new LoggerFactory();
+                    $logger->setContainer($container);
+
+                    return $logger;
+                }
+            )
+        );
     }
 }

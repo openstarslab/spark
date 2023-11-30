@@ -20,52 +20,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Foundation\Providers;
+namespace Spark\Core\Providers;
 
 use Nulldark\Container\ContainerInterface;
 use Nulldark\Routing\Router;
 use Nyholm\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
-use Spark\Foundation\HttpKernel\HttpKernel;
+use Spark\Core\ServiceProvider;
+use Spark\Http\Application;
 
 class CoreServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        $this->registerHttpKernel();
-        $this->registerCoreAliases();
-    }
-
-    /**
-     * Registers a http kernel.
-     *
-     * @return void
-     */
-    private function registerHttpKernel(): void
-    {
-        $this->container->bind(
-            'http_kernel', function (ContainerInterface $container) {
-                return new HttpKernel(
-                    $container,
-                    $container->get('router')
-                );
-            }
-        );
-    }
-
-    /**
-     * Registers a core aliases.
-     *
-     * @return void
-     */
-    private function registerCoreAliases(): void
+    public function register(ContainerInterface $container): void
     {
         foreach ([
-            'request' => [Request::class, RequestInterface::class],
-            'router' => [Router::class]
-        ] as $key => $aliases) {
+                     'request' => [Request::class, RequestInterface::class],
+                     'router' => [Router::class]
+                 ] as $key => $aliases) {
             foreach ($aliases as $alias) {
-                $this->container->alias($key, $alias);
+                $container->alias($key, $alias);
             }
         }
     }

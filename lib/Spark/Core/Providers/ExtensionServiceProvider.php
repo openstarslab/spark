@@ -20,23 +20,32 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Routing;
+namespace Spark\Core\Providers;
 
-use Nulldark\Routing\Route;
-use Psr\Http\Message\ResponseInterface;
+use Nulldark\Container\ContainerInterface;
+use Spark\Core\ServiceProvider;
+use Spark\Extension\ModuleHandler;
 
-interface CallableDispatcherInterface
+class ExtensionServiceProvider extends ServiceProvider
 {
-    /**
-     * Dispatchs and returns prepared response.
-     *
-     * @param Route    $route
-     *  Matched route.
-     * @param callable $callable
-     *  Prepared callable to dispatch.
-     *
-     * @return ResponseInterface
-     *  Returns a response.
-     */
-    public function dispatch(Route $route, callable $callable): ResponseInterface;
+    public function register(ContainerInterface $container): void
+    {
+        $container->singleton(
+            'module_handler', function (ContainerInterface $container) {
+                return new ModuleHandler(
+                    $container->get('kernel.app_dir'),
+                    $container->get('class_loader')
+                );
+            }
+        );
+    }
+
+    public function boot(): void
+    {
+        $extenesions = $this->container->get('module_handler')->getList();
+
+        foreach ($extenesions as $extension) {
+            $extension->boot($this->container);
+        }
+    }
 }
