@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  php-fpm:
+    image: openstarslab/php-fpm:latest
+    build:
+      context: .docker/php
+    volumes:
+      - ./:/var/www
+  nginx:
+    image: ghcr.io/nulldark/nginx:latest
+    volumes:
+      - ./:/var/www
+      - .docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - php-fpm
+    ports:
+      - "80:80"
