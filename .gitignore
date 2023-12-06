@@ -6,7 +6,7 @@
 vendor/
 
 ## QA Tools
-phpcs.xml.dist
+phpcs.xml
 phpstan.neon
 phpunit.xml
 psalm.xml
