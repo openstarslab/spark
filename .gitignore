@@ -3,7 +3,6 @@
  .vscode/
 
 ## Composer
-composer.lock
 vendor/
 
 ## QA Tools
@@ -13,4 +12,4 @@ phpunit.xml
 psalm.xml
 
 ## Cache
-.build/
+build/

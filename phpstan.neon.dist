@@ -1,11 +1,9 @@
 parameters:
-    level: 8
-    tmpDir: .build/cache/phpstan
+    level: max
+    tmpDir: ./build/cache/phpstan
     tipsOfTheDay: false
     treatPhpDocTypesAsCertain: false
-    checkGenericClassInNonGenericObjectType: false
-    checkMissingIterableValueType: false
-    reportUnmatchedIgnoredErrors: false
     paths:
-        - lib
-        - tests
+        - app/modules/
+        - lib/internal/
+        - tests/
