@@ -20,9 +20,42 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Extension;
+namespace Spark\Framework\Extension;
+
+use Spark\Framework\DependencyInjection\ContainerBuilderInterface;
 
 interface ExtensionInterface
 {
+    /**
+     * Boot the application.
+     *
+     * @return void
+     */
+    public function boot(): void;
 
+    /**
+     * Registers a container builder to the system.
+     *
+     * @param ContainerBuilderInterface $container
+     *   The container builder to be registered.
+     *
+     * @return void
+     */
+    public function register(ContainerBuilderInterface $container): void;
+
+    /**
+     * Returns the name of the extension.
+     *
+     * @return string
+     *    The name of the extension.
+     */
+    public function getName(): string;
+
+    /**
+     * Gets the path of the extension.
+     *
+     * @return string
+     *   The path of the extension.
+     */
+    public function getPath(): string;
 }

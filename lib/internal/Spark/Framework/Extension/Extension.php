@@ -20,26 +20,49 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Extension;
+namespace Spark\Framework\Extension;
 
 use Nulldark\Container\ContainerInterface;
+use Spark\Framework\DependencyInjection\ContainerAwareInterface;
+use Spark\Framework\DependencyInjection\ContainerAwareTrait;
+use Spark\Framework\DependencyInjection\ContainerBuilderInterface;
 use function mb_strpos;
 use function rtrim;
 
-abstract class Extension implements ExtensionInterface
+abstract class Extension implements ExtensionInterface, ContainerAwareInterface
 {
-    public function __construct(
-        protected bool   $active,
-        protected string $basePath,
-        string           $projectDir = null
-    ) {
-        if ($projectDir && mb_strpos($this->basePath, '/') !== 0) {
-            $this->basePath = rtrim($projectDir, '/') . '/' . $this->basePath;
-        }
+    use ContainerAwareTrait;
+
+    protected string $name;
+    protected string $path;
+
+    /**
+     * {@inheritDoc }
+     */
+    public function register(ContainerBuilderInterface $container): void
+    {
     }
 
-    public function build(ContainerInterface $container): void
+    /**
+     * {@inheritDoc }
+     */
+    public function boot(): void
     {
+    }
 
+    /**
+     * {@inheritDoc }
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * {@inheritDoc }
+     */
+    public function getPath(): string
+    {
+        return $this->path;
     }
 }
