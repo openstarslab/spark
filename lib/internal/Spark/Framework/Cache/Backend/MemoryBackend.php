@@ -20,9 +20,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Framework\Cache\Backend;
+namespace Spark\Framework\Cache\Backend;
 
-use Spark\Framework\Framework\Cache\CacheItem;
+use Spark\Framework\Cache\CacheItem;
 
 /**
  * Defines memory cache backend implementation.

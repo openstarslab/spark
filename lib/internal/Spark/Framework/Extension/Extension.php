@@ -22,12 +22,9 @@
 
 namespace Spark\Framework\Extension;
 
-use Nulldark\Container\ContainerInterface;
+use Spark\Framework\DependencyInjection\Builder\ContainerBuilderInterface;
 use Spark\Framework\DependencyInjection\ContainerAwareInterface;
 use Spark\Framework\DependencyInjection\ContainerAwareTrait;
-use Spark\Framework\DependencyInjection\ContainerBuilderInterface;
-use function mb_strpos;
-use function rtrim;
 
 abstract class Extension implements ExtensionInterface, ContainerAwareInterface
 {

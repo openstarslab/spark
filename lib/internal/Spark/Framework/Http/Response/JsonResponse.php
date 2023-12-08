@@ -20,10 +20,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Framework\Http\Response;
+namespace Spark\Framework\Http\Response;
 
 use Nyholm\Psr7\Stream;
-use Spark\Framework\Framework\Http\Response;
+use Spark\Framework\Http\Response;
 
 class JsonResponse extends Response
 {

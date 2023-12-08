@@ -20,13 +20,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Framework\Routing;
+namespace Spark\Framework\Routing;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Spark\Framework\Framework\Http\Middleware\RoutingMiddleware;
-use Spark\Framework\Framework\Http\Response;
+use Spark\Framework\Http\Middleware\RoutingMiddleware;
+use Spark\Framework\Http\Response;
 
 final class RouteRunner implements RequestHandlerInterface
 {

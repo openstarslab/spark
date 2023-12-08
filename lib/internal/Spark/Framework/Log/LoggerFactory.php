@@ -20,16 +20,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Framework\Log;
+namespace Spark\Framework\Log;
 
 use Psr\Log\LoggerInterface;
-use Spark\Framework\Framework\DependencyInjection\ContainerAwareInterface;
-use Spark\Framework\Framework\DependencyInjection\ContainerAwareTrait;
+use Spark\Framework\DependencyInjection\ContainerAwareInterface;
+use Spark\Framework\DependencyInjection\ContainerAwareTrait;
 
 /**
  * A logger factor.
  *
- * @see \Spark\Framework\Framework\Log\Logger
+ * @see \Spark\Framework\Log\Logger
  */
 class LoggerFactory implements ContainerAwareInterface
 {

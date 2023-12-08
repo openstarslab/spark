@@ -20,21 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Extension\Composer;
+namespace Spark\Framework\Composer;
 
 use Composer\IO\IOInterface;
+use Composer\IO\NullIO;
 use Composer\Package\CompletePackageInterface;
 use InvalidArgumentException;
-use Spark\Extension\Exception\InvalidComposerException;
+use Spark\Framework\Extension\Exception\InvalidComposerException;
 
 class PackageProvider
 {
-    public function getComposerPackage(string $extenesionPath, IOInterface $io): CompletePackageInterface
+    public function getComposerPackage(string $extensionPath, ?IOInterface $io = null): CompletePackageInterface
     {
+        if ($io === null) {
+            $io = new NullIO();
+        }
+
         try {
-            return Factory::createComposerPackage($extenesionPath, $io)->getPackage();
+            return Factory::createComposerPackage($extensionPath, $io)->getPackage();
         } catch (InvalidArgumentException) {
-            throw new InvalidComposerException($extenesionPath);
+            throw new InvalidComposerException($extensionPath);
         }
     }
 }

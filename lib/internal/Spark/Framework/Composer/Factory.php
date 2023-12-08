@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Extension\Composer;
+namespace Spark\Framework\Composer;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
@@ -31,11 +31,6 @@ class Factory
     public static function createComposerPackage(string $composerPath, IOInterface $io): Composer
     {
         return (new \Composer\Factory())
-            ->createComposer(
-                $io,
-                $composerPath,
-                false,
-                dirname($composerPath)
-            );
+            ->createComposer($io, $composerPath, false, dirname($composerPath));
     }
 }

@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Framework\Log;
+namespace Spark\Framework\Log;
 
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerAwareTrait;

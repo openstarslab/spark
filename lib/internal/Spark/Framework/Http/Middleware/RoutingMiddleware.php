@@ -20,13 +20,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Framework\Http\Middleware;
+namespace Spark\Framework\Http\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Spark\Framework\Framework\Routing\RouteContext;
+use Spark\Framework\Routing\RouteContext;
 
 class RoutingMiddleware implements MiddlewareInterface
 {

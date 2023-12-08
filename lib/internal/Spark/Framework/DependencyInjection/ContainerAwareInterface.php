@@ -20,9 +20,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Framework\DependencyInjection;
+namespace Spark\Framework\DependencyInjection;
 
-use Nulldark\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * This interface should be implemented by classes that depends on a Container.
@@ -30,10 +30,10 @@ use Nulldark\Container\ContainerInterface;
 interface ContainerAwareInterface
 {
     /**
-     * Sets the container.
+     * Set the container.
      *
      * @param ContainerInterface $container
-     *  Container instance.
+     *   The container to set.
      *
      * @return void
      */

@@ -20,21 +20,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Framework\DependencyInjection;
+namespace Spark\Framework\DependencyInjection;
 
-use Nulldark\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * ContainerAwareTrait
  *
- * @see \Spark\Framework\Framework\DependencyInjection\ContainerInjectionInterface
+ * @see \Spark\Framework\DependencyInjection\ContainerAwareInterface
  */
 trait ContainerAwareTrait
 {
     /**
-     * Container.
+     * The container object used for dependency injection and inversion of control.
      *
-     * @var ContainerInterface $container
+     * @param \Psr\Container\ContainerInterface $container
      */
     protected ContainerInterface $container;
 

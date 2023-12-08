@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Framework\Cache;
+namespace Spark\Framework\Cache;
 
 /**
  * Defines an interface for cache implementations.

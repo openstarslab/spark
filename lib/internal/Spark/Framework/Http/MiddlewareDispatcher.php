@@ -1,12 +1,12 @@
 <?php
 
-namespace Spark\Framework\Framework\Http;
+namespace Spark\Framework\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Spark\Framework\Framework\Routing\RouteRunner;
+use Spark\Framework\Routing\RouteRunner;
 use Spark\Http\Middleware\RequestHandler;
 
 /**

@@ -22,7 +22,7 @@
 
 namespace Spark\Framework\Extension;
 
-use Spark\Framework\DependencyInjection\ContainerBuilderInterface;
+use Spark\Framework\DependencyInjection\Builder\ContainerBuilderInterface;
 
 interface ExtensionInterface
 {
