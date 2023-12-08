@@ -34,8 +34,8 @@ class TextResponse extends Response
                 $statusCode,
                 \array_merge(['Content-Type' => 'text/plain'], $headers),
                 Stream::create($body),
-                '2'
-            )
+                '2',
+            ),
         );
     }
 }

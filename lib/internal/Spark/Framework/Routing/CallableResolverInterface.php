@@ -35,5 +35,4 @@ interface CallableResolverInterface
      * @return callable
      */
     public function resolve(Route $route): callable;
-
 }

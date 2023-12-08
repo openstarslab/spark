@@ -49,11 +49,11 @@ class Request implements ServerRequestInterface
             $psr17Factory,
             $psr17Factory,
             $psr17Factory,
-            $psr17Factory
+            $psr17Factory,
         );
 
         return new self(
-            $serverRequestCreator->fromGlobals()
+            $serverRequestCreator->fromGlobals(),
         );
     }
 

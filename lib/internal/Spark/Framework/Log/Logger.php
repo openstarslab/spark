@@ -66,13 +66,13 @@ class Logger extends AbstractLogger
             new \DateTimeImmutable(),
             $this->channel,
             $level,
-            $message
+            $message,
         );
 
         $filepath = sprintf(
             '%s/%s.log',
             rtrim($this->path . '/'),
-            $this->channel
+            $this->channel,
         );
 
         if (!\file_exists($filepath)) {
@@ -80,11 +80,12 @@ class Logger extends AbstractLogger
         }
 
         $message = \strtr(
-            '[%date%][%level%] %message%', [
+            '[%date%][%level%] %message%',
+            [
             '%date%' => $record->datetime->format('Y-m-d'),
             '%level%' => $record->level,
-            '%message%' => $record->message
-            ]
+            '%message%' => $record->message,
+            ],
         );
 
 
@@ -92,5 +93,4 @@ class Logger extends AbstractLogger
 
         $this->logDepth--;
     }
-
 }

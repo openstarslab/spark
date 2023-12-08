@@ -45,5 +45,4 @@ trait ContainerAwareTrait
     {
         $this->container = $container;
     }
-
 }

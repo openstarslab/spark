@@ -81,7 +81,7 @@ class ApcuBackend extends AbstractBackend
         return \apcu_store(
             $item->getKey(),
             \serialize(['data' => $item->get()]),
-            $item->getExpirationTime()
+            $item->getExpirationTime(),
         );
     }
 }

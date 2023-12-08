@@ -36,7 +36,7 @@ class RoutingMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         return $handler->handle(
-            $this->findRoute($request)
+            $this->findRoute($request),
         );
     }
 
@@ -55,7 +55,7 @@ class RoutingMiddleware implements MiddlewareInterface
 
         return $request->withAttribute(
             RouteContext::ROUTE->value,
-            \Spark::service('router')->match($request)
+            \Spark::service('router')->match($request),
         );
     }
 }

@@ -43,7 +43,7 @@ final class RouteRunner implements RequestHandlerInterface
         }
 
         $callable = $this->callableResolver->resolve(
-            $route = $request->getAttribute(RouteContext::ROUTE->value)
+            $route = $request->getAttribute(RouteContext::ROUTE->value),
         );
 
         $response = new Response();

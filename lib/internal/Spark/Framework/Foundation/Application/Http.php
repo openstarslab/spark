@@ -24,7 +24,6 @@ namespace Spark\Framework\Foundation\Application;
 
 class Http implements ApplicationInterface
 {
-
     /**
      * @inheritDoc
      */

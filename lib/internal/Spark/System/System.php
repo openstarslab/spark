@@ -26,5 +26,4 @@ use Spark\Framework\Extension\Extension;
 
 final class System extends Extension
 {
-
 }

@@ -29,10 +29,9 @@ class LogRecord
 {
     public function __construct(
         public readonly \DateTimeImmutable $datetime,
-        public readonly string             $channel,
-        public readonly string             $level,
-        public readonly string             $message
+        public readonly string $channel,
+        public readonly string $level,
+        public readonly string $message
     ) {
-
     }
 }

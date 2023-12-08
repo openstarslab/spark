@@ -96,8 +96,8 @@ final class CacheItem implements CacheItemInterface
                 default => throw new \InvalidArgumentException(
                     \sprintf(
                         'Expiration date must be an integer, a DateInterval or null, "%s" given.',
-                        \get_debug_type($time)
-                    )
+                        \get_debug_type($time),
+                    ),
                 )
             };
         }

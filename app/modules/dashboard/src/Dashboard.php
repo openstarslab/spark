@@ -2,7 +2,6 @@
 
 namespace Spark\Dashboard;
 
-
 use Spark\Framework\DependencyInjection\Builder\ContainerBuilderInterface;
 
 final class Dashboard extends \Spark\System\Module\Module
@@ -14,6 +13,5 @@ final class Dashboard extends \Spark\System\Module\Module
 
     public function boot(): void
     {
-
     }
 }

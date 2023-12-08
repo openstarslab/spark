@@ -34,8 +34,8 @@ class HtmlResponse extends Response
                 $statusCode,
                 \array_merge(['Content-Type' => 'text/html'], $headers),
                 Stream::create($body),
-                '2'
-            )
+                '2',
+            ),
         );
     }
 }

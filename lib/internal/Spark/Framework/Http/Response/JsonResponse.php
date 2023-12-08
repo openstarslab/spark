@@ -34,8 +34,8 @@ class JsonResponse extends Response
                 $statusCode,
                 \array_merge(['Content-Type' => 'application/json'], $headers),
                 Stream::create((string)(\is_array($body) ? \json_encode($body) : $body)),
-                '2'
-            )
+                '2',
+            ),
         );
     }
 }

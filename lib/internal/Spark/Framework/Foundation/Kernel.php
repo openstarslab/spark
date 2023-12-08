@@ -57,15 +57,14 @@ final class Kernel implements KernelInterface
         private readonly string $rootDir,
         private readonly ClassLoader $classLoader
     ) {
-
     }
 
     public static function create(string $environment, string $rootDir, ClassLoader $classLoader): self
     {
         $bootstrap = new self(
-          $environment,
-          $rootDir,
-          $classLoader
+            $environment,
+            $rootDir,
+            $classLoader,
         );
 
         $bootstrap->boot();
@@ -163,5 +162,4 @@ final class Kernel implements KernelInterface
             $this->extensions[] = $extension;
         }
     }
-
 }

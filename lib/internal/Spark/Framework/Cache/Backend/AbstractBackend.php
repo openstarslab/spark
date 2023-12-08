@@ -27,7 +27,6 @@ use Psr\Cache\CacheItemPoolInterface;
 use Spark\Framework\Cache\CacheBackendInterface;
 use Spark\Framework\Cache\CacheItem;
 
-
 /**
  * It is an implementation of the `CacheItemPoolInterface` interface, but also
  * defines abstract methods for implementation in a particular CacheBackend.
@@ -37,9 +36,9 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     protected static \Closure $createCacheItem;
 
     /**
-     * 
      *
-     * @var array<string, CacheItem> $deferred 
+     *
+     * @var array<string, CacheItem> $deferred
      */
     protected array $deferred = [];
 
@@ -53,7 +52,9 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
                 $item->isHit = $isHit;
 
                 return $item;
-            }, null, CacheItem::class
+            },
+            null,
+            CacheItem::class,
         );
     }
 
@@ -127,7 +128,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     /**
      * @inheritDoc
      */
-    public function set(string $key, mixed $value,  null|int|\DateInterval $tls= null): bool
+    public function set(string $key, mixed $value, null|int|\DateInterval $tls = null): bool
     {
         $item = $this->getItem($key);
         $item->set($value);
@@ -164,7 +165,6 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
 
             return (self::$createCacheItem)($key, $value, $isHit);
         } catch (\Exception $e) {
-
         }
 
         return (self::$createCacheItem)($key, null, false);

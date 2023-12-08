@@ -26,7 +26,8 @@ use Spark\Framework\Extension\Extension;
 
 class Module extends Extension
 {
-    public function __construct(string $name, string $path, bool $active = true) {
+    public function __construct(string $name, string $path, bool $active = true)
+    {
         $this->name = $name;
         $this->path = $path;
         $this->active = $active;

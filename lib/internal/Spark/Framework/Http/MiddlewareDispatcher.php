@@ -51,7 +51,7 @@ final class MiddlewareDispatcher implements RequestHandlerInterface
 
         $this->next = new class ($middleware, $next) implements RequestHandlerInterface {
             public function __construct(
-                private readonly MiddlewareInterface     $middleware,
+                private readonly MiddlewareInterface $middleware,
                 private readonly RequestHandlerInterface $next
             ) {
             }

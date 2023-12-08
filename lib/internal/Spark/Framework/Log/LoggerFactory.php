@@ -55,7 +55,7 @@ class LoggerFactory implements ContainerAwareInterface
         if (!isset($this->loggers[$channel])) {
             $this->loggers[$channel] = new Logger(
                 $channel,
-                $this->container->get('kernel.logs_path')
+                $this->container->get('kernel.logs_path'),
             );
         }
 

@@ -8,9 +8,11 @@ class ServiceCircularDependencyException extends \RuntimeException
     {
         var_dump($services);
         parent::__construct(
-            sprintf('Circular dependency detected while trying to resolve entry "%s", path: "%s"',
-                $id, \implode(' -> ', $services)
-            )
+            sprintf(
+                'Circular dependency detected while trying to resolve entry "%s", path: "%s"',
+                $id,
+                \implode(' -> ', $services),
+            ),
         );
     }
 }

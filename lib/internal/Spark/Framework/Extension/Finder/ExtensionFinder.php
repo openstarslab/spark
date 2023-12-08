@@ -22,8 +22,8 @@
 
 namespace Spark\Framework\Extension\Finder;
 
-use Composer\InstalledVersions;
 use Composer\IO\IOInterface;
+use Composer\InstalledVersions;
 use Composer\Package\CompletePackageInterface;
 use Spark\Framework\Composer\PackageProvider;
 use Spark\Framework\Extension\Exception\InvalidComposerException;
@@ -35,7 +35,8 @@ class ExtensionFinder implements ExtensionFinderInterface
 
     private PackageProvider $packageProvider;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->packageProvider = new PackageProvider();
     }
 
@@ -63,7 +64,7 @@ class ExtensionFinder implements ExtensionFinderInterface
                     'name' => $extensionName,
                     'path' => $path,
                     'baseClass' => $extensionName,
-                    'composerPackage' => $package
+                    'composerPackage' => $package,
                 ];
             }
         }

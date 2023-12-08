@@ -36,8 +36,8 @@ final class ExtensionLoader implements ExtensionLoaderInterface
     protected ExtensionCollection $extensions;
 
     public function __construct(
-        protected readonly string        $extensionDir,
-        protected readonly ClassLoader   $classLoader,
+        protected readonly string $extensionDir,
+        protected readonly ClassLoader $classLoader,
     ) {
         $this->extensions = new ExtensionCollection();
     }
@@ -86,14 +86,14 @@ final class ExtensionLoader implements ExtensionLoaderInterface
             $extension = new $extensionClassName(
                 (string) $extensionData['name'],
                 (string) $extensionData['path'],
-                true
+                true,
             );
 
             if (!$extension instanceof ExtensionInterface) {
                 $reason = sprintf(
                     "Extension class %s must implements %s",
                     $extensionClassName,
-                    ExtensionInterface::class
+                    ExtensionInterface::class,
                 );
 
                 throw new ExtensionLoaderException($extensionData['name'], $reason);
