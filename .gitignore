@@ -9,7 +9,6 @@ vendor/
 phpcs.xml
 phpstan.neon
 phpunit.xml
-psalm.xml.dist
 
 ## Cache
 build/
