@@ -20,16 +20,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\Providers;
+namespace Spark\Framework\Foundation;
 
-use Nulldark\Container\ContainerInterface;
-use Spark\Core\ServiceProvider;
-use Spark\Events\EventDispatcher;
+use Spark\Framework\Foundation\Application\ApplicationInterface;
 
-class EventServiceProvider extends ServiceProvider
+interface KernelInterface
 {
-    public function register(ContainerInterface $container): void
-    {
-        $container->singleton('event_dispatcher', new EventDispatcher());
-    }
+    /**
+     * Creates a new application of the specified type.
+     *
+     * @param string $type
+     *  The type of application to create.
+     *
+     * @return ApplicationInterface
+     *  The created application.
+     */
+    public function createApplication(string $type): ApplicationInterface;
+
+    /**
+     * Starts the application.
+     *
+     * @param ApplicationInterface $application
+     *  The application instance to start.
+     *
+     * @return void
+     *  Returns nothing.
+     */
+    public function start(ApplicationInterface $application): void;
 }

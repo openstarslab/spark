@@ -20,26 +20,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\Providers;
+namespace Spark\System;
 
-use Nulldark\Container\ContainerInterface;
-use Nulldark\Routing\Router;
-use Nyholm\Psr7\Request;
-use Psr\Http\Message\RequestInterface;
-use Spark\Core\ServiceProvider;
-use Spark\Http\Application;
+use Spark\Framework\Extension\Extension;
 
-class CoreServiceProvider extends ServiceProvider
+final class System extends Extension
 {
-    public function register(ContainerInterface $container): void
-    {
-        foreach ([
-                     'request' => [Request::class, RequestInterface::class],
-                     'router' => [Router::class]
-                 ] as $key => $aliases) {
-            foreach ($aliases as $alias) {
-                $container->alias($key, $alias);
-            }
-        }
-    }
+
 }

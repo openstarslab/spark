@@ -20,32 +20,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\Providers;
+\error_reporting(\E_STRICT | \E_ALL);
 
-use Nulldark\Container\ContainerInterface;
-use Spark\Core\ServiceProvider;
-use Spark\Extension\ModuleHandler;
-
-class ExtensionServiceProvider extends ServiceProvider
-{
-    public function register(ContainerInterface $container): void
-    {
-        $container->singleton(
-            'module_handler', function (ContainerInterface $container) {
-                return new ModuleHandler(
-                    $container->get('kernel.app_dir'),
-                    $container->get('class_loader')
-                );
-            }
-        );
+if (!defined('PHP_VERSION_ID') || \PHP_VERSION_ID < 80210) {
+    if (\PHP_SAPI === 'cli') {
+        echo 'Unsupported PHP Version, spark supports PHP 8.2.1 or later.';
+    } else {
+        echo "<p>Unsupported PHP Version, spark supports PHP 8.2.1 or later.</p>";
     }
 
-    public function boot(): void
-    {
-        $extenesions = $this->container->get('module_handler')->getList();
-
-        foreach ($extenesions as $extension) {
-            $extension->boot($this->container);
-        }
-    }
+    \http_response_code(503);
+    exit(1);
 }
+
+if (\PHP_SAPI !== 'cli') {
+    \ini_set('session.use_cookies', '1');
+    \ini_set('session.use_only_cookies', '1');
+    \ini_set('session.use_trans_sid', '0');
+    \ini_set('session.cache_limiter', '');
+    \ini_set('session.cookie_httponly', '1');
+}
+
+\setlocale(\LC_ALL, 'C');
+
+\mb_internal_encoding('UTF-8');
+\mb_language('uni');
+
+\date_default_timezone_set('UTC');
+
+$autoload = require __DIR__ . '/../vendor/autoload.php';
+
+return \Spark\Framework\Foundation\Kernel::create('dev', \dirname(__DIR__), $autoload);

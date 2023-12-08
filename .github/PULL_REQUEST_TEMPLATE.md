@@ -4,7 +4,7 @@
 <!--- Describe your changes in detail -->
 
 ## Types of changes
-<!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
+<!--- What types of changes does your modules introduce? Put an `x` in all the boxes that apply: -->
 - [ ] Feature
 - [ ] Bug Fix
 - [ ] Documentation Update

@@ -20,26 +20,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Core\Providers;
+namespace Spark\Framework\Foundation\Application;
 
-use Nulldark\Container\Concrete\Factory;
-use Nulldark\Container\ContainerInterface;
-use Spark\Core\ServiceProvider;
-use Spark\Log\LoggerFactory;
-
-class LogServiceProvider extends ServiceProvider
+class Http implements ApplicationInterface
 {
-    public function register(ContainerInterface $container): void
-    {
-        $container->singleton(
-            'logger.factory', new Factory(
-                function (ContainerInterface $container) {
-                    $logger = new LoggerFactory();
-                    $logger->setContainer($container);
 
-                    return $logger;
-                }
-            )
-        );
+    /**
+     * @inheritDoc
+     */
+    public function start(): void
+    {
     }
 }

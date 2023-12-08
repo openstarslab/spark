@@ -1,5 +1,5 @@
 {
-  "name": "spark/spark",
+  "name": "openstarslab/spark",
   "description": "The core of Spark",
   "license": "LGPL-2.1-or-later",
   "type": "project",
@@ -33,16 +33,23 @@
     "psr/event-dispatcher": "^1.0",
     "psr/http-server-handler": "^1.0",
     "psr/http-server-middleware": "^1.0",
-    "psr/log": "^3.0"
+    "psr/log": "^3.0",
+    "openstarslab/dashboard": "*"
   },
   "require-dev": {
     "nulldark/devtools": "@dev"
   },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "app/modules/*"
+    }
+  ],
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "Spark\\Core\\": "lib/internal/Spark/Core",
-      "Spark\\Framework\\": "lib/internal/Spark/Framework"
+      "Spark\\Framework\\": "lib/internal/Spark/Framework",
+      "Spark\\System\\": "lib/internal/Spark/System"
     }
   },
   "autoload-dev": {
@@ -53,6 +60,7 @@
   "config": {
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true,
+      "nulldark/devtools": true,
       "phpstan/extension-installer": true
     },
     "optimize-autoloader": true,
