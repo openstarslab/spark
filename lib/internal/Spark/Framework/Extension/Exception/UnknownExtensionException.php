@@ -20,14 +20,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Extension\Exception;
+namespace Spark\Framework\Extension\Exception;
 
 use RuntimeException;
 
 class UnknownExtensionException extends RuntimeException
 {
-    public function __construct(string $extenesion)
+    public function __construct(string $extension)
     {
-        parent::__construct("The `$extenesion` does not exist.");
+        parent::__construct("The `$extension` does not exist.");
     }
 }

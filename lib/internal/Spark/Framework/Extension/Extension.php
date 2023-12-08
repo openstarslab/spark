@@ -35,23 +35,24 @@ abstract class Extension implements ExtensionInterface, ContainerAwareInterface
 
     protected string $name;
     protected string $path;
+    protected bool $active;
 
     /**
-     * {@inheritDoc }
+     * {@inheritDoc}
      */
     public function register(ContainerBuilderInterface $container): void
     {
     }
 
     /**
-     * {@inheritDoc }
+     * {@inheritDoc}
      */
     public function boot(): void
     {
     }
 
     /**
-     * {@inheritDoc }
+     * {@inheritDoc}
      */
     public function getName(): string
     {
@@ -59,10 +60,18 @@ abstract class Extension implements ExtensionInterface, ContainerAwareInterface
     }
 
     /**
-     * {@inheritDoc }
+     * {@inheritDoc}
      */
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
     }
 }

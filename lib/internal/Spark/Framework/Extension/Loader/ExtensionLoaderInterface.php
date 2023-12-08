@@ -20,50 +20,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Extension;
+namespace Spark\Framework\Extension\Loader;
 
-use Spark\Framework\DependencyInjection\ContainerBuilderInterface;
+use Spark\Framework\Extension\ExtensionCollection;
+use Spark\Framework\Extension\ExtensionInterface;
 
-interface ExtensionInterface
+interface ExtensionLoaderInterface
 {
     /**
-     * Boot the application.
+     * Activates all extensions.
      *
      * @return void
      */
-    public function boot(): void;
+    public function activateExtensions(): void;
 
     /**
-     * Registers a container builder to the system.
+     * Retrieves all instances of loaded extensions.
      *
-     * @param ContainerBuilderInterface $container
-     *   The container builder to be registered.
-     *
-     * @return void
+     * @return ExtensionCollection
+     *  Returns a collection of instances of loaded extensions.
      */
-    public function register(ContainerBuilderInterface $container): void;
+    public function getExtensionInstances(): ExtensionCollection;
 
     /**
-     * Returns the name of the extension.
+     * Returns an instance of the extension with the given name.
      *
-     * @return string
-     *    The name of the extension.
-     */
-    public function getName(): string;
-
-    /**
-     * Gets the path of the extension.
+     * @param string $name
+     *     The name of the extension.
      *
-     * @return string
-     *   The path of the extension.
+     * @return null|ExtensionInterface
+     *     Returns an instance of the extension with the given name.
      */
-    public function getPath(): string;
-
-    /**
-     * Check if the extension is active.
-     *
-     * @return bool
-     *  `TRUE` if the extension is active, `FALSE` otherwise.
-     */
-    public function isActive(): bool;
+    public function getExtensionInstance(string $name): ?ExtensionInterface;
 }

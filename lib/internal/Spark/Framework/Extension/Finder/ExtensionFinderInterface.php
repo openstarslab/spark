@@ -20,14 +20,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Extension\Exception;
+namespace Spark\Framework\Extension\Finder;
 
-use RuntimeException;
+use Composer\IO\IOInterface;
 
-class InvalidComposerException extends RuntimeException
+interface ExtensionFinderInterface
 {
-    public function __construct(string $composerJsonPath)
-    {
-        parent::__construct("The file '$composerJsonPath' is invalid.");
-    }
+    /**
+     * Loads extensions from given path.
+     *
+     * @param string           $extensionPath
+     *  Path where extensions are located.
+     * @param IOInterface|null $io
+     *  The Input/Output instance.
+     *
+     * @return iterable<string, array>
+     *  Returns a list of all matching extensions.
+     */
+    public function loadExtensionsData(string $extensionPath, IOInterface $io = null): iterable;
 }
