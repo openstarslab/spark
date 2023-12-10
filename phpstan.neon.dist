@@ -4,6 +4,6 @@ parameters:
     tipsOfTheDay: false
     treatPhpDocTypesAsCertain: false
     paths:
-        - app/modules/
+        - app/src/
         - lib/internal/
         - tests/

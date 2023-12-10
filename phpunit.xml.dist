@@ -21,7 +21,7 @@
 
     <source restrictDeprecations="true" restrictNotices="true" restrictWarnings="true">
         <include>
-            <directory>app/modules/</directory>
+            <directory>app/src/</directory>
             <directory>lib/internal/</directory>
         </include>
     </source>
