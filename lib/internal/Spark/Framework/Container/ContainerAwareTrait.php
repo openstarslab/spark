@@ -20,14 +20,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\DependencyInjection;
+namespace Spark\Framework\Container;
 
 use Psr\Container\ContainerInterface;
 
 /**
  * ContainerAwareTrait
  *
- * @see \Spark\Framework\DependencyInjection\ContainerAwareInterface
+ * @see \Spark\Framework\Container\ContainerAwareInterface
  */
 trait ContainerAwareTrait
 {

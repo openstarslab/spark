@@ -20,22 +20,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\DependencyInjection;
+namespace Spark\Framework\Container\Exception;
 
-use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * This interface should be implemented by classes that depends on a Container.
- */
-interface ContainerAwareInterface
+class ServiceNotFoundException extends \RuntimeException implements NotFoundExceptionInterface
 {
-    /**
-     * Set the container.
-     *
-     * @param ContainerInterface $container
-     *   The container to set.
-     *
-     * @return void
-     */
-    public function setContainer(ContainerInterface $container): void;
+    public function __construct(string $id, \Throwable $previous = null, ?string $message = null)
+    {
+        if ($message === null) {
+            $message = "Service not found: " . $id;
+        }
+
+        parent::__construct($message, 0, $previous);
+    }
 }

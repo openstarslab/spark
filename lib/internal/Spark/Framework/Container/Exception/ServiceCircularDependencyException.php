@@ -20,25 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\DependencyInjection;
+namespace Spark\Framework\Container\Exception;
 
-use Nulldark\Container\ContainerInterface;
-
-/**
- * Defines an interface for dependency container injection.
- *
- * This interface gives classes who need services a factory method for
- * instantiation rather than defining a new service.
- */
-interface ContainerInjectionInterface
+class ServiceCircularDependencyException extends \RuntimeException
 {
     /**
-     * Instantiates a new instance of this class.
+     * @param string $id
+     *  The identifier for the entry.
+     * @param string[] $services
+     *  The array of services used to resolve the entry.
      *
-     * @param \Nulldark\Container\ContainerInterface $container
-     *  The service container this instance should use.
-     *
-     * @return static
+     * @return void
      */
-    public static function create(ContainerInterface $container): static;
+    public function __construct(string $id, array $services = [])
+    {
+        parent::__construct(
+            sprintf(
+                'Circular dependency detected while trying to resolve entry "%s", path: "%s"',
+                $id,
+                \implode(' -> ', $services),
+            ),
+        );
+    }
 }
