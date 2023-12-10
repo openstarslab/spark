@@ -8,7 +8,7 @@
 >
 
     <projectFiles>
-        <directory name="app/modules/" />
+        <directory name="app/src/" />
         <directory name="lib/internal/" />
         <ignoreFiles>
             <directory name="tests"/>
