@@ -22,6 +22,7 @@
 
 namespace Spark\Framework\Http\Middleware;
 
+use Nulldark\Routing\RouterInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -30,6 +31,12 @@ use Spark\Framework\Routing\RouteContext;
 
 class RoutingMiddleware implements MiddlewareInterface
 {
+    public function __construct(
+        protected RouterInterface $router
+    ) {
+
+    }
+
     /**
      * @inheritDoc
      */
@@ -48,6 +55,9 @@ class RoutingMiddleware implements MiddlewareInterface
      *
      * @return ServerRequestInterface
      *  The modified server request with the route attribute set.
+     *
+     * @throws \Nulldark\Routing\Exception\MethodNotAllowedException
+     * @throws \Nulldark\Routing\Exception\RouteNotFoundException
      */
     public function findRoute(ServerRequestInterface $request): ServerRequestInterface
     {
@@ -55,7 +65,7 @@ class RoutingMiddleware implements MiddlewareInterface
 
         return $request->withAttribute(
             RouteContext::ROUTE->value,
-            \Spark::service('router')->match($request),
+            $this->router->match($request),
         );
     }
 }

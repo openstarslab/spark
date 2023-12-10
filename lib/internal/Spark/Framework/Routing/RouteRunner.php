@@ -22,6 +22,7 @@
 
 namespace Spark\Framework\Routing;
 
+use Nulldark\Routing\RouterInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -31,6 +32,7 @@ use Spark\Framework\Http\Response;
 final class RouteRunner implements RequestHandlerInterface
 {
     public function __construct(
+        protected RouterInterface $router,
         protected CallableResolverInterface $callableResolver = new CallableResolver()
     ) {
     }
@@ -38,7 +40,7 @@ final class RouteRunner implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if ($request->getAttribute(RouteContext::ROUTE_FOUND->value) === null) {
-            $routingMiddleware = new RoutingMiddleware();
+            $routingMiddleware = new RoutingMiddleware($this->router);
             $request = $routingMiddleware->findRoute($request);
         }
 
