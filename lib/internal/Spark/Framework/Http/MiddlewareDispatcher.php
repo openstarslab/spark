@@ -6,8 +6,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Spark\Framework\Routing\RouteRunner;
-use Spark\Http\Middleware\RequestHandler;
 
 /**
  * Class MiddlewareDispatcher
@@ -17,11 +15,13 @@ use Spark\Http\Middleware\RequestHandler;
  */
 final class MiddlewareDispatcher implements RequestHandlerInterface
 {
-    protected RequestHandlerInterface $next;
+    private RequestHandlerInterface $next;
 
-    public function __construct(MiddlewareInterface ...$middlewares)
+    public function __construct(
+        RequestHandlerInterface $finalHandler,
+        MiddlewareInterface ...$middlewares)
     {
-        $this->next = new RouteRunner();
+        $this->next = $finalHandler;
 
         foreach ($middlewares as $middleware) {
             $this->add($middleware);
