@@ -19,8 +19,8 @@ final class MiddlewareDispatcher implements RequestHandlerInterface
 
     public function __construct(
         RequestHandlerInterface $finalHandler,
-        MiddlewareInterface ...$middlewares)
-    {
+        MiddlewareInterface ...$middlewares
+    ) {
         $this->next = $finalHandler;
 
         foreach ($middlewares as $middleware) {

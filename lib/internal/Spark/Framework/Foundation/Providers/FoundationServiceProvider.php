@@ -8,11 +8,8 @@ use Spark\Framework\Foundation\Application\Http;
 
 class FoundationServiceProvider implements ServiceProviderInterface
 {
-
     public function register(ContainerInterface $container): void
     {
-        $container->factory(Http::class, function (ContainerInterface $container) {
-            return new Http($container);
-        });
+        $container->factory(Http::class, fn (ContainerInterface $container) => new Http($container));
     }
 }

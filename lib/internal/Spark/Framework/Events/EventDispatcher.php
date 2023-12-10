@@ -32,7 +32,6 @@ class EventDispatcher implements EventDispatcherInterface
     protected array $sorted = [];
     protected array $listeners = [];
 
-
     public function listen(string $eventName, callable $listener, int $priority = 0): void
     {
         $this->listeners[$eventName][$priority][] = $listener;
@@ -40,7 +39,7 @@ class EventDispatcher implements EventDispatcherInterface
     }
 
     /**
-     * @inheritDoc
+     * @{inheritDoc}
      */
     public function dispatch(object $event, string $eventName = null): object
     {
@@ -54,16 +53,16 @@ class EventDispatcher implements EventDispatcherInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getListenersForEvent(string $eventName): array
     {
-        if (empty($this->listeners[$eventName])) {
+        if ($this->listeners[$eventName] === []) {
             return [];
         }
 
         if (!isset($this->sorted[$eventName])) {
-            $this->sortListners($eventName);
+            $this->sortListeners($eventName);
         }
 
         return $this->sorted[$eventName];
@@ -77,7 +76,7 @@ class EventDispatcher implements EventDispatcherInterface
      *
      * @return void
      */
-    protected function sortListners(string $eventName): void
+    protected function sortListeners(string $eventName): void
     {
         \krsort($this->listeners[$eventName]);
         $this->sorted[$eventName] = [];

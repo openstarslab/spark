@@ -31,12 +31,14 @@ class ExtensionList implements ExtensionListInterface
 
     public function __construct(
         protected ExtensionLoaderInterface $extensionLoader
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritDoc}
      */
-    public function loadAll(): array {
+    public function loadAll(): array
+    {
         if ($this->extensions === []) {
             $extensions = $this->extensionLoader->activateExtensions();
 

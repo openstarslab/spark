@@ -72,9 +72,8 @@ class ExtensionFinder implements ExtensionFinderInterface
         return $extensionsInfos;
     }
 
-
     /**
-     * Scans the specified directory and returns an iterable of all files and directories that match the filter criteria.
+     * Scans the specified directory and returns an iterable of all files that match the filter criteria.
      *
      * @param string $directory
      *   The directory to be scanned.
@@ -105,13 +104,13 @@ class ExtensionFinder implements ExtensionFinderInterface
                 }
 
                 return str_ends_with($name, 'composer.json');
-            }
+            },
         );
 
         return new \RecursiveIteratorIterator(
             $filter,
             \RecursiveIteratorIterator::LEAVES_ONLY,
-            \RecursiveIteratorIterator::CATCH_GET_CHILD
+            \RecursiveIteratorIterator::CATCH_GET_CHILD,
         );
     }
 

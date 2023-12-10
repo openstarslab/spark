@@ -24,5 +24,4 @@ namespace Spark\Framework\Foundation\Exceptions;
 
 class ErrorException extends \ErrorException
 {
-
 }

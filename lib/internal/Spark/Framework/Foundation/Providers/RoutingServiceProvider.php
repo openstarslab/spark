@@ -30,7 +30,6 @@ use Spark\Framework\Container\ServiceProviderInterface;
 
 class RoutingServiceProvider implements ServiceProviderInterface
 {
-
     /**
      * @inheritDoc
      */

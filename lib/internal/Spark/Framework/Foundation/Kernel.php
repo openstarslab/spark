@@ -58,7 +58,7 @@ final class Kernel implements KernelInterface
         private readonly string $rootDir,
     ) {
         $this->container = new Container(
-            $this->getKernelParameters()
+            $this->getKernelParameters(),
         );
     }
 
@@ -85,7 +85,7 @@ final class Kernel implements KernelInterface
             $reason = \sprintf(
                 "The given type (%s) does not implement %s",
                 $type,
-                ApplicationInterface::class
+                ApplicationInterface::class,
             );
 
             throw new \InvalidArgumentException($reason);
@@ -104,7 +104,7 @@ final class Kernel implements KernelInterface
             $this->container->register($provider);
         }
 
-        foreach($this->container->get(ExtensionList::class)->loadALl() as $extension) {
+        foreach ($this->container->get(ExtensionList::class)->loadALl() as $extension) {
             $extension->register($this->container);
         }
 
@@ -158,7 +158,7 @@ final class Kernel implements KernelInterface
     {
         return [
             'kernel.root_dir' => $this->rootDir,
-            'kernel.extension_dir' => $this->rootDir . '/app/src/'
+            'kernel.extension_dir' => $this->rootDir . '/app/src/',
         ];
     }
 }

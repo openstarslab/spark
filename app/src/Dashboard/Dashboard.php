@@ -14,12 +14,7 @@ final class Dashboard extends Extension
 {
     public function register(ContainerInterface $container): void
     {
-        $this->loadRoutes(function(RouteCollection $routes) {
-            $route = new Route(['GET'], '/', function (ServerRequestInterface $request, ResponseInterface $response) {
-                return new Response\HtmlResponse(__DIR__);
-            });
-
-            $routes->add($route);
+        $this->loadRoutes(function (RouteCollection $routes) {
         });
     }
 }

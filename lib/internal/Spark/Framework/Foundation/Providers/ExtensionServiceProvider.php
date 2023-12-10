@@ -30,22 +30,17 @@ use Spark\Framework\Extension\Loader\ExtensionLoaderInterface;
 
 class ExtensionServiceProvider implements ServiceProviderInterface
 {
-
     /**
      * {@inheritDoc}
      */
     public function register(ContainerInterface $container): void
     {
-        $container->factory(ExtensionLoaderInterface::class, function (ContainerInterface $container) {
-            return new ExtensionLoader(
-                $container->get('kernel.extension_dir')
-            );
-        });
+        $container->factory(ExtensionLoaderInterface::class, fn (ContainerInterface $container) => new ExtensionLoader(
+            $container->get('kernel.extension_dir'),
+        ));
 
-        $container->factory(ExtensionList::class, function (ContainerInterface $container) {
-            return new ExtensionList(
-                $container->get(ExtensionLoaderInterface::class)
-            );
-        });
+        $container->factory(ExtensionList::class, fn (ContainerInterface $container) => new ExtensionList(
+            $container->get(ExtensionLoaderInterface::class),
+        ));
     }
 }

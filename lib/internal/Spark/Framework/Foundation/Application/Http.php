@@ -25,8 +25,8 @@ namespace Spark\Framework\Foundation\Application;
 use Nulldark\Routing\RouterInterface;
 use Nyholm\Psr7\Stream;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Spark\Framework\Http\MiddlewareDispatcher;
 use Spark\Framework\Routing\RouteRunner;
 
@@ -35,10 +35,9 @@ class Http implements ApplicationInterface
     protected MiddlewareDispatcher $dispatcher;
     public function __construct(
         protected ContainerInterface $container
-    )
-    {
+    ) {
         $this->dispatcher = new MiddlewareDispatcher(
-            new RouteRunner($container->get(RouterInterface::class))
+            new RouteRunner($container->get(RouterInterface::class)),
         );
     }
 

@@ -40,7 +40,8 @@ class ErrorHandler implements ErrorHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function handleError(int $level, string $message, string $file = null, int $line = null): bool {
+    public function handleError(int $level, string $message, string $file = null, int $line = null): bool
+    {
         if (0 === (\error_reporting() & $level)) {
             return false;
         }
@@ -51,7 +52,8 @@ class ErrorHandler implements ErrorHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function handleException(\Throwable $throwable): void {
+    public function handleException(\Throwable $throwable): void
+    {
         $traceline = "#%s %s(%s): %s";
         $format = "'%s' with message '%s' in %s:%s\nStack trace:\n%s\n throw in %s on line %s";
 
@@ -63,21 +65,22 @@ class ErrorHandler implements ErrorHandlerInterface
                 $key,
                 $stack['file'] ?? '',
                 $stack['line'] ?? '',
-                $stack['function']
+                $stack['function'],
             );
             ++$k;
         }
 
         $results[] = '#' . ++$k . ' {main}';
 
-        $message = \sprintf($format,
+        $message = \sprintf(
+            $format,
             \get_class($throwable),
             $throwable->getMessage(),
             $throwable->getFile(),
             $throwable->getLine(),
             \implode("\n", $results),
             $throwable->getFile(),
-            $throwable->getLine()
+            $throwable->getLine(),
         );
 
         echo "<pre>";

@@ -22,8 +22,8 @@
 
 namespace Spark\Framework\Foundation\Application;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 interface ApplicationInterface
 {
