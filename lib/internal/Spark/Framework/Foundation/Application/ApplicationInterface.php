@@ -22,12 +22,19 @@
 
 namespace Spark\Framework\Foundation\Application;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
 interface ApplicationInterface
 {
     /**
-     * Starts the application.
+     * Starts the process with the given request.
      *
-     * @return void
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     *  The request object to start the process with.
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     *  The response object generated after processing the request.
      */
-    public function start(): void;
+    public function start(ServerRequestInterface $request): ResponseInterface;
 }

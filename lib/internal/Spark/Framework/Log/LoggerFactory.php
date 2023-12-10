@@ -23,8 +23,8 @@
 namespace Spark\Framework\Log;
 
 use Psr\Log\LoggerInterface;
-use Spark\Framework\DependencyInjection\ContainerAwareInterface;
-use Spark\Framework\DependencyInjection\ContainerAwareTrait;
+use Spark\Framework\Container\ContainerAwareInterface;
+use Spark\Framework\Container\ContainerAwareTrait;
 
 /**
  * A logger factor.

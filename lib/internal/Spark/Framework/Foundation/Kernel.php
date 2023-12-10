@@ -23,12 +23,16 @@
 namespace Spark\Framework\Foundation;
 
 use Composer\Autoload\ClassLoader;
-use Nulldark\Container\Container;
-use Psr\Container\ContainerInterface;
-use Spark\Framework\DependencyInjection\Builder\ContainerBuilder;
-use Spark\Framework\DependencyInjection\Builder\ContainerBuilderInterface;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+use Spark\Framework\Container\Container;
+use Spark\Framework\Container\ContainerInterface;
 use Spark\Framework\Extension\ExtensionInterface;
+use Spark\Framework\Extension\ExtensionList;
+use Spark\Framework\Extension\Loader\ExtensionLoaderInterface;
 use Spark\Framework\Foundation\Application\ApplicationInterface;
+use Spark\Framework\Foundation\Exceptions\ErrorHandler;
+use Spark\Framework\Foundation\Providers\ExtensionServiceProvider;
+use Spark\Framework\Http\Request;
 
 /**
  * The Kernel class is responsible for initializing and starting the application.
@@ -42,21 +46,20 @@ final class Kernel implements KernelInterface
      */
     protected bool $booted = false;
 
-    /** @var array $extensions */
-    private array $extensions = [];
-
     /**
      * The container instance.
      *
-     * @param null|\Psr\Container\ContainerInterface $container
+     * @param \Spark\Framework\Container\ContainerInterface $container
      */
-    private ?ContainerInterface $container = null;
+    private ContainerInterface $container;
 
     public function __construct(
         private readonly string $environment,
         private readonly string $rootDir,
-        private readonly ClassLoader $classLoader
     ) {
+        $this->container = new Container(
+            $this->getKernelParameters()
+        );
     }
 
     public static function create(string $environment, string $rootDir, ClassLoader $classLoader): self
@@ -64,7 +67,6 @@ final class Kernel implements KernelInterface
         $bootstrap = new self(
             $environment,
             $rootDir,
-            $classLoader,
         );
 
         $bootstrap->boot();
@@ -77,7 +79,19 @@ final class Kernel implements KernelInterface
      */
     public function createApplication(string $type): ApplicationInterface
     {
-        return $this->container->get($type);
+        $application = $this->container->get($type);
+
+        if (!($application instanceof ApplicationInterface)) {
+            $reason = \sprintf(
+                "The given type (%s) does not implement %s",
+                $type,
+                ApplicationInterface::class
+            );
+
+            throw new \InvalidArgumentException($reason);
+        }
+
+        return $application;
     }
 
     public function boot(): void
@@ -86,12 +100,12 @@ final class Kernel implements KernelInterface
             return;
         }
 
-        $this->initializeExtensions();
-        $this->initializeContainer();
+        foreach ($this->registerServiceProviders() as $provider) {
+            $this->container->register($provider);
+        }
 
-        foreach ($this->extensions as $extension) {
-            $extension->setContainer($this->container);
-            $extension->boot();
+        foreach($this->container->get(ExtensionList::class)->loadALl() as $extension) {
+            $extension->register($this->container);
         }
 
         $this->booted = true;
@@ -102,64 +116,49 @@ final class Kernel implements KernelInterface
      */
     public function start(ApplicationInterface $application): void
     {
-        $application->start();
+        ErrorHandler::register();
+
+        $this->bootsExtensions();
+
+        $request = Request::fromGlobals();
+        $response = $application->start($request);
+
+        // emit response.
+        $sapiEmitter = new SapiEmitter();
+        $sapiEmitter->emit($response);
     }
 
-    /**
-     * Gets a new instance of container builder.
-     *
-     * @return ContainerBuilderInterface
-     *  The container builder instance.
-     */
-    private function getContainerBuilder(): ContainerBuilderInterface
+    private function bootsExtensions(): void
     {
-        $container = new ContainerBuilder();
-        $container->register(ContainerInterface::class, Container::class);
-
-        return $container;
+        foreach ($this->container->get(ExtensionList::class)->loadAll() as $extension) {
+            $extension->setContainer($this->container);
+            $extension->boot();
+        }
     }
 
     /**
      * Loads system extensions from file and gets a new instance.
      *
-     * @return ExtensionInterface[]
+     * @return \Spark\Framework\Container\ServiceProviderInterface[]
      */
-    private function registerExtensions(): iterable
+    private function registerServiceProviders(): iterable
     {
-        $extensions = require $this->rootDir . '/app/config/extensions.php';
+        /** @var class-string<\Spark\Framework\Container\ServiceProviderInterface>[] $providers */
+        $providers = require $this->rootDir . '/app/config/providers.php';
 
-        foreach ($extensions as $extension) {
-            yield new $extension();
+        foreach ($providers as $provider) {
+            yield new $provider();
         }
     }
 
     /**
-     * Initializes the container by setting up the necessary services and parameters.
-     *
-     * @return void
+     * @return string[]
      */
-    private function initializeContainer(): void
+    private function getKernelParameters(): array
     {
-        $container = $this->getContainerBuilder();
-        $container->set(ClassLoader::class, $this->classLoader);
-        $container->set('kernel.modules_dir', $this->rootDir . '/app/modules/');
-
-        foreach ($this->extensions as $extension) {
-            $extension->register($container);
-        }
-
-        $this->container = $container->build();
-    }
-
-    /**
-     * Initializes the core extensions for the application.
-     *
-     * @return void
-     */
-    private function initializeExtensions(): void
-    {
-        foreach ($this->registerExtensions() as $extension) {
-            $this->extensions[] = $extension;
-        }
+        return [
+            'kernel.root_dir' => $this->rootDir,
+            'kernel.extension_dir' => $this->rootDir . '/app/src/'
+        ];
     }
 }
