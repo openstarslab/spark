@@ -20,10 +20,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\System;
+namespace Spark\Framework\Foundation\Providers;
 
-use Spark\Framework\Extension\Extension;
+use Spark\Framework\Cache\Backend\MemoryBackend;
+use Spark\Framework\Cache\CacheBackendInterface;
+use Spark\Framework\Container\ContainerInterface;
+use Spark\Framework\Container\ServiceProviderInterface;
 
-final class System extends Extension
+class CacheServiceProvider implements ServiceProviderInterface
 {
+    public function register(ContainerInterface $container): void
+    {
+        $container->factory(CacheBackendInterface::class, function (ContainerInterface $container) {
+            return new MemoryBackend();
+        });
+    }
 }
