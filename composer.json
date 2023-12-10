@@ -33,23 +33,21 @@
     "psr/event-dispatcher": "^1.0",
     "psr/http-server-handler": "^1.0",
     "psr/http-server-middleware": "^1.0",
-    "psr/log": "^3.0",
-    "openstarslab/dashboard": "*"
+    "psr/log": "^3.0"
   },
   "require-dev": {
     "nulldark/devtools": "@dev"
   },
-  "repositories": [
-    {
-      "type": "path",
-      "url": "app/modules/*"
-    }
-  ],
+  "replace": {
+    "spark/framework": "*",
+    "spark/system": "*"
+  },
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "Spark\\Framework\\": "lib/internal/Spark/Framework",
-      "Spark\\System\\": "lib/internal/Spark/System"
+      "Spark\\Framework\\": "lib/internal/Spark/Framework/",
+      "Spark\\System\\": "lib/internal/Spark/System/",
+      "Spark\\": "app/src/"
     }
   },
   "autoload-dev": {

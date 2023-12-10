@@ -22,9 +22,10 @@
 
 namespace Spark\Framework\Extension;
 
-use Spark\Framework\DependencyInjection\Builder\ContainerBuilderInterface;
+use Spark\Framework\Container\ContainerAwareInterface;
+use Spark\Framework\Container\ContainerInterface;
 
-interface ExtensionInterface
+interface ExtensionInterface extends ContainerAwareInterface
 {
     /**
      * Boot the application.
@@ -34,14 +35,14 @@ interface ExtensionInterface
     public function boot(): void;
 
     /**
-     * Registers a container builder to the system.
+     * Registers a given extension into kernel.
      *
-     * @param ContainerBuilderInterface $container
-     *   The container builder to be registered.
+     * @param \Spark\Framework\Container\ContainerInterface $container
+     *   The container instance.
      *
      * @return void
      */
-    public function register(ContainerBuilderInterface $container): void;
+    public function register(ContainerInterface $container): void;
 
     /**
      * Returns the name of the extension.
@@ -66,4 +67,14 @@ interface ExtensionInterface
      *  `TRUE` if the extension is active, `FALSE` otherwise.
      */
     public function isActive(): bool;
+
+    /**
+     * Load routes using a callback function.
+     *
+     * @param \Closure $callback
+     *  A callback function for defining routes.
+     *
+     * @return void
+     */
+    public function loadRoutes(\Closure $callback): void;
 }

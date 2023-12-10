@@ -22,22 +22,24 @@
 
 namespace Spark\Framework\Extension;
 
-use Spark\Framework\DependencyInjection\Builder\ContainerBuilderInterface;
-use Spark\Framework\DependencyInjection\ContainerAwareInterface;
-use Spark\Framework\DependencyInjection\ContainerAwareTrait;
+use Nulldark\Routing\RouteCollection;
+use Spark\Framework\Container\ContainerAwareTrait;
+use Spark\Framework\Container\ContainerInterface;
 
-abstract class Extension implements ExtensionInterface, ContainerAwareInterface
+abstract class Extension implements ExtensionInterface
 {
     use ContainerAwareTrait;
 
     protected string $name;
     protected string $path;
-    protected bool $active;
+    protected bool $active = true;
+
+    protected ?\Closure $loadRoutesCallback = null;
 
     /**
      * {@inheritDoc}
      */
-    public function register(ContainerBuilderInterface $container): void
+    public function register(ContainerInterface $container): void
     {
     }
 
@@ -46,6 +48,10 @@ abstract class Extension implements ExtensionInterface, ContainerAwareInterface
      */
     public function boot(): void
     {
+        if ($this->loadRoutesCallback !== null) {
+            $routesCallback = $this->loadRoutesCallback;
+            $routesCallback($this->container->get(RouteCollection::class));
+        }
     }
 
     /**
@@ -57,6 +63,20 @@ abstract class Extension implements ExtensionInterface, ContainerAwareInterface
     }
 
     /**
+     * Sets the name of the extension.
+     *
+     * @param string $name
+     *  The name to set for the extension.
+     * @return self
+     *  Returns an instance of the extension.
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getPath(): string
@@ -65,10 +85,33 @@ abstract class Extension implements ExtensionInterface, ContainerAwareInterface
     }
 
     /**
+     * Set the path for the extension.
+     *
+     * @param string $path
+     *  The path to set.
+     *
+     * @return self
+     *  This method returns the extension instance.
+     */
+    public function setPath(string $path): self
+    {
+        $this->path = $path;
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function isActive(): bool
     {
         return $this->active;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function loadRoutes(\Closure $callback): void
+    {
+        $this->loadRoutesCallback = $callback;
     }
 }

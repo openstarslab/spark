@@ -1,5 +1,5 @@
 {
-  "name": "openstarslab/dashboard",
+  "name": "spark/dashboard",
   "type": "spark-extension",
   "extra": {
     "name": "dashboard",
@@ -7,9 +7,12 @@
     "spark-extension-class": "\\Spark\\Dashboard\\Dashboard",
     "version": "0.0.1"
   },
+  "require": {
+    "spark/framework": "*"
+  },
   "autoload": {
     "psr-4": {
-      "Spark\\Dashboard\\": "src/"
+      "Spark\\Dashboard\\": ""
     }
   }
 }

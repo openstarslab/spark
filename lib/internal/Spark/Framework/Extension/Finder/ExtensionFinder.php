@@ -23,7 +23,6 @@
 namespace Spark\Framework\Extension\Finder;
 
 use Composer\IO\IOInterface;
-use Composer\InstalledVersions;
 use Composer\Package\CompletePackageInterface;
 use Spark\Framework\Composer\PackageProvider;
 use Spark\Framework\Extension\Exception\InvalidComposerException;
@@ -41,15 +40,15 @@ class ExtensionFinder implements ExtensionFinderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function loadExtensionsData(string $extensionPath, IOInterface $io = null): iterable
     {
-        $extensions = InstalledVersions::getInstalledPackagesByType(self::COMPOSER_TYPE);
+        $extensions = $this->scanDirectory($extensionPath);
         $extensionsInfos = [];
 
         foreach ($extensions as $extension) {
-            $path = InstalledVersions::getInstallPath($extension);
+            $path = $extension->getPath();
             $extensionPath = $path . '/composer.json';
 
             try {
@@ -60,6 +59,7 @@ class ExtensionFinder implements ExtensionFinderInterface
 
             if ($this->isSparkExtension($package) && $this->isExtensionComposerValid($package)) {
                 $extensionName = $this->getExtensionNameFromPackage($package);
+
                 $extensionsInfos[$extensionName] = [
                     'name' => $extensionName,
                     'path' => $path,
@@ -70,6 +70,49 @@ class ExtensionFinder implements ExtensionFinderInterface
         }
 
         return $extensionsInfos;
+    }
+
+
+    /**
+     * Scans the specified directory and returns an iterable of all files and directories that match the filter criteria.
+     *
+     * @param string $directory
+     *   The directory to be scanned.
+     *
+     * @return \SplFileInfo[]
+     *   An iterable of files and directories that match the filter criteria.
+     */
+    public function scanDirectory(string $directory): iterable
+    {
+        $flags = \FilesystemIterator::UNIX_PATHS;
+        $flags |= \FilesystemIterator::SKIP_DOTS;
+        $flags |= \FilesystemIterator::FOLLOW_SYMLINKS;
+        $flags |= \FilesystemIterator::CURRENT_AS_SELF;
+
+        $directoryIterator = new \RecursiveDirectoryIterator($directory, $flags);
+
+        $filter = new \RecursiveCallbackFilterIterator(
+            $directoryIterator,
+            function (\RecursiveDirectoryIterator $directory) {
+                $name = $directory->getFilename();
+
+                if (str_starts_with(".", $name)) {
+                    return false;
+                }
+
+                if ($directory->isDir()) {
+                    return true;
+                }
+
+                return str_ends_with($name, 'composer.json');
+            }
+        );
+
+        return new \RecursiveIteratorIterator(
+            $filter,
+            \RecursiveIteratorIterator::LEAVES_ONLY,
+            \RecursiveIteratorIterator::CATCH_GET_CHILD
+        );
     }
 
     /**

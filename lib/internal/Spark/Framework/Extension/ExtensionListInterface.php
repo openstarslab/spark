@@ -20,30 +20,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Extension\Finder;
+namespace Spark\Framework\Extension;
 
-use Composer\IO\IOInterface;
-
-/**
- * @phpstan-type ExtensionInfos array{
- *     name: string,
- *     path: string,
- *     baseClass: string,
- *     composerPackage: \Composer\Package\CompletePackageInterface
- * }
- */
-interface ExtensionFinderInterface
+interface ExtensionListInterface
 {
     /**
-     * Loads extensions from given path.
+     * Loads all extension from the filesystem.
      *
-     * @param string           $extensionPath
-     *  Path where extensions are located.
-     * @param IOInterface|null $io
-     *  The Input/Output instance.
-     *
-     * @return ExtensionInfos[]
-     *  Returns a list of all matching extensions.
+     * @return \Spark\Framework\Extension\ExtensionInterface[]
+     *  An array of all the loaded extensions.
      */
-    public function loadExtensionsData(string $extensionPath, IOInterface $io = null): iterable;
+    public function loadAll(): array;
 }

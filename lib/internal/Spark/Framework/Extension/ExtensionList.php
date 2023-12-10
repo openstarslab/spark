@@ -20,16 +20,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\System\Module;
+namespace Spark\Framework\Extension;
 
-use Spark\Framework\Extension\Extension;
+use Spark\Framework\Extension\Loader\ExtensionLoaderInterface;
 
-class Module extends Extension
+class ExtensionList implements ExtensionListInterface
 {
-    public function __construct(string $name, string $path, bool $active = true)
-    {
-        $this->name = $name;
-        $this->path = $path;
-        $this->active = $active;
+    /** @var ExtensionInterface[] $extensions */
+    private array $extensions = [];
+
+    public function __construct(
+        protected ExtensionLoaderInterface $extensionLoader
+    ) {}
+
+    /**
+     * {@inheritDoc}
+     */
+    public function loadAll(): array {
+        if ($this->extensions === []) {
+            $extensions = $this->extensionLoader->activateExtensions();
+
+            if ($extensions->all() === []) {
+                return [];
+            }
+
+            $this->extensions = [];
+            foreach ($extensions->getActiveExtensions() as $extension) {
+                $this->extensions[$extension->getName()] = $extension;
+            }
+        }
+
+        return $this->extensions;
     }
 }

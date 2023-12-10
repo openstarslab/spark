@@ -30,14 +30,14 @@ interface ExtensionLoaderInterface
     /**
      * Activates all extensions.
      *
-     * @return void
+     * @return \Spark\Framework\Extension\ExtensionCollection
      */
-    public function activateExtensions(): void;
+    public function activateExtensions(): ExtensionCollection;
 
     /**
      * Retrieves all instances of loaded extensions.
      *
-     * @return ExtensionCollection
+     * @return \Spark\Framework\Extension\ExtensionCollection
      *  Returns a collection of instances of loaded extensions.
      */
     public function getExtensionInstances(): ExtensionCollection;
@@ -48,7 +48,7 @@ interface ExtensionLoaderInterface
      * @param string $name
      *     The name of the extension.
      *
-     * @return null|ExtensionInterface
+     * @return null|\Spark\Framework\Extension\ExtensionInterface
      *     Returns an instance of the extension with the given name.
      */
     public function getExtensionInstance(string $name): ?ExtensionInterface;

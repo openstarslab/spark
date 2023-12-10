@@ -1,0 +1,12 @@
+{
+  "name": "spark/framework",
+  "description": "N/A",
+  "config": {
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "Spark\\Framework\\": ""
+    }
+  }
+}

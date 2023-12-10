@@ -36,8 +36,7 @@ final class ExtensionLoader implements ExtensionLoaderInterface
     protected ExtensionCollection $extensions;
 
     public function __construct(
-        protected readonly string $extensionDir,
-        protected readonly ClassLoader $classLoader,
+        protected readonly string $extensionDir
     ) {
         $this->extensions = new ExtensionCollection();
     }
@@ -67,10 +66,10 @@ final class ExtensionLoader implements ExtensionLoaderInterface
     /**
      * @inheritDoc
      */
-    public function activateExtensions(): void
+    public function activateExtensions(): ExtensionCollection
     {
         if ($this->initialized === true) {
-            return;
+            return $this->extensions;
         }
 
         $extensionsData = $this->getExtensionFinder()->loadExtensionsData($this->extensionDir);
@@ -83,11 +82,10 @@ final class ExtensionLoader implements ExtensionLoaderInterface
                 continue;
             }
 
-            $extension = new $extensionClassName(
-                (string) $extensionData['name'],
-                (string) $extensionData['path'],
-                true,
-            );
+            /** @var \Spark\Framework\Extension\Extension $extension */
+            $extension = new $extensionClassName();
+            $extension->setName($extensionData['name']);
+            $extension->setPath($extensionData['path']);
 
             if (!$extension instanceof ExtensionInterface) {
                 $reason = sprintf(
@@ -103,6 +101,8 @@ final class ExtensionLoader implements ExtensionLoaderInterface
         }
 
         $this->initialized = true;
+
+        return $this->getExtensionInstances();
     }
 
     /**
