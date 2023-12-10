@@ -46,7 +46,7 @@ class MemoryBackend extends AbstractBackend
         $values = [];
 
         foreach ($keys as $key) {
-            if (\array_key_exists($key, $this->values) && $this->values[$key] !== null) {
+            if (\array_key_exists($key, $this->values) && $this->values[$key] != null) {
                 $values[$key] = $this->values[$key];
             }
         }

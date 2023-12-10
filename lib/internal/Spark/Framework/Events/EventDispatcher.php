@@ -45,7 +45,7 @@ class EventDispatcher implements EventDispatcherInterface
     {
         $eventName ??= $event::class;
 
-        if ($listeners = $this->getListenersForEvent($eventName)) {
+        if (($listeners = $this->getListenersForEvent($eventName)) !== []) {
             $this->invokeListeners($listeners, $eventName, $event);
         }
 

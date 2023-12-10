@@ -157,6 +157,7 @@ final class Kernel implements KernelInterface
     private function getKernelParameters(): array
     {
         return [
+            'kernel.environment' => $this->environment,
             'kernel.root_dir' => $this->rootDir,
             'kernel.extension_dir' => $this->rootDir . '/app/src/',
         ];

@@ -36,9 +36,9 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     protected static \Closure $createCacheItem;
 
     /**
+     * A variable representing deferred tasks.
      *
-     *
-     * @var array<string, CacheItem> $deferred
+     * @var CacheItem[] $deferred
      */
     protected array $deferred = [];
 
@@ -64,7 +64,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
      * @param string[] $keys
      *  An indexed array of keys of items to retrieve.
      *
-     * @return iterable
+     * @return CacheItem[]
      *  A traversable collection of Cache Items keyed by the cache keys of each item.
      */
     abstract protected function doFetch(array $keys): iterable;
@@ -102,16 +102,16 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     /**
      * Saves item into pool.
      *
-     * @param CacheItem $item
+     * @param \Spark\Framework\Cache\CacheItem $item
      *  Cache item to the save.
      *
-     * @return array|bool
+     * @return string[]|bool
      *  The identifiers that failed to be cached or a boolean stating if caching succeeded or not.
      */
     abstract protected function doSave(CacheItem $item): array|bool;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function get(string $key, callable $callback): mixed
     {
@@ -126,7 +126,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function set(string $key, mixed $value, null|int|\DateInterval $tls = null): bool
     {
@@ -138,7 +138,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function delete(string $key): bool
     {
@@ -147,7 +147,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
 
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getItem(string $key): CacheItem
     {
@@ -156,14 +156,15 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
         }
 
         $isHit = false;
-        $value = null;
+        $hit = null;
 
         try {
             foreach ($this->doFetch([$key]) as $value) {
                 $isHit = true;
+                $hit = $value;
             }
 
-            return (self::$createCacheItem)($key, $value, $isHit);
+            return (self::$createCacheItem)($key, $hit, $isHit);
         } catch (\Exception $e) {
         }
 
@@ -171,7 +172,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getItems(array $keys = []): iterable
     {
@@ -184,7 +185,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function deleteItem(string $key): bool
     {
@@ -192,7 +193,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function deleteItems(array $keys): bool
     {
@@ -211,7 +212,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function hasItem(string $key): bool
     {
@@ -223,7 +224,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function save(CacheItemInterface $item): bool
     {
@@ -237,7 +238,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function saveDeferred(CacheItemInterface $item): bool
     {
@@ -251,7 +252,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function clear(): bool
     {
@@ -261,7 +262,7 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function commit(): bool
     {

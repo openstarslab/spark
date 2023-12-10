@@ -52,7 +52,7 @@ class Logger extends AbstractLogger
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function log($level, \Stringable|string $message, array $context = []): void
     {

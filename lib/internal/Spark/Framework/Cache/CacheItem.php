@@ -92,13 +92,7 @@ final class CacheItem implements CacheItemInterface
         } else {
             $this->expiry = match (true) {
                 \is_null($time) => null,
-                \is_int($time) => $time + \microtime(true),
-                default => throw new \InvalidArgumentException(
-                    \sprintf(
-                        'Expiration date must be an integer, a DateInterval or null, "%s" given.',
-                        \get_debug_type($time),
-                    ),
-                )
+                default => $time + \microtime(true)
             };
         }
 

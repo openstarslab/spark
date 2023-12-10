@@ -92,7 +92,7 @@ final class ExtensionCollection
      */
     public function getActiveExtensions(): array
     {
-        if (!$this->extensions) {
+        if ($this->extensions === []) {
             return [];
         }
 

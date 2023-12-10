@@ -27,20 +27,17 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 
-/**
- * @phpstan-type HTTPMessage MessageInterface|ServerRequestInterface|ResponseInterface
- */
 trait MessageTrait
 {
-    /** @var HTTPMessage $message */
-    private MessageInterface|ServerRequestInterface|ResponseInterface $message;
+    /** @var (MessageInterface&ServerRequestInterface)|(MessageInterface&ResponseInterface) $message */
+    protected (MessageInterface&ServerRequestInterface)|(MessageInterface&ResponseInterface) $message;
 
     /**
      * Returns the decorated message
      *
-     * @return HTTPMessage
+     * @return (MessageInterface&ServerRequestInterface)|(MessageInterface&ResponseInterface)
      */
-    public function getMessage(): MessageInterface|ServerRequestInterface|ResponseInterface
+    public function getMessage(): (MessageInterface&ServerRequestInterface)|(MessageInterface&ResponseInterface)
     {
         return $this->message;
     }
