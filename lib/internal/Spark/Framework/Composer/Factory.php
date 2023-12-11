@@ -24,6 +24,7 @@ namespace Spark\Framework\Composer;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
+
 use function dirname;
 
 class Factory

@@ -53,7 +53,4 @@ class ContainerGetTest extends \Spark\Tests\Unit\TestCase
 
         self::assertSame($this->container, $result);
     }
-
-
 }
-

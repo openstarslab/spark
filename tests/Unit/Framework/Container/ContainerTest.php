@@ -35,9 +35,7 @@ class ContainerTest extends \Spark\Tests\Unit\TestCase
      */
     public function testFactoryMethod(): void
     {
-        $callable = static function (Container $container) {
-            return new \stdClass();
-        };
+        $callable = static fn (Container $container) => new \stdClass();
 
         $this->container->factory('test', $callable);
 
@@ -59,5 +57,4 @@ class ContainerTest extends \Spark\Tests\Unit\TestCase
         // Try getting a non-existent service
         $this->container->get('non_existent_service');
     }
-
 }

@@ -2,13 +2,13 @@
 
 namespace Spark\Tests\Unit\Framework\Extension\Finder;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use Spark\Framework\Extension\Finder\ExtensionFinder;
-use Spark\Framework\Composer\PackageProvider;
-use Spark\Framework\Extension\Exception\InvalidComposerException;
-use Spark\Tests\Unit\TestCase;
 use Composer\IO\IOInterface;
 use Composer\Package\CompletePackageInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Spark\Framework\Composer\PackageProvider;
+use Spark\Framework\Extension\Exception\InvalidComposerException;
+use Spark\Framework\Extension\Finder\ExtensionFinder;
+use Spark\Tests\Unit\TestCase;
 
 #[CoversClass(ExtensionFinder::class)]
 class ExtensionFinderTest extends TestCase
@@ -21,7 +21,7 @@ class ExtensionFinderTest extends TestCase
         $this->packageProviderMock = self::mock(PackageProvider::class);
         $this->extensionFinder = new ExtensionFinder($this->packageProviderMock);
     }
-    
+
 
 
     public function testLoadExtensionsDataReturnsIterableWhenPathIsValid(): void
@@ -35,7 +35,7 @@ class ExtensionFinderTest extends TestCase
         $dummyPackage->shouldReceive('getExtra')
             ->andReturn([
                 ExtensionFinder::SPARK_EXTENSION_CLASS_EXTRA_IDENTIFIER =>
-                    'DummyExtension'
+                    'DummyExtension',
             ]);
 
         $this->packageProviderMock->shouldReceive('getComposerPackage')
@@ -43,7 +43,7 @@ class ExtensionFinderTest extends TestCase
 
         $result = $this->extensionFinder->loadExtensionsData(
             \dirname(__DIR__, 3) . '/Stubs/extensions',
-            $io
+            $io,
         );
 
         self::assertIsIterable($result);
@@ -59,7 +59,7 @@ class ExtensionFinderTest extends TestCase
 
         $result = $this->extensionFinder->loadExtensionsData(
             \dirname(__DIR__, 3) . '/Stubs/extensions',
-            $io
+            $io,
         );
 
         self::assertEmpty($result);

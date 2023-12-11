@@ -19,7 +19,7 @@ class ExtensionListTest extends TestCase
         $this->extensionLoaderMock = self::mock(ExtensionLoaderInterface::class);
 
         $this->extensionList = new ExtensionList(
-            $this->extensionLoaderMock
+            $this->extensionLoaderMock,
         );
     }
 
@@ -41,9 +41,9 @@ class ExtensionListTest extends TestCase
         $loadedExtensions = $this->extensionList->loadAll();
 
         self::assertEquals(
-            $extensions->getActiveExtensions(), 
-            $loadedExtensions, 
-            'Loaded extensions do not match with mock extensions.'
+            $extensions->getActiveExtensions(),
+            $loadedExtensions,
+            'Loaded extensions do not match with mock extensions.',
         );
     }
 
@@ -62,10 +62,10 @@ class ExtensionListTest extends TestCase
 
         // Load extensions and compare with mock extension collection
         $loadedExtensions = $this->extensionList->loadAll();
-        
+
         self::assertEmpty(
-            $loadedExtensions, 
-            'Extensions should not be loaded when none are available.'
+            $loadedExtensions,
+            'Extensions should not be loaded when none are available.',
         );
     }
 }

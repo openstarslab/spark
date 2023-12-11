@@ -19,9 +19,8 @@ final class MiddlewareDispatcher implements RequestHandlerInterface
 
     public function __construct(
         RequestHandlerInterface $finalHandler,
-        MiddlewareInterface     ...$middlewares
-    )
-    {
+        MiddlewareInterface ...$middlewares
+    ) {
         $this->next = $finalHandler;
 
         foreach ($middlewares as $middleware) {
@@ -44,10 +43,9 @@ final class MiddlewareDispatcher implements RequestHandlerInterface
 
         $this->next = new class ($middleware, $next) implements RequestHandlerInterface {
             public function __construct(
-                private readonly MiddlewareInterface     $middleware,
+                private readonly MiddlewareInterface $middleware,
                 private readonly RequestHandlerInterface $next
-            )
-            {
+            ) {
             }
 
             /**

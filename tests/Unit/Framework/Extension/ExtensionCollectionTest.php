@@ -1,4 +1,5 @@
 <?php
+
 namespace Spark\Tests\Unit\Framework\Extension;
 
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -30,7 +31,7 @@ final class ExtensionCollectionTest extends TestCase
 
 
         self::assertTrue(
-            $collection->has('MockExtension')
+            $collection->has('MockExtension'),
         );
     }
 
@@ -69,7 +70,7 @@ final class ExtensionCollectionTest extends TestCase
 
         self::assertInstanceOf(
             ExtensionInterface::class,
-            $retrievedExtension
+            $retrievedExtension,
         );
     }
 
@@ -100,7 +101,7 @@ final class ExtensionCollectionTest extends TestCase
 
         self::assertContains(
             $activeMockExtension,
-            $activeExtensions
+            $activeExtensions,
         );
     }
 }

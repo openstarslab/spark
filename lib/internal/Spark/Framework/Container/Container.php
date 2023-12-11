@@ -84,7 +84,7 @@ class Container implements ContainerInterface
             $this->values[$id] = $this->factories[$id]($this);
         }
 
-        if ($this->values[$id] === NULL) {
+        if ($this->values[$id] === null) {
             throw new ServiceNotFoundException($id);
         }
 

@@ -30,7 +30,8 @@ class EventDispatcherListenTest extends TestCase
     public function testListen(): void
     {
         $eventName = 'test.event';
-        $listener  = static function () : void {};
+        $listener  = static function (): void {
+        };
 
         // Expect the listen method to be called once with specific parameters.
         $this->dispatcher
