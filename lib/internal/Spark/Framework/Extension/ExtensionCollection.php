@@ -22,7 +22,7 @@
 
 namespace Spark\Framework\Extension;
 
-final class ExtensionCollection
+class ExtensionCollection
 {
     /**
      * @var ExtensionInterface[] $extensions

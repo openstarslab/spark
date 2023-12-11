@@ -53,8 +53,7 @@ final class Kernel implements KernelInterface
     public function __construct(
         private readonly string $environment,
         private readonly string $rootDir,
-    )
-    {
+    ) {
         $this->container = new Container(
             $this->getKernelParameters(),
         );

@@ -36,8 +36,7 @@ final class ExtensionLoader implements ExtensionLoaderInterface
 
     public function __construct(
         protected readonly string $extensionDir
-    )
-    {
+    ) {
         $this->extensions = new ExtensionCollection();
     }
 

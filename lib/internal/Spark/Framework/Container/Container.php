@@ -84,6 +84,10 @@ class Container implements ContainerInterface
             $this->values[$id] = $this->factories[$id]($this);
         }
 
+        if ($this->values[$id] === null) {
+            throw new ServiceNotFoundException($id);
+        }
+
         return $this->values[$id];
     }
 
@@ -105,7 +109,7 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function register(ServiceProviderInterface $provider): self
     {

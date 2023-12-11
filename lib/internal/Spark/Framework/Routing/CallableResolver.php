@@ -83,7 +83,7 @@ class CallableResolver implements CallableResolverInterface
 
         try {
             $matches[0] = new $matches[0]();
-        } catch (\Error|\LogicException $error) {
+        } catch (\Error | \LogicException $error) {
             if (\is_callable($matches)) {
                 return $matches;
             }

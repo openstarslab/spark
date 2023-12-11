@@ -36,8 +36,7 @@ class Http implements ApplicationInterface
 
     public function __construct(
         protected ContainerInterface $container
-    )
-    {
+    ) {
         $this->dispatcher = new MiddlewareDispatcher(
             new RouteRunner($container->get(RouterInterface::class)),
         );

@@ -32,10 +32,9 @@ use Spark\Framework\Http\Response;
 final class RouteRunner implements RequestHandlerInterface
 {
     public function __construct(
-        protected RouterInterface           $router,
+        protected RouterInterface $router,
         protected CallableResolverInterface $callableResolver = new CallableResolver()
-    )
-    {
+    ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

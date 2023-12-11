@@ -33,8 +33,7 @@ class RoutingMiddleware implements MiddlewareInterface
 {
     public function __construct(
         protected RouterInterface $router
-    )
-    {
+    ) {
     }
 
     /**
