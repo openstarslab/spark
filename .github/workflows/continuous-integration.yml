@@ -1,0 +1,60 @@
+name: "Continuous Integration"
+
+on:
+  pull_request:
+    branches:
+      - "*.x"
+    paths:
+      - .github/workflows/continuous-integration.yml
+      - composer.*
+      - app/**
+      - lib/**
+      - phpunit.xml.dist
+      - tests/**
+  push:
+    branches:
+      - "*.x"
+    paths:
+      - .github/workflows/continuous-integration.yml
+      - composer.*
+      - app/**
+      - lib/**
+      - phpunit.xml.dist
+      - tests/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  fail-fast: true
+
+jobs:
+  coding-standards:
+    name: Coding Standards
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          php-version: '8.2'
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v2
+
+      - name: "Check coding standards"
+        run: "vendor/bin/phpcs -q --no-colors --report=checkstyle"
+
+      - name: Static Analysis (PHPStan)
+        run: "composer run analyze:phpstan analyse --error-format=checkstyle | cs2pr"
+
+      - name: Static Analysis (PHPStan)
+        run: "composer run analyze:psalm --shepherd"
+
+      - name: Tests (Unit Tests)
+        run: "composer run test:unit"
