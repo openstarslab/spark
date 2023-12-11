@@ -37,7 +37,7 @@ interface ExtensionFinderInterface
     /**
      * Loads extensions from given path.
      *
-     * @param string           $extensionPath
+     * @param string $extensionPath
      *  Path where extensions are located.
      * @param IOInterface|null $io
      *  The Input/Output instance.

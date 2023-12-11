@@ -22,7 +22,6 @@
 
 namespace Spark\Framework\Extension\Loader;
 
-use Composer\Autoload\ClassLoader;
 use Spark\Framework\Extension\Exception\ExtensionLoaderException;
 use Spark\Framework\Extension\ExtensionCollection;
 use Spark\Framework\Extension\ExtensionInterface;
@@ -37,16 +36,9 @@ final class ExtensionLoader implements ExtensionLoaderInterface
 
     public function __construct(
         protected readonly string $extensionDir
-    ) {
-        $this->extensions = new ExtensionCollection();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getExtensionInstances(): ExtensionCollection
+    )
     {
-        return $this->extensions;
+        $this->extensions = new ExtensionCollection();
     }
 
     /**
@@ -114,5 +106,13 @@ final class ExtensionLoader implements ExtensionLoaderInterface
     public function getExtensionFinder(): ExtensionFinderInterface
     {
         return new ExtensionFinder();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getExtensionInstances(): ExtensionCollection
+    {
+        return $this->extensions;
     }
 }

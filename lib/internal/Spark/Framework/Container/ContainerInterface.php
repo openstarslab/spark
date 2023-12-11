@@ -27,9 +27,11 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
     /**
      * Sets a service with the provided ID.
      *
+     * @template T
+     *
      * @param string $id
      *  The ID of the service to set.
-     * @param mixed $value
+     * @param T $value
      *  The service to set.
      *
      * @return void
@@ -39,10 +41,12 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
     /**
      * Retrieves a service based on the provided ID.
      *
+     * @template T
+     *
      * @param string $id
      *  The ID of the service to retrieve.
      *
-     * @return mixed
+     * @return ($id is class-string<T> ? T : mixed)
      *  The retrieved service.
      *
      * @throws \Spark\Framework\Container\Exception\ServiceNotFoundException

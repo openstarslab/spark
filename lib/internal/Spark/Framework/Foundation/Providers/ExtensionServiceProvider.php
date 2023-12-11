@@ -35,11 +35,11 @@ class ExtensionServiceProvider implements ServiceProviderInterface
      */
     public function register(ContainerInterface $container): void
     {
-        $container->factory(ExtensionLoaderInterface::class, fn (ContainerInterface $container) => new ExtensionLoader(
+        $container->factory(ExtensionLoaderInterface::class, fn(ContainerInterface $container) => new ExtensionLoader(
             $container->get('kernel.extension_dir'),
         ));
 
-        $container->factory(ExtensionList::class, fn (ContainerInterface $container) => new ExtensionList(
+        $container->factory(ExtensionList::class, fn(ContainerInterface $container) => new ExtensionList(
             $container->get(ExtensionLoaderInterface::class),
         ));
     }

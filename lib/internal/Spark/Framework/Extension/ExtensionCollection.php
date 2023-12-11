@@ -96,6 +96,6 @@ final class ExtensionCollection
             return [];
         }
 
-        return \array_filter($this->extensions, static fn (ExtensionInterface $extension) => $extension->isActive());
+        return \array_filter($this->extensions, static fn(ExtensionInterface $extension) => $extension->isActive());
     }
 }

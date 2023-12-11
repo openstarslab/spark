@@ -22,22 +22,18 @@
 
 namespace Spark\Framework\Http;
 
-use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 
 trait MessageTrait
 {
-    /** @var (MessageInterface&ServerRequestInterface)|(MessageInterface&ResponseInterface) $message */
-    protected (MessageInterface&ServerRequestInterface)|(MessageInterface&ResponseInterface) $message;
-
     /**
      * Returns the decorated message
      *
-     * @return (MessageInterface&ServerRequestInterface)|(MessageInterface&ResponseInterface)
+     * @return ServerRequestInterface|ResponseInterface
      */
-    public function getMessage(): (MessageInterface&ServerRequestInterface)|(MessageInterface&ResponseInterface)
+    public function getMessage(): ServerRequestInterface|ResponseInterface
     {
         return $this->message;
     }

@@ -82,9 +82,9 @@ class Logger extends AbstractLogger
         $message = \strtr(
             '[%date%][%level%] %message%',
             [
-            '%date%' => $record->datetime->format('Y-m-d'),
-            '%level%' => $record->level,
-            '%message%' => $record->message,
+                '%date%' => $record->datetime->format('Y-m-d'),
+                '%level%' => $record->level,
+                '%message%' => $record->message,
             ],
         );
 

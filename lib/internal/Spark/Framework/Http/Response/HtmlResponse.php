@@ -27,6 +27,11 @@ use Spark\Framework\Http\Response;
 
 class HtmlResponse extends Response
 {
+    /**
+     * @param string $body
+     * @param int $statusCode
+     * @param mixed[] $headers
+     */
     public function __construct(string $body, int $statusCode = 200, array $headers = [])
     {
         parent::__construct(

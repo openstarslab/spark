@@ -33,9 +33,11 @@ use Spark\Framework\Routing\RouteRunner;
 class Http implements ApplicationInterface
 {
     protected MiddlewareDispatcher $dispatcher;
+
     public function __construct(
         protected ContainerInterface $container
-    ) {
+    )
+    {
         $this->dispatcher = new MiddlewareDispatcher(
             new RouteRunner($container->get(RouterInterface::class)),
         );

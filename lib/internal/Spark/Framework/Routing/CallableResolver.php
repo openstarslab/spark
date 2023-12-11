@@ -29,11 +29,40 @@ class CallableResolver implements CallableResolverInterface
     public function resolve(Route $route): callable
     {
         $toResolve = $this->prepareCandidateToResolve($route->callback());
+
         if (\is_callable($toResolve)) {
             return $toResolve;
         }
 
         return $this->tryResolveCandidate($toResolve);
+    }
+
+    /**
+     * @param \Closure|string|array<class-string, string|null> $toResolve
+     *  Candidate to resolve.
+     *
+     * @return string|callable
+     *  Prepared candidate.
+     */
+    private function prepareCandidateToResolve(array|string|callable $toResolve): string|callable
+    {
+        if (!\is_array($toResolve)) {
+            return $toResolve;
+        }
+
+        $candidate = $toResolve;
+        $controller = \array_shift($candidate);
+        $method = \array_shift($candidate);
+
+        if (\is_string($controller) && \is_string($method)) {
+            return $controller . "::" . $method;
+        } else {
+            if (\is_string($controller)) {
+                return $controller;
+            }
+        }
+
+        throw new \RuntimeException("The given controller does not exists");
     }
 
     /**
@@ -54,8 +83,8 @@ class CallableResolver implements CallableResolverInterface
 
         try {
             $matches[0] = new $matches[0]();
-        } catch (\Error | \LogicException $error) {
-            if (\is_callable($matches[0])) {
+        } catch (\Error|\LogicException $error) {
+            if (\is_callable($matches)) {
                 return $matches;
             }
 
@@ -63,29 +92,5 @@ class CallableResolver implements CallableResolverInterface
         }
 
         return $matches;
-    }
-
-    /**
-     * @param array|string|callable $toResolve
-     *  Candidate to resolve.
-     *
-     * @return string|callable
-     *  Prepared candidate.
-     */
-    private function prepareCandidateToResolve(array|string|callable $toResolve): string|callable
-    {
-        if (!\is_array($toResolve)) {
-            return $toResolve;
-        }
-
-        $candidate = $toResolve;
-        $controller = \array_shift($candidate);
-        $method = \array_shift($candidate);
-
-        if (\is_string($controller) && \is_string($method)) {
-            return $controller . "::" . $method;
-        }
-
-        return $toResolve;
     }
 }

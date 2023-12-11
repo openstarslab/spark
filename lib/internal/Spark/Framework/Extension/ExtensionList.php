@@ -31,7 +31,8 @@ class ExtensionList implements ExtensionListInterface
 
     public function __construct(
         protected ExtensionLoaderInterface $extensionLoader
-    ) {
+    )
+    {
     }
 
     /**

@@ -26,12 +26,9 @@ use Composer\Autoload\ClassLoader;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use Spark\Framework\Container\Container;
 use Spark\Framework\Container\ContainerInterface;
-use Spark\Framework\Extension\ExtensionInterface;
 use Spark\Framework\Extension\ExtensionList;
-use Spark\Framework\Extension\Loader\ExtensionLoaderInterface;
 use Spark\Framework\Foundation\Application\ApplicationInterface;
 use Spark\Framework\Foundation\Exceptions\ErrorHandler;
-use Spark\Framework\Foundation\Providers\ExtensionServiceProvider;
 use Spark\Framework\Http\Request;
 
 /**
@@ -56,10 +53,23 @@ final class Kernel implements KernelInterface
     public function __construct(
         private readonly string $environment,
         private readonly string $rootDir,
-    ) {
+    )
+    {
         $this->container = new Container(
             $this->getKernelParameters(),
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getKernelParameters(): array
+    {
+        return [
+            'kernel.environment' => $this->environment,
+            'kernel.root_dir' => $this->rootDir,
+            'kernel.extension_dir' => $this->rootDir . '/app/src/',
+        ];
     }
 
     public static function create(string $environment, string $rootDir, ClassLoader $classLoader): self
@@ -72,6 +82,38 @@ final class Kernel implements KernelInterface
         $bootstrap->boot();
 
         return $bootstrap;
+    }
+
+    public function boot(): void
+    {
+        if ($this->booted) {
+            return;
+        }
+
+        foreach ($this->registerServiceProviders() as $provider) {
+            $this->container->register($provider);
+        }
+
+        foreach ($this->container->get(ExtensionList::class)->loadAll() as $extension) {
+            $extension->register($this->container);
+        }
+
+        $this->booted = true;
+    }
+
+    /**
+     * Loads system extensions from file and gets a new instance.
+     *
+     * @return \Spark\Framework\Container\ServiceProviderInterface[]
+     */
+    private function registerServiceProviders(): iterable
+    {
+        /** @var class-string<\Spark\Framework\Container\ServiceProviderInterface>[] $providers */
+        $providers = require $this->rootDir . '/app/config/providers.php';
+
+        foreach ($providers as $provider) {
+            yield new $provider();
+        }
     }
 
     /**
@@ -92,23 +134,6 @@ final class Kernel implements KernelInterface
         }
 
         return $application;
-    }
-
-    public function boot(): void
-    {
-        if ($this->booted) {
-            return;
-        }
-
-        foreach ($this->registerServiceProviders() as $provider) {
-            $this->container->register($provider);
-        }
-
-        foreach ($this->container->get(ExtensionList::class)->loadALl() as $extension) {
-            $extension->register($this->container);
-        }
-
-        $this->booted = true;
     }
 
     /**
@@ -134,32 +159,5 @@ final class Kernel implements KernelInterface
             $extension->setContainer($this->container);
             $extension->boot();
         }
-    }
-
-    /**
-     * Loads system extensions from file and gets a new instance.
-     *
-     * @return \Spark\Framework\Container\ServiceProviderInterface[]
-     */
-    private function registerServiceProviders(): iterable
-    {
-        /** @var class-string<\Spark\Framework\Container\ServiceProviderInterface>[] $providers */
-        $providers = require $this->rootDir . '/app/config/providers.php';
-
-        foreach ($providers as $provider) {
-            yield new $provider();
-        }
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getKernelParameters(): array
-    {
-        return [
-            'kernel.environment' => $this->environment,
-            'kernel.root_dir' => $this->rootDir,
-            'kernel.extension_dir' => $this->rootDir . '/app/src/',
-        ];
     }
 }

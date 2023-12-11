@@ -93,9 +93,9 @@ class EventDispatcher implements EventDispatcherInterface
      *
      * @param callable[] $listeners
      *  The event listeners.
-     * @param string     $eventName
+     * @param string $eventName
      *  The event name.
-     * @param object     $event
+     * @param object $event
      *  The event object to pass to the listener.
      *
      * @return void

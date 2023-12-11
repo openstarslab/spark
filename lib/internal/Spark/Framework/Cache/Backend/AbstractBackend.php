@@ -59,58 +59,6 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * Returns a traversable set of cache items.
-     *
-     * @param string[] $keys
-     *  An indexed array of keys of items to retrieve.
-     *
-     * @return CacheItem[]
-     *  A traversable collection of Cache Items keyed by the cache keys of each item.
-     */
-    abstract protected function doFetch(array $keys): iterable;
-
-    /**
-     * Checks if the cache item exists in the pool.
-     *
-     * @param string $key
-     *  The identifier for which to check existence
-     *
-     * @return bool
-     *  `TRUE` if item found, otherwise `FALSE`.
-     */
-    abstract protected function doHave(string $key): bool;
-
-    /**
-     * Removes the items from the pool.
-     *
-     * @param string[] $keys
-     *  The keys to delete.
-     *
-     * @return bool
-     *  TRUE` if the item was successfully deleted, otherwise `FALSE`.
-     */
-    abstract protected function doDelete(array $keys): bool;
-
-    /**
-     * Deletes all items from pool.
-     *
-     * @return bool
-     *  `TRUE` if the pool was successfully cleared, otherwise `FALSE`.
-     */
-    abstract protected function doClear(): bool;
-
-    /**
-     * Saves item into pool.
-     *
-     * @param \Spark\Framework\Cache\CacheItem $item
-     *  Cache item to the save.
-     *
-     * @return string[]|bool
-     *  The identifiers that failed to be cached or a boolean stating if caching succeeded or not.
-     */
-    abstract protected function doSave(CacheItem $item): array|bool;
-
-    /**
      * {@inheritDoc}
      */
     public function get(string $key, callable $callback): mixed
@@ -124,27 +72,6 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
 
         return $item->get();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function set(string $key, mixed $value, null|int|\DateInterval $tls = null): bool
-    {
-        $item = $this->getItem($key);
-        $item->set($value);
-        $item->expiresAfter($tls);
-
-        return $this->save($item);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function delete(string $key): bool
-    {
-        return $this->deleteItem($key);
-    }
-
 
     /**
      * {@inheritDoc}
@@ -174,14 +101,75 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     /**
      * {@inheritDoc}
      */
-    public function getItems(array $keys = []): iterable
+    public function commit(): bool
     {
-        $items = [];
-        foreach ($keys as $key) {
-            $items[$key] = $this->getItem($key);
+        $saved = true;
+
+        foreach ($this->deferred as $item) {
+            if (!$this->save($item)) {
+                $saved = false;
+            }
         }
 
-        return $items;
+        $this->deferred = [];
+
+        return $saved;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function save(CacheItemInterface $item): bool
+    {
+        if (!$item instanceof CacheItem) {
+            return false;
+        }
+
+        $results = $this->doSave($item);
+
+        return \is_array($results) ? false : $results;
+    }
+
+    /**
+     * Saves item into pool.
+     *
+     * @param \Spark\Framework\Cache\CacheItem $item
+     *  Cache item to the save.
+     *
+     * @return string[]|bool
+     *  The identifiers that failed to be cached or a boolean stating if caching succeeded or not.
+     */
+    abstract protected function doSave(CacheItem $item): array|bool;
+
+    /**
+     * Returns a traversable set of cache items.
+     *
+     * @param string[] $keys
+     *  An indexed array of keys of items to retrieve.
+     *
+     * @return CacheItem[]
+     *  A traversable collection of Cache Items keyed by the cache keys of each item.
+     */
+    abstract protected function doFetch(array $keys): iterable;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function set(string $key, mixed $value, null|int|\DateInterval $tls = null): bool
+    {
+        $item = $this->getItem($key);
+        $item->set($value);
+        $item->expiresAfter($tls);
+
+        return $this->save($item);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function delete(string $key): bool
+    {
+        return $this->deleteItem($key);
     }
 
     /**
@@ -212,6 +200,30 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
+     * Removes the items from the pool.
+     *
+     * @param string[] $keys
+     *  The keys to delete.
+     *
+     * @return bool
+     *  TRUE` if the item was successfully deleted, otherwise `FALSE`.
+     */
+    abstract protected function doDelete(array $keys): bool;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getItems(array $keys = []): iterable
+    {
+        $items = [];
+        foreach ($keys as $key) {
+            $items[$key] = $this->getItem($key);
+        }
+
+        return $items;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function hasItem(string $key): bool
@@ -224,18 +236,15 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * {@inheritDoc}
+     * Checks if the cache item exists in the pool.
+     *
+     * @param string $key
+     *  The identifier for which to check existence
+     *
+     * @return bool
+     *  `TRUE` if item found, otherwise `FALSE`.
      */
-    public function save(CacheItemInterface $item): bool
-    {
-        if (!$item instanceof CacheItem) {
-            return false;
-        }
-
-        $results = $this->doSave($item);
-
-        return \is_array($results) ? false : $results;
-    }
+    abstract protected function doHave(string $key): bool;
 
     /**
      * {@inheritDoc}
@@ -262,20 +271,10 @@ abstract class AbstractBackend implements CacheBackendInterface, CacheItemPoolIn
     }
 
     /**
-     * {@inheritDoc}
+     * Deletes all items from pool.
+     *
+     * @return bool
+     *  `TRUE` if the pool was successfully cleared, otherwise `FALSE`.
      */
-    public function commit(): bool
-    {
-        $saved = true;
-
-        foreach ($this->deferred as $item) {
-            if (!$this->save($item)) {
-                $saved = false;
-            }
-        }
-
-        $this->deferred = [];
-
-        return $saved;
-    }
+    abstract protected function doClear(): bool;
 }

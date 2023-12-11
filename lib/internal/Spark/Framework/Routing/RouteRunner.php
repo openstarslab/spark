@@ -32,9 +32,10 @@ use Spark\Framework\Http\Response;
 final class RouteRunner implements RequestHandlerInterface
 {
     public function __construct(
-        protected RouterInterface $router,
+        protected RouterInterface           $router,
         protected CallableResolverInterface $callableResolver = new CallableResolver()
-    ) {
+    )
+    {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -44,15 +45,15 @@ final class RouteRunner implements RequestHandlerInterface
             $request = $routingMiddleware->findRoute($request);
         }
 
-        $callable = $this->callableResolver->resolve(
-            $route = $request->getAttribute(RouteContext::ROUTE->value),
-        );
+        /** @var \Nulldark\Routing\Route $route */
+        $route = $request->getAttribute(RouteContext::ROUTE->value);
+        $callable = $this->callableResolver->resolve($route);
 
         $response = new Response();
         $response = $callable($request, $response, ...$route->getParameters());
 
         if (!($response instanceof ResponseInterface)) {
-            $msg = 'The controller must return a "\Psr\Http\Message\ResponseInterface" (%s given)' ;
+            $msg = 'The controller must return a "\Psr\Http\Message\ResponseInterface" (%s given)';
 
             if ($response === null) {
                 $msg .= ' Did you forget to add a return statement somewhere in your controller?';

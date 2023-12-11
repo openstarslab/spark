@@ -19,21 +19,14 @@ final class MiddlewareDispatcher implements RequestHandlerInterface
 
     public function __construct(
         RequestHandlerInterface $finalHandler,
-        MiddlewareInterface ...$middlewares
-    ) {
+        MiddlewareInterface     ...$middlewares
+    )
+    {
         $this->next = $finalHandler;
 
         foreach ($middlewares as $middleware) {
             $this->add($middleware);
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function handle(ServerRequestInterface $request): ResponseInterface
-    {
-        return $this->next->handle($request);
     }
 
     /**
@@ -51,9 +44,10 @@ final class MiddlewareDispatcher implements RequestHandlerInterface
 
         $this->next = new class ($middleware, $next) implements RequestHandlerInterface {
             public function __construct(
-                private readonly MiddlewareInterface $middleware,
+                private readonly MiddlewareInterface     $middleware,
                 private readonly RequestHandlerInterface $next
-            ) {
+            )
+            {
             }
 
             /**
@@ -66,5 +60,13 @@ final class MiddlewareDispatcher implements RequestHandlerInterface
         };
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->next->handle($request);
     }
 }

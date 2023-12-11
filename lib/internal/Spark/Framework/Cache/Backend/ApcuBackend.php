@@ -30,15 +30,20 @@ use Spark\Framework\Cache\CacheItem;
 class ApcuBackend extends AbstractBackend
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function doFetch(array $keys): iterable
     {
         $values = [];
+        $results = \apcu_fetch($keys, $ok);
 
-        foreach (\apcu_fetch($keys, $ok) as $key => $value) {
+        if (!\is_array($results)) {
+            $results = [$results];
+        }
+
+        foreach ($results as $key => $value) {
             if ($ok && $value !== null) {
-                $values[$key] = unserialize($value)['data'];
+                $values[$key] = \unserialize($value)['data'];
             }
         }
 
@@ -81,7 +86,7 @@ class ApcuBackend extends AbstractBackend
         return \apcu_store(
             $item->getKey(),
             \serialize(['data' => $item->get()]),
-            $item->getExpirationTime(),
+            (int)$item->getExpirationTime(),
         );
     }
 }

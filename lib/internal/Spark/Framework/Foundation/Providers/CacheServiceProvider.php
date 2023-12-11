@@ -31,6 +31,6 @@ class CacheServiceProvider implements ServiceProviderInterface
 {
     public function register(ContainerInterface $container): void
     {
-        $container->factory(CacheBackendInterface::class, fn (ContainerInterface $container) => new MemoryBackend());
+        $container->factory(CacheBackendInterface::class, fn(ContainerInterface $container) => new MemoryBackend());
     }
 }

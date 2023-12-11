@@ -25,16 +25,19 @@ namespace Spark\Framework\Container;
 use Spark\Framework\Container\Exception\ServiceCircularDependencyException;
 use Spark\Framework\Container\Exception\ServiceNotFoundException;
 
+/**
+ * @template T
+ */
 class Container implements ContainerInterface
 {
-    /** @var array<string, mixed> $values */
+    /** @var array<string, T> $values */
     private array $values = [];
 
     /** @var array<string, callable> $factories */
     private array $factories = [];
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param array<string, string|T> $parameters
      */
     public function __construct(array $parameters = [])
     {
@@ -68,6 +71,23 @@ class Container implements ContainerInterface
     }
 
     /**
+     * @param string $id
+     * @return ($id is class-string<T> ? T : mixed)
+     */
+    private function resolve(string $id): mixed
+    {
+        if (isset($this->values[$id])) {
+            return $this->values[$id];
+        }
+
+        if (isset($this->factories[$id])) {
+            $this->values[$id] = $this->factories[$id]($this);
+        }
+
+        return $this->values[$id];
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function has(string $id): bool
@@ -92,18 +112,5 @@ class Container implements ContainerInterface
         $provider->register($this);
 
         return $this;
-    }
-
-    private function resolve(string $id): mixed
-    {
-        if (isset($this->values[$id])) {
-            return $this->values[$id];
-        }
-
-        if (isset($this->factories[$id])) {
-            $this->values[$id] = $this->factories[$id]($this);
-        }
-
-        return $this->values[$id];
     }
 }

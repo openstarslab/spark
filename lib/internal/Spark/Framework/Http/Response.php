@@ -28,6 +28,9 @@ class Response implements ResponseInterface
 {
     use MessageTrait;
 
+    /** @var \Psr\Http\Message\ResponseInterface $message */
+    protected ResponseInterface $message;
+
     public function __construct(ResponseInterface $message = new \Nyholm\Psr7\Response())
     {
         $this->message = $message;

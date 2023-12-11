@@ -27,6 +27,11 @@ use Spark\Framework\Http\Response;
 
 class JsonResponse extends Response
 {
+    /**
+     * @param mixed[]|string $body
+     * @param int $statusCode
+     * @param mixed[] $headers
+     */
     public function __construct(array|string $body, int $statusCode = 200, array $headers = [])
     {
         parent::__construct(
