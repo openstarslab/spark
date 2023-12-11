@@ -40,4 +40,11 @@ class TestCase extends \PHPUnit\Framework\TestCase
         /** @var T & MockInterface */
         return Mockery::spy($class, ...$arguments);
     }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+
+        parent::tearDown();
+    }
 }

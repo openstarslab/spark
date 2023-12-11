@@ -32,11 +32,9 @@ class ExtensionFinder implements ExtensionFinderInterface
     public const COMPOSER_TYPE = 'spark-extension';
     public const SPARK_EXTENSION_CLASS_EXTRA_IDENTIFIER = 'spark-extension-class';
 
-    private PackageProvider $packageProvider;
-
-    public function __construct()
-    {
-        $this->packageProvider = new PackageProvider();
+    public function __construct(
+        private $packageProvider = new PackageProvider()
+    ) {
     }
 
     /**
