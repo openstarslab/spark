@@ -56,10 +56,10 @@ class CallableResolver implements CallableResolverInterface
 
         if (\is_string($controller) && \is_string($method)) {
             return $controller . "::" . $method;
-        } else {
-            if (\is_string($controller)) {
-                return $controller;
-            }
+        }
+
+        if (\is_string($controller)) {
+            return $controller;
         }
 
         throw new \RuntimeException("The given controller does not exists");
@@ -71,6 +71,8 @@ class CallableResolver implements CallableResolverInterface
      *
      * @return callable
      *  Returns prepared candidate.
+     *
+     * @throws \RuntimeException
      */
     private function tryResolveCandidate(string $toResolve): callable
     {
@@ -91,6 +93,10 @@ class CallableResolver implements CallableResolverInterface
             throw $error;
         }
 
-        return $matches;
+        if(\is_callable($matches)) {
+            return $matches;
+        }
+
+        throw new \RuntimeException('Given callback is not callable.');
     }
 }

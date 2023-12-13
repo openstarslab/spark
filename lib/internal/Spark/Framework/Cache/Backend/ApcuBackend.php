@@ -26,6 +26,8 @@ use Spark\Framework\Cache\CacheItem;
 
 /**
  * Defines APCu cache backend implementation.
+ *
+ * @phpstan-type CacheEntry array{data: mixed}
  */
 class ApcuBackend extends AbstractBackend
 {
@@ -43,7 +45,9 @@ class ApcuBackend extends AbstractBackend
 
         foreach ($results as $key => $value) {
             if ($ok && $value !== null) {
-                $values[$key] = \unserialize($value)['data'];
+                /** @var CacheEntry $entry */
+                $entry = \unserialize($value);
+                $values[$key] = $entry['data'];
             }
         }
 
@@ -83,9 +87,11 @@ class ApcuBackend extends AbstractBackend
      */
     protected function doSave(CacheItem $item): bool
     {
+        $entry = ['data' => $item->get()];
+
         return \apcu_store(
             $item->getKey(),
-            \serialize(['data' => $item->get()]),
+            \serialize($entry),
             (int)$item->getExpirationTime(),
         );
     }

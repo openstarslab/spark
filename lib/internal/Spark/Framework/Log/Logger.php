@@ -62,6 +62,10 @@ class Logger extends AbstractLogger
 
         $this->logDepth++;
 
+        if (!\is_string($level)) {
+            return;
+        }
+
         $record = new LogRecord(
             new \DateTimeImmutable(),
             $this->channel,
