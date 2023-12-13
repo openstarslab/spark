@@ -33,7 +33,7 @@ class ExtensionFinder implements ExtensionFinderInterface
     public const SPARK_EXTENSION_CLASS_EXTRA_IDENTIFIER = 'spark-extension-class';
 
     public function __construct(
-        private $packageProvider = new PackageProvider()
+        private readonly PackageProvider $packageProvider = new PackageProvider()
     ) {
     }
 
@@ -115,7 +115,7 @@ class ExtensionFinder implements ExtensionFinderInterface
     /**
      * Determines whether a given package is a Spark extension.
      *
-     * @param CompletePackageInterface $package
+     * @param \Composer\Package\CompletePackageInterface $package
      *  The package to check.
      *
      * @return bool
@@ -129,7 +129,7 @@ class ExtensionFinder implements ExtensionFinderInterface
     /**
      * Check if the extension composer is valid.
      *
-     * @param CompletePackageInterface $package
+     * @param \Composer\Package\CompletePackageInterface $package
      *  The composer package to check.
      *
      * @return bool
@@ -146,14 +146,26 @@ class ExtensionFinder implements ExtensionFinderInterface
     /**
      * Get the extension name from a composer package.
      *
-     * @param CompletePackageInterface $package
+     * @param \Composer\Package\CompletePackageInterface $package
      *  The composer package.
      *
      * @return string
      *  The extension name.
+     *
+     * @throws \Spark\Framework\Extension\Exception\InvalidComposerException
      */
     private function getExtensionNameFromPackage(CompletePackageInterface $package): string
     {
-        return $package->getExtra()[self::SPARK_EXTENSION_CLASS_EXTRA_IDENTIFIER];
+        $extensionClass = $package->getExtra()[self::SPARK_EXTENSION_CLASS_EXTRA_IDENTIFIER];
+
+        if ($extensionClass === "" || !\is_string($extensionClass)) {
+            $reason = \sprintf(
+                "composer.json has invalid extra/%s value.",
+                self::SPARK_EXTENSION_CLASS_EXTRA_IDENTIFIER
+            );
+            throw new InvalidComposerException($reason);
+        }
+
+        return $extensionClass;
     }
 }

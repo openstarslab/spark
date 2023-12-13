@@ -4,6 +4,7 @@ namespace Spark\Tests\Unit\Framework\Events;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\EventDispatcher\StoppableEventInterface;
+use Spark\Framework\Events\Event;
 use Spark\Framework\Events\EventDispatcher;
 
 #[CoversClass(EventDispatcher::class)]
@@ -16,7 +17,7 @@ class EventDispatcherDispatchTest extends \Spark\Tests\Unit\TestCase
         $this->eventDispatcher = new EventDispatcher();
     }
 
-    public function testDispatchShouldInvokeListenerOnEventDispatch()
+    public function testDispatchShouldInvokeListenerOnEventDispatch(): void
     {
         $invoked = false;
 
@@ -31,12 +32,12 @@ class EventDispatcherDispatchTest extends \Spark\Tests\Unit\TestCase
         self::assertTrue($invoked, 'Listener should be invoked on event dispatch');
     }
 
-    public function testDispatchShouldNotInvokeListenerAfterPropagationStopped()
+    public function testDispatchShouldNotInvokeListenerAfterPropagationStopped(): void
     {
         $invokedAfterStop = false;
 
         $this->eventDispatcher->listen('test.event', function ($event) {
-            if ($event instanceof StoppableEventInterface) {
+            if ($event instanceof Event) {
                 $event->stopPropagation();
             }
         });

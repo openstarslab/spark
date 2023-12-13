@@ -4,6 +4,7 @@ namespace Spark\Tests\Unit\Framework\Extension\Finder;
 
 use Composer\IO\IOInterface;
 use Composer\Package\CompletePackageInterface;
+use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Spark\Framework\Composer\PackageProvider;
 use Spark\Framework\Extension\Exception\InvalidComposerException;
@@ -14,7 +15,7 @@ use Spark\Tests\Unit\TestCase;
 class ExtensionFinderTest extends TestCase
 {
     private ExtensionFinder $extensionFinder;
-    private PackageProvider $packageProviderMock;
+    private PackageProvider&MockInterface $packageProviderMock;
 
     protected function setUp(): void
     {
@@ -46,7 +47,8 @@ class ExtensionFinderTest extends TestCase
             $io,
         );
 
-        self::assertIsIterable($result);
+        self::assertIsArray($result);
+        self::assertNotEmpty($result);
     }
 
 

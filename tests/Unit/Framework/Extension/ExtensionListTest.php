@@ -2,6 +2,7 @@
 
 namespace Spark\Tests\Unit\Framework\Extension;
 
+use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Spark\Framework\Extension\ExtensionCollection;
 use Spark\Framework\Extension\ExtensionList;
@@ -11,7 +12,7 @@ use Spark\Tests\Unit\TestCase;
 #[CoversClass(ExtensionList::class)]
 class ExtensionListTest extends TestCase
 {
-    private ExtensionLoaderInterface $extensionLoaderMock;
+    private ExtensionLoaderInterface&MockInterface $extensionLoaderMock;
     private ExtensionList $extensionList;
 
     protected function setUp(): void

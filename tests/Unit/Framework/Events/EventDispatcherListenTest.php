@@ -2,6 +2,7 @@
 
 namespace Spark\Tests\Unit\Framework\Events;
 
+use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Spark\Framework\Events\EventDispatcher;
 use Spark\Framework\Events\EventDispatcherInterface;
@@ -10,7 +11,7 @@ use Spark\Tests\Unit\TestCase;
 #[CoversClass(EventDispatcher::class)]
 class EventDispatcherListenTest extends TestCase
 {
-    protected EventDispatcherInterface $dispatcher;
+    protected EventDispatcherInterface&MockInterface $dispatcher;
 
     /**
      * Set up the test
@@ -42,7 +43,7 @@ class EventDispatcherListenTest extends TestCase
         $this->dispatcher->listen($eventName, $listener);
     }
 
-    public function testGetListenersForEventWithNoListener()
+    public function testGetListenersForEventWithNoListener(): void
     {
         $this->dispatcher->shouldReceive('getListenersForEvent')
             ->with('non.existing.event');
@@ -50,12 +51,12 @@ class EventDispatcherListenTest extends TestCase
         self::assertEquals([], $this->dispatcher->getListenersForEvent('non.existing.event'));
     }
 
-    public function testGetListenersForEventWithSingleListener()
+    public function testGetListenersForEventWithSingleListener(): void
     {
         $eventName = "event.test";
 
         // Mock event listener.
-        $listener = self::mock('alias:EventListener');
+        $listener = fn () => "listener1";
 
         // Register a listener to the dispatcher
         $this->dispatcher
@@ -70,14 +71,14 @@ class EventDispatcherListenTest extends TestCase
         self::assertEquals($listener, reset($listeners));
     }
 
-    public function testGetListenersForEventWithMultipleListeners()
+    public function testGetListenersForEventWithMultipleListeners(): void
     {
         $eventName = "event.test.multiple";
 
         // Mock event listeners.
-        $listener1 = self::mock('alias:EventListener1');
-        $listener2 = self::mock('alias:EventListener2');
-        $listener3 = self::mock('alias:EventListener3');
+        $listener1 = fn () => "listener1";
+        $listener2 = fn () => "listener2";
+        $listener3 = fn () => "listener3";
 
         // Expected listeners
         $expectedListeners = [$listener1, $listener2, $listener3];
@@ -94,14 +95,14 @@ class EventDispatcherListenTest extends TestCase
         self::assertEquals($expectedListeners, $listeners);
     }
 
-    public function testGetListenersForEventWithPrioritizedListeners()
+    public function testGetListenersForEventWithPrioritizedListeners(): void
     {
         $eventName = "event.test.priority";
 
         // Mock event listeners with different priorities.
-        $listener1 = self::mock('alias:EventListener1');
-        $listener2 = self::mock('alias:EventListener2');
-        $listener3 = self::mock('alias:EventListener3');
+        $listener1 = fn () => "listener1";
+        $listener2 = fn () => "listener2";
+        $listener3 = fn () => "listener3";
 
         // Expected listeners
         $expectedListeners = [3 => $listener3, 2 => $listener2, 1 => $listener1];
