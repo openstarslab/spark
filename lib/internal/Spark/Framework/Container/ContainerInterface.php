@@ -57,7 +57,7 @@ interface ContainerInterface
      * @throws \Spark\Framework\Container\Exception\ServiceNotFoundException
      * @throws \Spark\Framework\Container\Exception\ServiceCircularDependencyException
      */
-    public function get(string $id, int $behavior = self::NULL_ON_INVALID_REFERENCE): ?object;
+    public function get(string $id, int $behavior = self::EXCEPTION_ON_INVALID_REFERENCE): ?object;
 
     /**
      * Returns true if the container can return an entry for the given identifier, otherwise false.

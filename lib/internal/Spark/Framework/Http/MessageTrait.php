@@ -22,6 +22,7 @@
 
 namespace Spark\Framework\Http;
 
+use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -49,7 +50,7 @@ trait MessageTrait
     /**
      * {@inheritdoc}
      */
-    public function withProtocolVersion($version): self
+    public function withProtocolVersion(string $version): MessageInterface
     {
         $new = clone $this;
         $new->message = $this->message->withProtocolVersion($version);
@@ -68,34 +69,34 @@ trait MessageTrait
     /**
      * {@inheritdoc}
      */
-    public function hasHeader($header): bool
+    public function hasHeader(string $name): bool
     {
-        return $this->message->hasHeader($header);
+        return $this->message->hasHeader($name);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getHeader(string $header): array
+    public function getHeader(string $name): array
     {
-        return $this->message->getHeader($header);
+        return $this->message->getHeader($name);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getHeaderLine($header): string
+    public function getHeaderLine(string $name): string
     {
-        return $this->message->getHeaderLine($header);
+        return $this->message->getHeaderLine($name);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withHeader(string $header, $value): self
+    public function withHeader(string $name, $value): MessageInterface
     {
         $new = clone $this;
-        $new->message = $this->message->withHeader($header, $value);
+        $new->message = $this->message->withHeader($name, $value);
 
         return $new;
     }
@@ -103,10 +104,10 @@ trait MessageTrait
     /**
      * {@inheritdoc}
      */
-    public function withAddedHeader(string $header, $value): self
+    public function withAddedHeader(string $name, $value): MessageInterface
     {
         $new = clone $this;
-        $new->message = $this->message->withAddedHeader($header, $value);
+        $new->message = $this->message->withAddedHeader($name, $value);
 
         return $new;
     }
@@ -114,10 +115,10 @@ trait MessageTrait
     /**
      * {@inheritdoc}
      */
-    public function withoutHeader(string $header): self
+    public function withoutHeader(string $name): MessageInterface
     {
         $new = clone $this;
-        $new->message = $this->message->withoutHeader($header);
+        $new->message = $this->message->withoutHeader($name);
 
         return $new;
     }
@@ -133,7 +134,7 @@ trait MessageTrait
     /**
      * {@inheritdoc}
      */
-    public function withBody(StreamInterface $body): self
+    public function withBody(StreamInterface $body): MessageInterface
     {
         $new = clone $this;
         $new->message = $this->message->withBody($body);

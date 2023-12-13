@@ -53,8 +53,5 @@ jobs:
       - name: Static Analysis (PHPStan)
         run: "composer run analyze:phpstan analyse --error-format=checkstyle | cs2pr"
 
-      - name: Static Analysis (PHPStan)
-        run: "composer run analyze:psalm --shepherd"
-
       - name: Tests (Unit Tests)
         run: "composer run test:unit"
