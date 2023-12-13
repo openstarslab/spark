@@ -134,12 +134,12 @@ class Container implements ContainerInterface
     private function make(string $id, int $behavior): ?object
     {
         if ($behavior === self::EXCEPTION_ON_INVALID_REFERENCE) {
-            if (!isset($this->values[$id])) {
-                throw new ServiceNotFoundException($id);
-            }
-
             if (isset($this->factories[$id])) {
                 $this->values[$id] = $this->factories[$id]($this);
+            }
+
+            if (!isset($this->values[$id])) {
+                throw new ServiceNotFoundException($id);
             }
 
             return $this->values[$id];

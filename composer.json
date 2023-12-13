@@ -52,8 +52,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Spark\\Dev\\": "dev/tools",
-      "Spark\\Tests\\Unit\\": "tests/Unit"
+      "Spark\\Dev\\": "dev/tools/",
+      "Spark\\Tests\\Unit\\": "dev/tests/Unit"
     }
   },
   "config": {
@@ -83,8 +83,8 @@
     ],
     "lint:check": "phpcs",
     "lint:fix": "phpcbf --standard=phpcs.xml.dist",
-    "test:coverage:ci": "phpunit --colors=always --coverage-text --coverage-xml build/coverage/coverage-xml tests",
-    "test:coverage:html": "phpunit --colors=always --coverage-html build/coverage/coverage-html tests",
+    "test:coverage:ci": "phpunit --colors=always --coverage-text --coverage-xml build/coverage/coverage-xml",
+    "test:coverage:html": "phpunit --colors=always --coverage-html build/coverage/coverage-html",
     "test:unit": "phpunit --testsuite units"
   }
 }

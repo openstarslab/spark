@@ -11,4 +11,4 @@ parameters:
     paths:
         - app/src/
         - lib/internal/
-        - tests/
+        - dev/tests/

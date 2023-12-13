@@ -46,7 +46,7 @@ class EventDispatcherDispatchTest extends \Spark\Tests\Unit\TestCase
             $invokedAfterStop = true;
         });
 
-        $event = new class implements StoppableEventInterface {
+        $event = new class extends Event {
             private bool $propagationStopped = false;
 
             public function isPropagationStopped(): bool

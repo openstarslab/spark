@@ -9,7 +9,7 @@
 
     <file>app/</file>
     <file>lib/internal/</file>
-    <file>tests/</file>
+    <file>dev/tests/</file>
 
     <rule ref="PSR12"/>
 

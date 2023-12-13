@@ -11,8 +11,8 @@
         <directory name="app/src/" />
         <directory name="lib/internal/" />
         <ignoreFiles>
-            <directory name="tests"/>
-            <directory name="vendor"/>
+            <directory name="dev/tests/"/>
+            <directory name="vendor/"/>
         </ignoreFiles>
     </projectFiles>
 
