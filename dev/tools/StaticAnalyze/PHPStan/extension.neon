@@ -1,0 +1,5 @@
+services:
+	-
+		class: Spark\Dev\StaticAnalyze\PHPStan\Type\ContainerDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension

@@ -1,3 +1,6 @@
+includes:
+    - dev/tools/StaticAnalyze/PHPStan/extension.neon
+
 parameters:
     level: max
     tmpDir: ./build/cache/phpstan

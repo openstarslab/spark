@@ -52,6 +52,7 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "Spark\\Dev\\": "dev/tools",
       "Spark\\Tests\\Unit\\": "tests/Unit"
     }
   },
