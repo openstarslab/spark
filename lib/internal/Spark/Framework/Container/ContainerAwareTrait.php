@@ -22,8 +22,6 @@
 
 namespace Spark\Framework\Container;
 
-use Psr\Container\ContainerInterface;
-
 /**
  * ContainerAwareTrait
  *
@@ -34,12 +32,12 @@ trait ContainerAwareTrait
     /**
      * The container object used for dependency injection and inversion of control.
      *
-     * @param \Psr\Container\ContainerInterface $container
+     * @param \Spark\Framework\Container\ContainerInterface $container
      */
     protected ContainerInterface $container;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setContainer(ContainerInterface $container): void
     {

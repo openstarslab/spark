@@ -37,11 +37,11 @@ class ContainerTest extends \Spark\Tests\Unit\TestCase
     {
         $callable = static fn (Container $container) => new \stdClass();
 
-        $this->container->factory('test', $callable);
+        $this->container->factory(\stdClass::class, $callable);
 
         // By getting 'test' service from container,
         // we indirectly test that the factory has correctly been stored
-        $service = $this->container->get('test');
+        $service = $this->container->get(\stdClass::class);
 
         self::assertInstanceOf(\stdClass::class, $service);
     }
@@ -55,6 +55,6 @@ class ContainerTest extends \Spark\Tests\Unit\TestCase
         self::expectException(ServiceNotFoundException::class);
 
         // Try getting a non-existent service
-        $this->container->get('non_existent_service');
+        $this->container->get(\stdClass::class);
     }
 }

@@ -24,9 +24,9 @@ namespace Spark\Framework\Foundation\Application;
 
 use Nulldark\Routing\RouterInterface;
 use Nyholm\Psr7\Stream;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Spark\Framework\Container\ContainerInterface;
 use Spark\Framework\Http\MiddlewareDispatcher;
 use Spark\Framework\Routing\RouteRunner;
 

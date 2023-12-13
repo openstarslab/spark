@@ -23,9 +23,9 @@ class ContainerGetTest extends \Spark\Tests\Unit\TestCase
      */
     public function testSetStoresKeyValueInContainer(): void
     {
-        $this->container->set('name', 'Test Framework');
+        $this->container->setParameter('name', 'Test Framework');
 
-        self::assertEquals('Test Framework', $this->container->get('name'));
+        self::assertEquals('Test Framework', $this->container->getParameter('name'));
     }
 
     /**
@@ -33,15 +33,15 @@ class ContainerGetTest extends \Spark\Tests\Unit\TestCase
      */
     public function testSetWithDifferentValues(): void
     {
-        $this->container->set('string', 'string');
-        $this->container->set('integer', 1);
-        $this->container->set('float', 1.23);
-        $this->container->set('array', ['element']);
+        $this->container->setParameter('string', 'string');
+        $this->container->setParameter('integer', 1);
+        $this->container->setParameter('float', 1.23);
+        $this->container->setParameter('array', ['element']);
 
-        self::assertSame('string', $this->container->get('string'));
-        self::assertSame(1, $this->container->get('integer'));
-        self::assertSame(1.23, $this->container->get('float'));
-        self::assertSame(['element'], $this->container->get('array'));
+        self::assertSame('string', $this->container->getParameter('string'));
+        self::assertSame(1, $this->container->getParameter('integer'));
+        self::assertSame(1.23, $this->container->getParameter('float'));
+        self::assertSame(['element'], $this->container->getParameter('array'));
     }
 
     public function testRegisterMethod(): void

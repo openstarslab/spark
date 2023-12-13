@@ -29,7 +29,7 @@ interface KernelInterface
     /**
      * Creates a new application of the specified type.
      *
-     * @param string $type
+     * @param class-string $type
      *  The type of application to create.
      *
      * @return ApplicationInterface

@@ -22,8 +22,6 @@
 
 namespace Spark\Framework\Container;
 
-use Psr\Container\ContainerInterface;
-
 /**
  * This interface should be implemented by classes that depends on a Container.
  */
@@ -32,7 +30,7 @@ interface ContainerAwareInterface
     /**
      * Set the container.
      *
-     * @param ContainerInterface $container
+     * @param \Spark\Framework\Container\ContainerInterface $container
      *   The container to set.
      *
      * @return void

@@ -25,70 +25,41 @@ namespace Spark\Framework\Container;
 use Spark\Framework\Container\Exception\ServiceCircularDependencyException;
 use Spark\Framework\Container\Exception\ServiceNotFoundException;
 
-/**
- * @template T
- */
 class Container implements ContainerInterface
 {
-    /** @var array<string, T> $values */
+    /** @var array<string, object> $values */
     private array $values = [];
 
     /** @var array<string, callable> $factories */
     private array $factories = [];
 
+    /** @var array<string, int|float|string|array> $parameters */
+    private array $parameters = [];
+
     /**
-     * @param array<string, string|T> $parameters
+     * @param array<string, int|float|string> $parameters
      */
     public function __construct(array $parameters = [])
     {
         foreach ($parameters as $key => $parameter) {
-            $this->set($key, $parameter);
+            $this->setParameter($key, $parameter);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function set(string $id, mixed $value): void
+    public function set(string $id, object $service): void
     {
-        $this->values[$id] = $value;
+        $this->values[$id] = $service;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function get(string $id): mixed
+    public function get(string $id, int $behavior = self::EXCEPTION_ON_INVALID_REFERENCE): ?object
     {
-        try {
-            return $this->resolve($id);
-        } catch (\Exception $e) {
-            if ($this->has($id) || $e instanceof ServiceCircularDependencyException) {
-                throw $e;
-            }
-
-            throw new ServiceNotFoundException($id);
-        }
-    }
-
-    /**
-     * @param string $id
-     * @return ($id is class-string<T> ? T : mixed)
-     */
-    private function resolve(string $id): mixed
-    {
-        if (isset($this->values[$id])) {
-            return $this->values[$id];
-        }
-
-        if (isset($this->factories[$id])) {
-            $this->values[$id] = $this->factories[$id]($this);
-        }
-
-        if ($this->values[$id] === null) {
-            throw new ServiceNotFoundException($id);
-        }
-
-        return $this->values[$id];
+        return $this->make($id, $behavior);
     }
 
     /**
@@ -116,5 +87,64 @@ class Container implements ContainerInterface
         $provider->register($this);
 
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParameter(string $name): int|float|string|array
+    {
+        if (!$this->hasParameter($name)) {
+            throw new \RuntimeException("The parameter '$name' not found.");
+        }
+
+        return $this->parameters[$name];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setParameter(string $name, float|int|string|array $value): void
+    {
+        if (\is_numeric($name)) {
+            throw new \InvalidArgumentException("The parameter name cannot be numeric.");
+        }
+
+        $this->parameters[$name] = $value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setParameters(array $parameters): void
+    {
+        foreach ($parameters as $key => $parameter) {
+            $this->setParameter($key, $parameter);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function hasParameter(string $name): bool
+    {
+        return \array_key_exists($name, $this->parameters);
+    }
+
+    private function make(string $id, int $behavior): ?object
+    {
+        if ($behavior === self::EXCEPTION_ON_INVALID_REFERENCE) {
+            if (!isset($this->values[$id])) {
+                throw new ServiceNotFoundException($id);
+            }
+
+            if (isset($this->factories[$id])) {
+                $this->values[$id] = $this->factories[$id]($this);
+            }
+
+            return $this->values[$id];
+        }
+
+        return null;
     }
 }

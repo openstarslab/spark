@@ -60,6 +60,8 @@ final class Kernel implements KernelInterface
     }
 
     /**
+     * Gets a kernel parameters.
+     *
      * @return string[]
      */
     private function getKernelParameters(): array
@@ -71,7 +73,7 @@ final class Kernel implements KernelInterface
         ];
     }
 
-    public static function create(string $environment, string $rootDir, ClassLoader $classLoader): self
+    public static function create(string $environment, string $rootDir): self
     {
         $bootstrap = new self(
             $environment,
@@ -116,7 +118,7 @@ final class Kernel implements KernelInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function createApplication(string $type): ApplicationInterface
     {

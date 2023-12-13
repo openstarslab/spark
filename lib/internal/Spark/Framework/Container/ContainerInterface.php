@@ -22,37 +22,52 @@
 
 namespace Spark\Framework\Container;
 
-interface ContainerInterface extends \Psr\Container\ContainerInterface
+interface ContainerInterface
 {
+    public const EXCEPTION_ON_INVALID_REFERENCE = 1;
+    public const NULL_ON_INVALID_REFERENCE = 2;
+
     /**
      * Sets a service with the provided ID.
      *
-     * @template T
-     *
      * @param string $id
      *  The ID of the service to set.
-     * @param T $value
+     * @param object $service
      *  The service to set.
      *
      * @return void
      */
-    public function set(string $id, mixed $value): void;
+    public function set(string $id, object $service): void;
 
     /**
      * Retrieves a service based on the provided ID.
      *
-     * @template T
+     * @template B of self::*_REFERENCE
+     * @template T of object
      *
-     * @param string $id
+     * @param class-string<T> $id
      *  The ID of the service to retrieve.
+     * @param B $behavior
+     *  The way to behave if the container does not find a suitable service.
      *
-     * @return ($id is class-string<T> ? T : mixed)
+     * @return (B is self::EXCEPTION_ON_INVALID_REFERENCE ? T : T|null)
+     * @psalm-return (B is self::EXCEPTION_ON_INVALID_REFERENCE ? T : T|null)
      *  The retrieved service.
      *
      * @throws \Spark\Framework\Container\Exception\ServiceNotFoundException
      * @throws \Spark\Framework\Container\Exception\ServiceCircularDependencyException
      */
-    public function get(string $id): mixed;
+    public function get(string $id, int $behavior = self::NULL_ON_INVALID_REFERENCE): ?object;
+
+    /**
+     * Returns true if the container can return an entry for the given identifier, otherwise false.
+     *
+     * @param string $id
+     *  Identifier of the entry to look for.
+     *
+     * @return bool
+     */
+    public function has(string $id): bool;
 
     /**
      * Creates and registers a service factory.
@@ -76,4 +91,52 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      *     The container instance.
      */
     public function register(ServiceProviderInterface $provider): self;
+
+    /**
+     * Retrieves the value of a parameter based on its name.
+     *
+     * @param string $name
+     *   The name of the parameter whose value to retrieve.
+     *
+     * @return int|float|string|array
+     *   The value of the parameter.
+     *
+     * @throws \InvalidArgumentException
+     *   If the parameter name is empty.
+     */
+    public function getParameter(string $name): int|float|string|array;
+
+    /**
+     * Sets the value of a parameter.
+     *
+     * @param string $name
+     *  The name of the parameter.
+     * @param int|float|string|array $value
+     *  The value of the parameter.
+     *
+     * @return void
+     */
+    public function setParameter(string $name, int|float|string|array $value): void;
+
+    /**
+     * Sets the values of multiple parameters.
+     *
+     * @param array<string, int|float|string> $parameters
+     *  The array of parameters to set.
+     *  The keys of the array are the names of the parameters, and the values are their corresponding values.
+     *
+     * @return void
+     */
+    public function setParameters(array $parameters): void;
+
+    /**
+     * Checks if a parameter exists.
+     *
+     * @param string $name
+     *  The name of the parameter to check.
+     *
+     * @return bool
+     *  Returns "true" if the parameter exists, otherwise "false".
+     */
+    public function hasParameter(string $name): bool;
 }

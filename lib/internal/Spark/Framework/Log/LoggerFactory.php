@@ -53,10 +53,13 @@ class LoggerFactory implements ContainerAwareInterface
     public function get(string $channel): LoggerInterface
     {
         if (!isset($this->loggers[$channel])) {
-            $this->loggers[$channel] = new Logger(
-                $channel,
-                $this->container->get('kernel.logs_path'),
-            );
+            $logsDir = $this->container->getParameter('kernel.logs_path');
+
+            if (!\is_string($logsDir) || !\file_exists($logsDir)) {
+                throw new \RuntimeException("The directory to logs has invalid value, must be valid path.");
+            }
+
+            $this->loggers[$channel] = new Logger($channel, $logsDir);
         }
 
         return $this->loggers[$channel];
