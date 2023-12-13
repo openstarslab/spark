@@ -44,8 +44,7 @@ class ExtensionServiceProvider implements ServiceProviderInterface
         $container->factory(ExtensionLoaderInterface::class, fn(ContainerInterface $container) =>
             new ExtensionLoader(
                 $extensionDir,
-            )
-        );
+            ));
 
         $container->factory(ExtensionList::class, fn(ContainerInterface $container) => new ExtensionList(
             $container->get(ExtensionLoaderInterface::class),

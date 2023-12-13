@@ -93,7 +93,7 @@ class CallableResolver implements CallableResolverInterface
             throw $error;
         }
 
-        if(\is_callable($matches)) {
+        if (\is_callable($matches)) {
             return $matches;
         }
 

@@ -161,7 +161,7 @@ class ExtensionFinder implements ExtensionFinderInterface
         if ($extensionClass === "" || !\is_string($extensionClass)) {
             $reason = \sprintf(
                 "composer.json has invalid extra/%s value.",
-                self::SPARK_EXTENSION_CLASS_EXTRA_IDENTIFIER
+                self::SPARK_EXTENSION_CLASS_EXTRA_IDENTIFIER,
             );
             throw new InvalidComposerException($reason);
         }

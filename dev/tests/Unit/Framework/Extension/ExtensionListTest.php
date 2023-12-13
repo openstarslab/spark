@@ -31,7 +31,6 @@ class ExtensionListTest extends TestCase
     {
         // Mock extension collection
         $extensions = new ExtensionCollection();
-        // TODO: Add mock extensions to collection
 
         // Set the expectations for the mocks.
         $this->extensionLoaderMock->shouldReceive('activateExtensions')

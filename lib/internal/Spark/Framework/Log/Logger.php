@@ -30,9 +30,6 @@ use Psr\Log\LoggerAwareTrait;
  *
  * In the near future, the logger should be refactored, adding support for `handlers`, such as sending logs to
  * designated email addresses, or adding log entry processing.
- *
- * @TODO: Add handlers
- * @TODO: Add log record formatter
  */
 class Logger extends AbstractLogger
 {
