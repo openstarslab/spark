@@ -40,4 +40,4 @@ jobs:
         uses: ramsey/composer-install@v2
 
       - name: Static Analysis (PHPStan)
-        run: "composer run analyze:phpstan analyse --error-format=checkstyle | cs2pr"
+        run: "composer run analyze:phpstan -- --error-format=checkstyle | cs2pr"
