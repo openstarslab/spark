@@ -35,9 +35,9 @@ class ContainerTest extends \Spark\Tests\Unit\TestCase
      */
     public function testFactoryMethod(): void
     {
-        $callable = static fn (Container $container) => new \stdClass();
+        $callable = static fn () => new \stdClass();
 
-        $this->container->factory(\stdClass::class, $callable);
+        $this->container->bind(\stdClass::class, $callable);
 
         // By getting 'test' service from container,
         // we indirectly test that the factory has correctly been stored

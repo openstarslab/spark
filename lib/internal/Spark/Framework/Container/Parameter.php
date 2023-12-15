@@ -20,17 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Foundation\Providers;
+namespace Spark\Framework\Container;
 
-use Spark\Framework\Cache\Backend\MemoryBackend;
-use Spark\Framework\Cache\CacheBackendInterface;
-use Spark\Framework\Container\ContainerInterface;
-use Spark\Framework\Container\ServiceProviderInterface;
-
-class CacheServiceProvider implements ServiceProviderInterface
+class Parameter extends Binding
 {
-    public function register(ContainerInterface $container): void
+    public function __construct(
+        public string $name,
+        public float|int|string|array $value
+    ) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __toString(): string
     {
-        $container->singleton(CacheBackendInterface::class, fn () => new MemoryBackend());
+        return \sprintf(
+            "%s: (%s) %s",
+            $this->name,
+            \gettype($this->value),
+            \var_export($this->value, true),
+        );
     }
 }

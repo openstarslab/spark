@@ -35,18 +35,21 @@ class ExtensionServiceProvider implements ServiceProviderInterface
      */
     public function register(ContainerInterface $container): void
     {
-        $extensionDir = $container->getParameter('kernel.extension_dir');
+        $container->singleton(ExtensionLoaderInterface::class, function (ContainerInterface $container) {
+            $extensionDir = $container->getParameter('kernel.extension_dir');
 
-        if (!\is_string($extensionDir) || !\file_exists($extensionDir)) {
-            throw new \RuntimeException("The directory to extensions has invalid value, must be valid path.");
-        }
+            if (!\is_string($extensionDir) || !\file_exists($extensionDir)) {
+                throw new \RuntimeException(
+                    "The directory to extensions has invalid value, must be valid path.",
+                );
+            }
 
-        $container->factory(ExtensionLoaderInterface::class, fn(ContainerInterface $container) =>
-            new ExtensionLoader(
+            return new ExtensionLoader(
                 $extensionDir,
-            ));
+            );
+        });
 
-        $container->factory(ExtensionList::class, fn(ContainerInterface $container) => new ExtensionList(
+        $container->singleton(ExtensionList::class, fn (ContainerInterface $container) => new ExtensionList(
             $container->get(ExtensionLoaderInterface::class),
         ));
     }

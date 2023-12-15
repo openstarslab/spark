@@ -27,14 +27,8 @@ use Spark\Framework\Container\Exception\ServiceNotFoundException;
 
 class Container implements ContainerInterface
 {
-    /** @var array<string, object> $values */
     private array $values = [];
-
-    /** @var array<string, callable> $factories */
-    private array $factories = [];
-
-    /** @var array<string, int|float|string|array> $parameters */
-    private array $parameters = [];
+    private array $instances = [];
 
     /**
      * @param array<string, int|float|string> $parameters
@@ -49,9 +43,21 @@ class Container implements ContainerInterface
     /**
      * {@inheritDoc}
      */
+    public function setParameter(string $name, float|int|string|array $value): void
+    {
+        if (\is_numeric($name)) {
+            throw new \InvalidArgumentException("The parameter name cannot be numeric.");
+        }
+
+        $this->values[$name] = new Parameter($name, $value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function set(string $id, object $service): void
     {
-        $this->values[$id] = $service;
+        $this->instances[$id] = $service;
     }
 
     /**
@@ -65,18 +71,42 @@ class Container implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function has(string $id): bool
+    public function make(string $id, int $behavior = self::EXCEPTION_ON_INVALID_REFERENCE): ?object
     {
-        return \array_key_exists($id, $this->values)
-            || \array_key_exists($id, $this->factories);
+        if ($behavior === self::EXCEPTION_ON_INVALID_REFERENCE) {
+            if (\array_key_exists($id, $this->instances)) {
+                return $this->instances[$id];
+            }
+
+            if (!isset($this->values[$id])) {
+                throw new ServiceNotFoundException($id);
+            }
+
+            $concrete = $this->values[$id];
+
+            if ($concrete instanceof Factory) {
+                $value = ($concrete->callable)($this);
+
+                if ($concrete->singleton === true) {
+                    $this->instances[$id] = $concrete;
+                }
+
+                return $value;
+            }
+
+            return $concrete;
+        }
+
+        return $this->values[$id] ?? null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function factory(string $id, callable $callable): void
+    public function has(string $id): bool
     {
-        $this->factories[$id] = $callable;
+        return \array_key_exists($id, $this->values)
+            || \array_key_exists($id, $this->instances);
     }
 
     /**
@@ -98,19 +128,27 @@ class Container implements ContainerInterface
             throw new \RuntimeException("The parameter '$name' not found.");
         }
 
-        return $this->parameters[$name];
+        $parameter = $this->values[$name];
+
+        if (!$parameter instanceof Parameter) {
+            $reason = \sprintf(
+                "The given parameter ('%s') is not instance of %s",
+                $name,
+                Parameter::class,
+            );
+
+            throw new \RuntimeException($reason);
+        }
+
+        return $parameter->value;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setParameter(string $name, float|int|string|array $value): void
+    public function hasParameter(string $name): bool
     {
-        if (\is_numeric($name)) {
-            throw new \InvalidArgumentException("The parameter name cannot be numeric.");
-        }
-
-        $this->parameters[$name] = $value;
+        return \array_key_exists($name, $this->values) && $this->values[$name] instanceof Parameter;
     }
 
     /**
@@ -126,25 +164,27 @@ class Container implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function hasParameter(string $name): bool
+    public function singleton(string $id, callable|object $concrete): void
     {
-        return \array_key_exists($name, $this->parameters);
+        $this->bind($id, $concrete, true);
     }
 
-    private function make(string $id, int $behavior): ?object
+    /**
+     * {@inheritDoc}
+     */
+    public function bind(string $id, callable|object $concrete, bool $singleton = null): void
     {
-        if ($behavior === self::EXCEPTION_ON_INVALID_REFERENCE) {
-            if (isset($this->factories[$id])) {
-                $this->values[$id] = $this->factories[$id]($this);
-            }
-
-            if (!isset($this->values[$id])) {
-                throw new ServiceNotFoundException($id);
-            }
-
-            return $this->values[$id];
+        if ($singleton === null) {
+            $singleton = false;
         }
 
-        return null;
+
+        $binding = match (true) {
+            $concrete instanceof \Closure => new Factory($id, $concrete, $singleton),
+            \is_object($concrete) => new Reference($concrete),
+            default => throw new \InvalidArgumentException('Unknown concrete type.'),
+        };
+
+        $this->values[$id] = $binding;
     }
 }
