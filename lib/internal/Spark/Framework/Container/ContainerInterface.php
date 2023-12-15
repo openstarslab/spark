@@ -22,6 +22,12 @@
 
 namespace Spark\Framework\Container;
 
+use Spark\Framework\Container\Exception\ServiceCircularDependencyException;
+use Spark\Framework\Container\Exception\ServiceNotFoundException;
+
+/**
+ * @property-read mixed $value
+ */
 interface ContainerInterface
 {
     public const EXCEPTION_ON_INVALID_REFERENCE = 1;
@@ -55,9 +61,29 @@ interface ContainerInterface
      *  The retrieved service.
      *
      * @throws \Spark\Framework\Container\Exception\ServiceNotFoundException
-     * @throws \Spark\Framework\Container\Exception\ServiceCircularDependencyException
      */
     public function get(string $id, int $behavior = self::EXCEPTION_ON_INVALID_REFERENCE): ?object;
+
+    /**
+     * Make a service of the container by its name.
+     *
+     * @template B of self::*_REFERENCE
+     * @template T of object
+     *
+     * @param class-string<T> $id
+     *  The ID of the object to make.
+     * @param B $behavior
+     *  The behavior when a service does not exist.
+     *      - self::EXCEPTION_ON_INVALID_REFERENCE: Throw an exception on invalid reference.
+     *      - self::NULL_ON_INVALID_REFERENCE: Returns a null on invalid reference
+     *
+     * @return (B is self::EXCEPTION_ON_INVALID_REFERENCE ? T : T|null)
+     * @psalm-return (B is self::EXCEPTION_ON_INVALID_REFERENCE ? T : T|null)
+     *  The created object or null if the behavior is set to EXCEPTION_ON_INVALID_REFERENCE.
+     *
+     * @throws \Spark\Framework\Container\Exception\ServiceNotFoundException
+     */
+    public function make(string $id, int $behavior = self::EXCEPTION_ON_INVALID_REFERENCE): ?object;
 
     /**
      * Returns true if the container can return an entry for the given identifier, otherwise false.
@@ -70,16 +96,34 @@ interface ContainerInterface
     public function has(string $id): bool;
 
     /**
-     * Creates and registers a service factory.
+     * Binds an implementation to a specified identifier.
+     *
+     * The bind method allows you to associate an implementation with a specific identifier.
+     * The identifier can then be used to retrieve the implementation through Dependency Injection or
+     * Service Location.
      *
      * @param string $id
-     *  The ID for the service factory.
-     * @param callable $callable
-     *  A callable function that returns the service instance.
+     *  The identifier to bind the implementation to.
+     * @param callable|object $concrete
+     *  The implementation to bind. This can be a callable or an object.
+     * @param bool $singleton
+     *  (Optional) Defines whether the bound implementation should be treated as a singleton. Default is false.
      *
      * @return void
      */
-    public function factory(string $id, callable $callable): void;
+    public function bind(string $id, callable|object $concrete, bool $singleton = null): void;
+
+    /**
+     * Registers a shared service in the container.
+     *
+     * @param string $id
+     *   The unique identifier for the service.
+     * @param callable $concrete
+     *   A closure or class name that will be invoked to create the singleton instance.
+     *
+     * @return void
+     */
+    public function singleton(string $id, callable|object $concrete): void;
 
     /**
      * Registers a service provider to the container.

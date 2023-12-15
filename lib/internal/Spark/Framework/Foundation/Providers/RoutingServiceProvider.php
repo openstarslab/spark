@@ -36,7 +36,7 @@ class RoutingServiceProvider implements ServiceProviderInterface
     public function register(ContainerInterface $container): void
     {
         $container->set(RouteCollection::class, new RouteCollection());
-        $container->factory(RouterInterface::class, function (ContainerInterface $container) {
+        $container->singleton(RouterInterface::class, function (ContainerInterface $container) {
             $router = new Router();
             $router->setRouteCollection($container->get(RouteCollection::class));
 

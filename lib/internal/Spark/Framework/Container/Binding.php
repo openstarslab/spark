@@ -20,17 +20,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Foundation\Providers;
+namespace Spark\Framework\Container;
 
-use Spark\Framework\Cache\Backend\MemoryBackend;
-use Spark\Framework\Cache\CacheBackendInterface;
-use Spark\Framework\Container\ContainerInterface;
-use Spark\Framework\Container\ServiceProviderInterface;
-
-class CacheServiceProvider implements ServiceProviderInterface
+abstract class Binding implements \Stringable
 {
-    public function register(ContainerInterface $container): void
-    {
-        $container->singleton(CacheBackendInterface::class, fn () => new MemoryBackend());
-    }
 }
