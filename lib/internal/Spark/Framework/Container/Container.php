@@ -27,17 +27,35 @@ use Spark\Framework\Container\Exception\ServiceNotFoundException;
 
 class Container implements ContainerInterface
 {
-    private array $values = [];
-    private array $instances = [];
+    protected array $values = [];
+    protected array $instances = [];
+    protected static ?ContainerInterface $instance = null;
 
     /**
-     * @param array<string, int|float|string> $parameters
+     * Sets the shared instance of the container.
+     *
+     * @param ContainerInterface|null $instance
+     *  The container instance.
+     *
+     * @return ContainerInterface|static
      */
-    public function __construct(array $parameters = [])
+    public static function setInstance(ContainerInterface $instance = null): ContainerInterface|static|null
     {
-        foreach ($parameters as $key => $parameter) {
-            $this->setParameter($key, $parameter);
+        return static::$instance = $instance;
+    }
+
+    /**
+     * Gets current container instance.
+     *
+     * @return ContainerInterface|static|null
+     */
+    public static function getInstance(): ContainerInterface|static|null
+    {
+        if (!isset(self::$instance)) {
+            static::$instance = new self();
         }
+
+        return static::$instance;
     }
 
     /**

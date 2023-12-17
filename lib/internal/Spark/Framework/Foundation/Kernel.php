@@ -54,9 +54,8 @@ final class Kernel implements KernelInterface
         private readonly string $environment,
         private readonly string $rootDir,
     ) {
-        $this->container = new Container(
-            $this->getKernelParameters(),
-        );
+        $this->container = new Container();
+        $this->container->setParameters($this->getKernelParameters());
     }
 
     /**
