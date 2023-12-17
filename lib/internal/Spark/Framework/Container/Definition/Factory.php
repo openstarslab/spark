@@ -20,8 +20,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Container;
+namespace Spark\Framework\Container\Definition;
 
-abstract class Binding implements \Stringable
+class Factory extends Binding
 {
+    public readonly string $id;
+    public readonly \Closure $callable;
+    public readonly bool $singleton;
+
+    public function __construct(string $id, callable $callable, bool $singleton)
+    {
+        $this->id = $id;
+        $this->callable = $callable(...);
+        $this->singleton = $singleton;
+    }
+
+    public function __toString(): string
+    {
+        return "Factory from function();";
+    }
 }

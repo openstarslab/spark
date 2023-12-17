@@ -20,23 +20,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Container;
+namespace Spark\Framework\Container\Definition;
 
-class Reference extends Binding
+abstract class Binding implements \Stringable
 {
-    public function __construct(
-        public readonly object $value,
-    ) {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __toString(): string
-    {
-        return \sprintf(
-            "Reference of class '%s'",
-            $this->value::class,
-        );
-    }
 }

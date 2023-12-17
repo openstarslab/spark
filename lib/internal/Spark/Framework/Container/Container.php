@@ -22,7 +22,9 @@
 
 namespace Spark\Framework\Container;
 
-use Spark\Framework\Container\Exception\ServiceCircularDependencyException;
+use Spark\Framework\Container\Definition\Factory;
+use Spark\Framework\Container\Definition\Parameter;
+use Spark\Framework\Container\Definition\Reference;
 use Spark\Framework\Container\Exception\ServiceNotFoundException;
 
 class Container implements ContainerInterface
