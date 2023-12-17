@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Foundation\Providers;
+namespace Spark\Framework\Routing;
 
 use Nulldark\Routing\RouteCollection;
 use Nulldark\Routing\Router;

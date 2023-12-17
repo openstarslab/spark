@@ -20,11 +20,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Foundation\Providers;
+namespace Spark\Framework\Extension;
 
 use Spark\Framework\Container\ContainerInterface;
 use Spark\Framework\Container\ServiceProviderInterface;
-use Spark\Framework\Extension\ExtensionList;
 use Spark\Framework\Extension\Loader\ExtensionLoader;
 use Spark\Framework\Extension\Loader\ExtensionLoaderInterface;
 
