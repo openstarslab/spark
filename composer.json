@@ -44,6 +44,9 @@
   },
   "minimum-stability": "dev",
   "autoload": {
+    "files": [
+      "lib/internal/Spark/Framework/Support/functions.php"
+    ],
     "psr-4": {
       "Spark\\Framework\\": "lib/internal/Spark/Framework/",
       "Spark\\System\\": "lib/internal/Spark/System/",
