@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Foundation\Exceptions;
+namespace Spark\Framework\App\Exceptions;
 
 class ErrorHandler implements ErrorHandlerInterface
 {

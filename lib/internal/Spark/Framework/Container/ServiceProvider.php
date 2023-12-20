@@ -20,34 +20,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Foundation\Exceptions;
+namespace Spark\Framework\Container;
 
-interface ErrorHandlerInterface
+use Spark\Framework\App\Spark;
+
+abstract class ServiceProvider
 {
+    public function __construct(
+        protected Spark $app
+    ) {
+
+    }
+
     /**
-     * Handle an exception.
-     *
-     * @param \Throwable $throwable
-     *  The exception to handle.
+     * Registers a services into container.
      *
      * @return void
      */
-    public function handleException(\Throwable $throwable): void;
+    public function register(): void
+    {
+
+    }
 
     /**
-     * Handle an error.
+     * Boots an application services.
      *
-     * @param int $level
-     *   The level of the error that occurred.
-     * @param string $message
-     *   The error message.
-     * @param string|null $file
-     *   The file in which the error occurred (optional).
-     * @param int|null $line
-     *   The line number where the error occurred (optional).
-     *
-     * @return bool
-     *   Indicates whether the error handling was successful or not.
+     * @return void
      */
-    public function handleError(int $level, string $message, string $file = null, int $line = null): bool;
+    public function boot(): void
+    {
+
+    }
 }

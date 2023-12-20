@@ -20,31 +20,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Foundation;
+namespace Spark\Framework\App;
 
-use Spark\Framework\Foundation\Application\ApplicationInterface;
-
-interface KernelInterface
+final class DefaultProviders
 {
-    /**
-     * Creates a new application of the specified type.
-     *
-     * @param class-string $type
-     *  The type of application to create.
-     *
-     * @return ApplicationInterface
-     *  The created application.
-     */
-    public function createApplication(string $type): ApplicationInterface;
+    /** @var \Spark\Framework\Container\ServiceProvider[] $providers */
+    protected array $providers = [];
+
+    public function __construct() {
+        $this->providers = [
+            \Spark\Framework\Routing\RoutingServiceProvider::class,
+            \Spark\Framework\Cache\CacheServiceProvider::class,
+            \Spark\Framework\Extension\ExtensionServiceProvider::class,
+            \Spark\Framework\App\ApplicationServiceProvider::class
+        ];
+    }
 
     /**
-     * Starts the application.
+     * Gets a default providers collection as array
      *
-     * @param ApplicationInterface $application
-     *  The application instance to start.
-     *
-     * @return void
-     *  Returns nothing.
+     * @return array|\Spark\Framework\Container\ServiceProvider[]
      */
-    public function start(ApplicationInterface $application): void;
+    public function toArray(): array
+    {
+        return $this->providers;
+    }
 }

@@ -23,13 +23,15 @@
 namespace Spark\Framework\Cache;
 
 use Spark\Framework\Cache\Backend\MemoryBackend;
-use Spark\Framework\Container\ContainerInterface;
-use Spark\Framework\Container\ServiceProviderInterface;
+use Spark\Framework\Container\ServiceProvider;
 
-class CacheServiceProvider implements ServiceProviderInterface
+class CacheServiceProvider extends ServiceProvider
 {
-    public function register(ContainerInterface $container): void
+    /**
+     * {@inheritDoc}
+     */
+    public function register(): void
     {
-        $container->singleton(CacheBackendInterface::class, fn () => new MemoryBackend());
+        $this->app->singleton(CacheBackendInterface::class, fn () => new MemoryBackend());
     }
 }

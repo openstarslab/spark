@@ -30,11 +30,13 @@ final class Directories implements DirectoriesInterface
     /** @var string[] $directories */
     private array $directories;
 
-    public function __construct(string $root, array $directories)
+    public function __construct(string $root, array $directories = [])
     {
         $this->root = $root;
 
         $directories = \array_merge([
+            self::APP => '/app/',
+            self::CONFIG => '/app/config/',
             self::PUBLIC => '/public/',
             self::VAR => '/var/',
             self::CACHE => '/var/cache/',

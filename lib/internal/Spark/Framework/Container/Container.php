@@ -31,6 +31,8 @@ class Container implements ContainerInterface
 {
     protected array $values = [];
     protected array $instances = [];
+    protected array $serviceProviders = [];
+
     protected static ?ContainerInterface $instance = null;
 
     /**
@@ -108,7 +110,7 @@ class Container implements ContainerInterface
                 $value = ($concrete->callable)($this);
 
                 if ($concrete->singleton === true) {
-                    $this->instances[$id] = $concrete;
+                    $this->instances[$id] = $value;
                 }
 
                 return $value;
@@ -132,11 +134,42 @@ class Container implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function register(ServiceProviderInterface $provider): self
+    public function register(ServiceProvider|string $provider): ServiceProvider
     {
-        $provider->register($this);
+        if (($registered = $this->getProvider($provider))) {
+            return $registered;
+        }
 
-        return $this;
+        if (\is_string($provider)) {
+            $provider = new $provider($this);
+
+            if (!($provider instanceof ServiceProvider)) {
+                $reason = \sprintf(
+                    "The given provider does not extends %s",
+                    ServiceProvider::class,
+                );
+
+                throw new \InvalidArgumentException($reason);
+            }
+        }
+
+        $provider->register();
+
+        if (\property_exists($provider, 'bindings')) {
+            foreach ($provider->bindings as $key => $value) {
+                $this->bind($key, $value);
+            }
+        }
+
+        if (\property_exists($provider, 'singletons')) {
+            foreach ($provider->singletons as $key => $value) {
+                $this->singleton($key, $value);
+            }
+        }
+
+        $this->serviceProviders[\get_class($provider)] = $provider;
+
+        return $provider;
     }
 
     /**
@@ -184,7 +217,7 @@ class Container implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function singleton(string $id, callable|object $concrete): void
+    public function singleton(string $id, object $concrete): void
     {
         $this->bind($id, $concrete, true);
     }
@@ -206,5 +239,15 @@ class Container implements ContainerInterface
         };
 
         $this->values[$id] = $binding;
+    }
+
+    /**
+     * Gets a service provider instance.
+     *
+     * @param string|\Spark\Framework\Container\ServiceProvider $provider
+     * @return \Spark\Framework\Container\ServiceProvider|null
+     */
+    public function getProvider(string|ServiceProvider $provider): ?ServiceProvider {
+        return $this->serviceProviders[\is_string($provider) ? $provider : \get_class($provider)] ?? null;
     }
 }

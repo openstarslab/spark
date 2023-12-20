@@ -24,6 +24,8 @@ namespace Spark\Framework\App\Filesystem;
 
 interface DirectoriesInterface
 {
+    public const APP = 'app';
+    public const CONFIG = 'config';
     public const PUBLIC = 'public';
     public const VAR = 'var';
     public const LOGS = 'logs';

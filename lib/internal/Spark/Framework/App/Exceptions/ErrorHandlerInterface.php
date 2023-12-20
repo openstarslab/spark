@@ -20,17 +20,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Container;
+namespace Spark\Framework\App\Exceptions;
 
-interface ServiceProviderInterface
+interface ErrorHandlerInterface
 {
     /**
-     * Registers a services into container.
+     * Handle an exception.
      *
-     * @param \Spark\Framework\Container\ContainerInterface $container
-     *  The container instance to be registered.
+     * @param \Throwable $throwable
+     *  The exception to handle.
      *
      * @return void
      */
-    public function register(ContainerInterface $container): void;
+    public function handleException(\Throwable $throwable): void;
+
+    /**
+     * Handle an error.
+     *
+     * @param int $level
+     *   The level of the error that occurred.
+     * @param string $message
+     *   The error message.
+     * @param string|null $file
+     *   The file in which the error occurred (optional).
+     * @param int|null $line
+     *   The line number where the error occurred (optional).
+     *
+     * @return bool
+     *   Indicates whether the error handling was successful or not.
+     */
+    public function handleError(int $level, string $message, string $file = null, int $line = null): bool;
 }

@@ -50,7 +50,9 @@ abstract class Extension implements ExtensionInterface
     {
         if ($this->loadRoutesCallback !== null) {
             $routesCallback = $this->loadRoutesCallback;
-            $routesCallback($this->container->get(RouteCollection::class));
+            $routesCallback(
+                $this->container->get(RouteCollection::class)
+            );
         }
     }
 

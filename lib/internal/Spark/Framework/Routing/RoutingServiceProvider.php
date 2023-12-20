@@ -26,17 +26,17 @@ use Nulldark\Routing\RouteCollection;
 use Nulldark\Routing\Router;
 use Nulldark\Routing\RouterInterface;
 use Spark\Framework\Container\ContainerInterface;
-use Spark\Framework\Container\ServiceProviderInterface;
+use Spark\Framework\Container\ServiceProvider;
 
-class RoutingServiceProvider implements ServiceProviderInterface
+class RoutingServiceProvider extends ServiceProvider
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function register(ContainerInterface $container): void
+    public function register(): void
     {
-        $container->set(RouteCollection::class, new RouteCollection());
-        $container->singleton(RouterInterface::class, function (ContainerInterface $container) {
+        $this->app->set(RouteCollection::class, new RouteCollection());
+        $this->app->singleton(RouterInterface::class, function (ContainerInterface $container) {
             $router = new Router();
             $router->setRouteCollection($container->get(RouteCollection::class));
 

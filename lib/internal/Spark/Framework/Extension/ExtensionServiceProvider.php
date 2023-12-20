@@ -22,20 +22,22 @@
 
 namespace Spark\Framework\Extension;
 
+use Spark\Framework\App\Filesystem\DirectoriesInterface;
 use Spark\Framework\Container\ContainerInterface;
-use Spark\Framework\Container\ServiceProviderInterface;
+use Spark\Framework\Container\ServiceProvider;
 use Spark\Framework\Extension\Loader\ExtensionLoader;
 use Spark\Framework\Extension\Loader\ExtensionLoaderInterface;
 
-class ExtensionServiceProvider implements ServiceProviderInterface
+class ExtensionServiceProvider extends ServiceProvider
 {
     /**
      * {@inheritDoc}
      */
-    public function register(ContainerInterface $container): void
+    public function register(): void
     {
-        $container->singleton(ExtensionLoaderInterface::class, function (ContainerInterface $container) {
-            $extensionDir = $container->getParameter('kernel.extension_dir');
+        $this->app->singleton(ExtensionLoaderInterface::class, function (ContainerInterface $container) {
+            $extensionDir = $container->get(DirectoriesInterface::class)
+                ->get(DirectoriesInterface::APP) . 'src/';
 
             if (!\is_string($extensionDir) || !\file_exists($extensionDir)) {
                 throw new \RuntimeException(
@@ -48,8 +50,28 @@ class ExtensionServiceProvider implements ServiceProviderInterface
             );
         });
 
-        $container->singleton(ExtensionList::class, fn (ContainerInterface $container) => new ExtensionList(
+        $this->app->singleton(ExtensionList::class, fn (ContainerInterface $container) => new ExtensionList(
             $container->get(ExtensionLoaderInterface::class),
         ));
+
+        $extensions = $this->app->get(ExtensionList::class)->loadAll();
+
+        foreach ($extensions as $extension) {
+            $extension->register($this->app);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function boot(): void
+    {
+        $extensions = $this->app->get(ExtensionList::class)->loadAll();
+
+        /** @var \Spark\Framework\Extension\Extension $extension */
+        foreach ($extensions as $extension) {
+            $extension->setContainer($this->app);
+            $extension->boot();
+        }
     }
 }

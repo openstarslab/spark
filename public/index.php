@@ -1,8 +1,8 @@
 <?php
 
 try {
-    /** @var \Spark\Framework\Foundation\KernelInterface $bootstrap */
-    $bootstrap = require_once __DIR__ . '/../app/bootstrap.php';
+    /** @var \Spark\Framework\App\Spark $kernel */
+    $kernel = require_once __DIR__ . '/../app/bootstrap.php';
 } catch (\Exception $exc) {
     echo "<p>{$exc->getMessage()}" . PHP_EOL;
     echo "<p>{$exc->getTraceAsString()}</p>" . PHP_EOL;
@@ -10,6 +10,9 @@ try {
     exit(1);
 }
 
-$bootstrap->start(
-    $bootstrap->createApplication(\Spark\Framework\Foundation\Application\Http::class)
+$kernel->boot();
+$kernel->start(
+    $kernel->createApplication(\Spark\Framework\App\Application\Http::class)
 );
+
+exit(0);

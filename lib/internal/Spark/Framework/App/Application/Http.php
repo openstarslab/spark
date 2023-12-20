@@ -20,21 +20,39 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace Spark\Framework\Foundation\Application;
+namespace Spark\Framework\App\Application;
 
+use Nulldark\Routing\RouterInterface;
+use Nyholm\Psr7\Stream;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Spark\Framework\Container\ContainerInterface;
+use Spark\Framework\Http\MiddlewareDispatcher;
+use Spark\Framework\Routing\RouteRunner;
 
-interface ApplicationInterface
+class Http implements Application
 {
+    protected MiddlewareDispatcher $dispatcher;
+
+    public function __construct(
+        protected ContainerInterface $container
+    ) {
+        $this->dispatcher = new MiddlewareDispatcher(
+            new RouteRunner($container->get(RouterInterface::class)),
+        );
+    }
+
     /**
-     * Starts the process with the given request.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     *  The request object to start the process with.
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     *  The response object generated after processing the request.
+     * @inheritDoc
      */
-    public function start(ServerRequestInterface $request): ResponseInterface;
+    public function start(ServerRequestInterface $request): ResponseInterface
+    {
+        $response = $this->dispatcher->handle($request);
+
+        if ($request->getMethod() === 'HEAD') {
+            $response->withBody(Stream::create());
+        }
+
+        return $response;
+    }
 }

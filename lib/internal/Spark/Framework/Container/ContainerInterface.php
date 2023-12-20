@@ -22,9 +22,6 @@
 
 namespace Spark\Framework\Container;
 
-use Spark\Framework\Container\Exception\ServiceCircularDependencyException;
-use Spark\Framework\Container\Exception\ServiceNotFoundException;
-
 /**
  * @property-read mixed $value
  */
@@ -118,23 +115,23 @@ interface ContainerInterface
      *
      * @param string $id
      *   The unique identifier for the service.
-     * @param callable $concrete
+     * @param object $concrete
      *   A closure or class name that will be invoked to create the singleton instance.
      *
      * @return void
      */
-    public function singleton(string $id, callable|object $concrete): void;
+    public function singleton(string $id, object $concrete): void;
 
     /**
      * Registers a service provider to the container.
      *
-     * @param ServiceProviderInterface $provider
+     * @param \Spark\Framework\Container\ServiceProvider $provider
      *     The service provider to be registered.
      *
-     * @return self
+     * @return \Spark\Framework\Container\ServiceProvider
      *     The container instance.
      */
-    public function register(ServiceProviderInterface $provider): self;
+    public function register(ServiceProvider $provider): ServiceProvider;
 
     /**
      * Retrieves the value of a parameter based on its name.

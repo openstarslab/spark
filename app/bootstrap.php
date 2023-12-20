@@ -48,6 +48,6 @@ if (\PHP_SAPI !== 'cli') {
 
 \date_default_timezone_set('UTC');
 
-$autoload = require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
-return \Spark\Framework\Foundation\Kernel::create('dev', \dirname(__DIR__), $autoload);
+return \Spark\Framework\App\Spark::create(\dirname(__DIR__));
