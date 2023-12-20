@@ -28,16 +28,19 @@ class Env
      * Gets the value of an environment variable.
      *
      * @param string $key
-     * @param string|null $default
+     * @param mixed $default
      *
      * @return string|null
      */
-    public static function get(string $key, string $default = null): string|null {
-        return match(true) {
+    public static function get(string $key, mixed $default = null): string|null
+    {
+        $value = match (true) {
             \array_key_exists($key, $_SERVER) => $_SERVER[$key],
             \array_key_exists($key, $_ENV) => $_ENV[$key],
-            default => \getenv($key) ?? $default
+            default => \getenv($key)
         };
+
+        return $value ?? $default;
     }
 
     /**
@@ -61,10 +64,10 @@ class Env
         $entries = $this->parse($filename);
 
         foreach ($entries as $name => $value) {
-            switch (true) {
-                case \getenv($name, true) !== false: \putenv("$name=$value");
-                case empty($_SERVER[$name]): $_SERVER[$name] = $value;
-                case empty($_ENV[$name]): $_ENV[$name] = $value;
+            match (true) {
+                !isset($_SERVER[$name]) => $_SERVER[$name] = $value,
+                !isset($_ENV[$name]) => $_ENV[$name] = $value,
+                default => \putenv("$name=$value")
             };
         }
     }
@@ -81,6 +84,16 @@ class Env
         $entries = [];
 
         $lines = \file($filename, \FILE_IGNORE_NEW_LINES | \FILE_SKIP_EMPTY_LINES);
+
+        if ($lines === false) {
+            $reason = \sprintf(
+                "failed to parse a file '%s'.",
+                $filename,
+            );
+
+            throw new \RuntimeException($reason);
+        }
+
         foreach ($lines as $line) {
             if (\str_starts_with($line, '#')) {
                 continue; // is comments

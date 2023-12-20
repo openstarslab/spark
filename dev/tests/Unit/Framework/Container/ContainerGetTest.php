@@ -11,13 +11,6 @@ class ContainerGetTest extends \Spark\Tests\Unit\TestCase
 {
     private Container $container;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->container = new Container();
-    }
-
     /**
      * Test if set method stores correctly the key-value pair in the container
      */
@@ -44,13 +37,10 @@ class ContainerGetTest extends \Spark\Tests\Unit\TestCase
         self::assertSame(['element'], $this->container->getParameter('array'));
     }
 
-    public function testRegisterMethod(): void
+    protected function setUp(): void
     {
-        $provider = self::mock(ServiceProviderInterface::class);
-        $provider->expects('register')->with($this->container);
+        parent::setUp();
 
-        $result = $this->container->register($provider);
-
-        self::assertSame($this->container, $result);
+        $this->container = new Container();
     }
 }

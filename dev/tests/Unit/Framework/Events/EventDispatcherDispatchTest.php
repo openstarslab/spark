@@ -3,7 +3,6 @@
 namespace Spark\Tests\Unit\Framework\Events;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Psr\EventDispatcher\StoppableEventInterface;
 use Spark\Framework\Events\Event;
 use Spark\Framework\Events\EventDispatcher;
 
@@ -11,11 +10,6 @@ use Spark\Framework\Events\EventDispatcher;
 class EventDispatcherDispatchTest extends \Spark\Tests\Unit\TestCase
 {
     private EventDispatcher $eventDispatcher;
-
-    protected function setUp(): void
-    {
-        $this->eventDispatcher = new EventDispatcher();
-    }
 
     public function testDispatchShouldInvokeListenerOnEventDispatch(): void
     {
@@ -63,5 +57,10 @@ class EventDispatcherDispatchTest extends \Spark\Tests\Unit\TestCase
         $this->eventDispatcher->dispatch($event, 'test.event');
 
         self::assertFalse($invokedAfterStop, 'Listener should not be invoked after propagation is stopped');
+    }
+
+    protected function setUp(): void
+    {
+        $this->eventDispatcher = new EventDispatcher();
     }
 }

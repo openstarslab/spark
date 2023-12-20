@@ -13,10 +13,8 @@ class ApplicationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(Http::class, function (ContainerInterface $container) {
-            return new Http(
-                $container
-            );
-        });
+        $this->app->bind(Http::class, fn(ContainerInterface $container) => new Http(
+            $container,
+        ));
     }
 }

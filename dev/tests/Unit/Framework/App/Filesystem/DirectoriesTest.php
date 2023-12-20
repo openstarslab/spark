@@ -13,16 +13,6 @@ class DirectoriesTest extends TestCase
     private DirectoriesInterface $directories;
 
     /**
-     * setUp method called before running each test case.
-     */
-    protected function setUp(): void
-    {
-        $this->directories = new Directories('/root', [
-            'temp' => '/tmp/',
-        ]);
-    }
-
-    /**
      * Test for set method of Directories class.
      * It starts by creating a directory and verifying it doesn't exist.
      * Then it uses the set method to add it and asserts that it now exists.
@@ -71,5 +61,15 @@ class DirectoriesTest extends TestCase
 
         self::expectException(\Exception::class);
         $this->directories->get('unexisting_directory');
+    }
+
+    /**
+     * setUp method called before running each test case.
+     */
+    protected function setUp(): void
+    {
+        $this->directories = new Directories('/root', [
+            'temp' => '/tmp/',
+        ]);
     }
 }

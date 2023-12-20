@@ -17,14 +17,6 @@ class ExtensionFinderTest extends TestCase
     private ExtensionFinder $extensionFinder;
     private PackageProvider&MockInterface $packageProviderMock;
 
-    protected function setUp(): void
-    {
-        $this->packageProviderMock = self::mock(PackageProvider::class);
-        $this->extensionFinder = new ExtensionFinder($this->packageProviderMock);
-    }
-
-
-
     public function testLoadExtensionsDataReturnsIterableWhenPathIsValid(): void
     {
         $io = self::mock(IOInterface::class);
@@ -51,7 +43,6 @@ class ExtensionFinderTest extends TestCase
         self::assertNotEmpty($result);
     }
 
-
     public function testLoadExtensionsDataSkipsInvalidComposers(): void
     {
         $io = self::mock(IOInterface::class);
@@ -65,5 +56,11 @@ class ExtensionFinderTest extends TestCase
         );
 
         self::assertEmpty($result);
+    }
+
+    protected function setUp(): void
+    {
+        $this->packageProviderMock = self::mock(PackageProvider::class);
+        $this->extensionFinder = new ExtensionFinder($this->packageProviderMock);
     }
 }

@@ -24,22 +24,23 @@ namespace Spark\Framework\App;
 
 final class DefaultProviders
 {
-    /** @var \Spark\Framework\Container\ServiceProvider[] $providers */
+    /** @var class-string<\Spark\Framework\Container\ServiceProvider>[] $providers */
     protected array $providers = [];
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->providers = [
             \Spark\Framework\Routing\RoutingServiceProvider::class,
             \Spark\Framework\Cache\CacheServiceProvider::class,
             \Spark\Framework\Extension\ExtensionServiceProvider::class,
-            \Spark\Framework\App\ApplicationServiceProvider::class
+            \Spark\Framework\App\ApplicationServiceProvider::class,
         ];
     }
 
     /**
      * Gets a default providers collection as array
      *
-     * @return array|\Spark\Framework\Container\ServiceProvider[]
+     * @return class-string<\Spark\Framework\Container\ServiceProvider>[]
      */
     public function toArray(): array
     {

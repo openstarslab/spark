@@ -3,30 +3,24 @@
 namespace Spark\Tests\Unit\Framework\Container;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use Spark\Framework\App\Spark;
 use Spark\Framework\Container\Container;
 use Spark\Framework\Container\Exception\ServiceNotFoundException;
-use Spark\Framework\Container\ServiceProviderInterface;
+use Spark\Framework\Container\ServiceProvider;
 
 #[CoversClass(Container::class)]
 class ContainerTest extends \Spark\Tests\Unit\TestCase
 {
     private Container $container;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->container = new Container();
-    }
-
     public function testRegisterMethod(): void
     {
-        $provider = self::mock(ServiceProviderInterface::class);
-        $provider->expects('register')->with($this->container);
+        $provider = self::mock(ServiceProvider::class, new Spark(__DIR__));
+        $provider->expects('register');
 
         $result = $this->container->register($provider);
 
-        self::assertSame($this->container, $result);
+        self::assertSame($provider, $result);
     }
 
     /**
@@ -35,7 +29,7 @@ class ContainerTest extends \Spark\Tests\Unit\TestCase
      */
     public function testFactoryMethod(): void
     {
-        $callable = static fn () => new \stdClass();
+        $callable = static fn() => new \stdClass();
 
         $this->container->bind(\stdClass::class, $callable);
 
@@ -56,5 +50,12 @@ class ContainerTest extends \Spark\Tests\Unit\TestCase
 
         // Try getting a non-existent service
         $this->container->get(\stdClass::class);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container = new Container();
     }
 }

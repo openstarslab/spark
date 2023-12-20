@@ -36,21 +36,16 @@ class ExtensionServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(ExtensionLoaderInterface::class, function (ContainerInterface $container) {
-            $extensionDir = $container->get(DirectoriesInterface::class)
-                ->get(DirectoriesInterface::APP) . 'src/';
-
-            if (!\is_string($extensionDir) || !\file_exists($extensionDir)) {
-                throw new \RuntimeException(
-                    "The directory to extensions has invalid value, must be valid path.",
-                );
-            }
+            $extensionDir = $container
+                    ->get(DirectoriesInterface::class)
+                    ->get(DirectoriesInterface::APP) . 'src/';
 
             return new ExtensionLoader(
                 $extensionDir,
             );
         });
 
-        $this->app->singleton(ExtensionList::class, fn (ContainerInterface $container) => new ExtensionList(
+        $this->app->singleton(ExtensionList::class, fn(ContainerInterface $container) => new ExtensionList(
             $container->get(ExtensionLoaderInterface::class),
         ));
 

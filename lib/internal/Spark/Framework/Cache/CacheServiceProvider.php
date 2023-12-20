@@ -32,6 +32,6 @@ class CacheServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(CacheBackendInterface::class, fn () => new MemoryBackend());
+        $this->app->singleton(CacheBackendInterface::class, fn() => new MemoryBackend());
     }
 }

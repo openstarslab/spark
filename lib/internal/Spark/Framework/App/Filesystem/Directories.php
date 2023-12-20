@@ -59,19 +59,17 @@ final class Directories implements DirectoriesInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Joins a given path with the root path.
+     *
+     * @param string $path
+     *  The path to be joined with the root path.
+     *
+     * @return string
+     *  The combined path.
      */
-    public function has(string $name): bool
+    private function joinPaths(string $path): string
     {
-        return \array_key_exists($name, $this->directories);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function get(string $name): string
-    {
-        return $this->directories[$name];
+        return $this->root . ($path != '' ? '/' . \ltrim($path, '/') : '');
     }
 
     /**
@@ -90,16 +88,22 @@ final class Directories implements DirectoriesInterface
     }
 
     /**
-     * Joins a given path with the root path.
-     *
-     * @param string $path
-     *  The path to be joined with the root path.
-     *
-     * @return string
-     *  The combined path.
+     * {@inheritDoc}
      */
-    private function joinPaths(string $path): string
+    public function get(string $name): string
     {
-        return $this->root . ($path != '' ? '/' . \ltrim($path, '/') : '');
+        if (!$this->has($name)) {
+            throw new \Exception("Unknown directory '%name'");
+        }
+
+        return $this->directories[$name];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function has(string $name): bool
+    {
+        return \array_key_exists($name, $this->directories);
     }
 }

@@ -10,7 +10,8 @@ if (!function_exists('env')) {
      *
      * @return string|null
      */
-    function env(string $key, mixed $default = null): string|null {
+    function env(string $key, mixed $default = null): string|null
+    {
         return \Spark\Framework\Support\Env::get($key, $default);
     }
 }

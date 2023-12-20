@@ -15,15 +15,6 @@ class ExtensionListTest extends TestCase
     private ExtensionLoaderInterface&MockInterface $extensionLoaderMock;
     private ExtensionList $extensionList;
 
-    protected function setUp(): void
-    {
-        $this->extensionLoaderMock = self::mock(ExtensionLoaderInterface::class);
-
-        $this->extensionList = new ExtensionList(
-            $this->extensionLoaderMock,
-        );
-    }
-
     /**
      * Tests if all extensions are loaded correctly.
      */
@@ -66,6 +57,15 @@ class ExtensionListTest extends TestCase
         self::assertEmpty(
             $loadedExtensions,
             'Extensions should not be loaded when none are available.',
+        );
+    }
+
+    protected function setUp(): void
+    {
+        $this->extensionLoaderMock = self::mock(ExtensionLoaderInterface::class);
+
+        $this->extensionList = new ExtensionList(
+            $this->extensionLoaderMock,
         );
     }
 }

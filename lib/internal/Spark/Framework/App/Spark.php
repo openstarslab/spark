@@ -43,18 +43,29 @@ final class Spark extends Container
     ) {
     }
 
-    public static function create(string $rootDir): self {
+    public static function create(string $rootDir): self
+    {
         $self = new self(
-            $rootDir
+            $rootDir,
         );
 
-        $self->singleton(DirectoriesInterface::class, function () use ($rootDir) {
-            return new Directories($rootDir);
-        });
+        $self->singleton(DirectoriesInterface::class, fn() => new Directories($rootDir));
 
         $self->registerDefaultProviders();
 
         return $self;
+    }
+
+    private function registerDefaultProviders(): void
+    {
+        foreach ($this->defaultProviders()->toArray() as $provider) {
+            $this->register($provider);
+        }
+    }
+
+    private function defaultProviders(): DefaultProviders
+    {
+        return new DefaultProviders();
     }
 
     /**
@@ -80,6 +91,11 @@ final class Spark extends Container
         } catch (\Throwable $e) {
             echo $e;
         }
+    }
+
+    private function envLoader(): Env
+    {
+        return new Env();
     }
 
     public function boot(): void
@@ -119,22 +135,5 @@ final class Spark extends Container
         }
 
         return $application;
-    }
-
-    private function registerDefaultProviders(): void
-    {
-        foreach ($this->defaultProviders()->toArray() as $provider) {
-            $this->register($provider);
-        }
-    }
-
-    private function defaultProviders(): DefaultProviders
-    {
-        return new DefaultProviders();
-    }
-
-    private function envLoader(): Env
-    {
-        return new Env();
     }
 }

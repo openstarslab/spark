@@ -15,7 +15,7 @@ final class Dashboard extends Extension
     {
         $this->loadRoutes(function (RouteCollection $routes) {
             $route = new Route(['GET'], '/test', function (Request $request, Response $response) {
-                return new Response\HtmlResponse('<h1>Hello world</h1>');
+                new Response\HtmlResponse('<h1>Hello world</h1>');
             });
 
             $routes->add($route);

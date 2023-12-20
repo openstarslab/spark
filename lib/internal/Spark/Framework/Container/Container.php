@@ -29,24 +29,10 @@ use Spark\Framework\Container\Exception\ServiceNotFoundException;
 
 class Container implements ContainerInterface
 {
+    protected static ?ContainerInterface $instance = null;
     protected array $values = [];
     protected array $instances = [];
     protected array $serviceProviders = [];
-
-    protected static ?ContainerInterface $instance = null;
-
-    /**
-     * Sets the shared instance of the container.
-     *
-     * @param ContainerInterface|null $instance
-     *  The container instance.
-     *
-     * @return ContainerInterface|static
-     */
-    public static function setInstance(ContainerInterface $instance = null): ContainerInterface|static|null
-    {
-        return static::$instance = $instance;
-    }
 
     /**
      * Gets current container instance.
@@ -63,15 +49,16 @@ class Container implements ContainerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the shared instance of the container.
+     *
+     * @param ContainerInterface|null $instance
+     *  The container instance.
+     *
+     * @return ContainerInterface|static
      */
-    public function setParameter(string $name, float|int|string|array $value): void
+    public static function setInstance(ContainerInterface $instance = null): ContainerInterface|static|null
     {
-        if (\is_numeric($name)) {
-            throw new \InvalidArgumentException("The parameter name cannot be numeric.");
-        }
-
-        $this->values[$name] = new Parameter($name, $value);
+        return static::$instance = $instance;
     }
 
     /**
@@ -136,7 +123,7 @@ class Container implements ContainerInterface
      */
     public function register(ServiceProvider|string $provider): ServiceProvider
     {
-        if (($registered = $this->getProvider($provider))) {
+        if (($registered = $this->getProvider($provider)) !== null) {
             return $registered;
         }
 
@@ -170,6 +157,44 @@ class Container implements ContainerInterface
         $this->serviceProviders[\get_class($provider)] = $provider;
 
         return $provider;
+    }
+
+    /**
+     * Gets a service provider instance.
+     *
+     * @param string|\Spark\Framework\Container\ServiceProvider $provider
+     * @return \Spark\Framework\Container\ServiceProvider|null
+     */
+    public function getProvider(string|ServiceProvider $provider): ?ServiceProvider
+    {
+        return $this->serviceProviders[\is_string($provider) ? $provider : \get_class($provider)] ?? null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function bind(string $id, callable|object $concrete, bool $singleton = null): void
+    {
+        if ($singleton === null) {
+            $singleton = false;
+        }
+
+
+        $binding = match (true) {
+            $concrete instanceof \Closure => new Factory($id, $concrete, $singleton),
+            \is_object($concrete) => new Reference($concrete),
+            default => throw new \InvalidArgumentException('Unknown concrete type.'),
+        };
+
+        $this->values[$id] = $binding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function singleton(string $id, object $concrete): void
+    {
+        $this->bind($id, $concrete, true);
     }
 
     /**
@@ -217,37 +242,12 @@ class Container implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function singleton(string $id, object $concrete): void
+    public function setParameter(string $name, float|int|string|array $value): void
     {
-        $this->bind($id, $concrete, true);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function bind(string $id, callable|object $concrete, bool $singleton = null): void
-    {
-        if ($singleton === null) {
-            $singleton = false;
+        if (\is_numeric($name)) {
+            throw new \InvalidArgumentException("The parameter name cannot be numeric.");
         }
 
-
-        $binding = match (true) {
-            $concrete instanceof \Closure => new Factory($id, $concrete, $singleton),
-            \is_object($concrete) => new Reference($concrete),
-            default => throw new \InvalidArgumentException('Unknown concrete type.'),
-        };
-
-        $this->values[$id] = $binding;
-    }
-
-    /**
-     * Gets a service provider instance.
-     *
-     * @param string|\Spark\Framework\Container\ServiceProvider $provider
-     * @return \Spark\Framework\Container\ServiceProvider|null
-     */
-    public function getProvider(string|ServiceProvider $provider): ?ServiceProvider {
-        return $this->serviceProviders[\is_string($provider) ? $provider : \get_class($provider)] ?? null;
+        $this->values[$name] = new Parameter($name, $value);
     }
 }

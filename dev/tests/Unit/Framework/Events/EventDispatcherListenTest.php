@@ -14,24 +14,13 @@ class EventDispatcherListenTest extends TestCase
     protected EventDispatcherInterface&MockInterface $dispatcher;
 
     /**
-     * Set up the test
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // Create a mock instance of EventDispatcherInterface.
-        $this->dispatcher = self::mock(EventDispatcherInterface::class);
-    }
-
-    /**
      * Tests the 'listen' functionality of the EventDispatcherInterface class.
      * This test focuses on the scenario when a listener is registered for an event.
      */
     public function testListen(): void
     {
         $eventName = 'test.event';
-        $listener  = static function (): void {
+        $listener = static function (): void {
         };
 
         // Expect the listen method to be called once with specific parameters.
@@ -56,7 +45,7 @@ class EventDispatcherListenTest extends TestCase
         $eventName = "event.test";
 
         // Mock event listener.
-        $listener = fn () => "listener1";
+        $listener = fn() => "listener1";
 
         // Register a listener to the dispatcher
         $this->dispatcher
@@ -76,9 +65,9 @@ class EventDispatcherListenTest extends TestCase
         $eventName = "event.test.multiple";
 
         // Mock event listeners.
-        $listener1 = fn () => "listener1";
-        $listener2 = fn () => "listener2";
-        $listener3 = fn () => "listener3";
+        $listener1 = fn() => "listener1";
+        $listener2 = fn() => "listener2";
+        $listener3 = fn() => "listener3";
 
         // Expected listeners
         $expectedListeners = [$listener1, $listener2, $listener3];
@@ -100,9 +89,9 @@ class EventDispatcherListenTest extends TestCase
         $eventName = "event.test.priority";
 
         // Mock event listeners with different priorities.
-        $listener1 = fn () => "listener1";
-        $listener2 = fn () => "listener2";
-        $listener3 = fn () => "listener3";
+        $listener1 = fn() => "listener1";
+        $listener2 = fn() => "listener2";
+        $listener3 = fn() => "listener3";
 
         // Expected listeners
         $expectedListeners = [3 => $listener3, 2 => $listener2, 1 => $listener1];
@@ -117,5 +106,16 @@ class EventDispatcherListenTest extends TestCase
 
         // Assert that the registered listeners are present in the correct order according to their priority
         self::assertEquals($expectedListeners, $listeners);
+    }
+
+    /**
+     * Set up the test
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Create a mock instance of EventDispatcherInterface.
+        $this->dispatcher = self::mock(EventDispatcherInterface::class);
     }
 }

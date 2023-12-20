@@ -29,7 +29,6 @@ abstract class ServiceProvider
     public function __construct(
         protected Spark $app
     ) {
-
     }
 
     /**
@@ -39,7 +38,6 @@ abstract class ServiceProvider
      */
     public function register(): void
     {
-
     }
 
     /**
@@ -49,6 +47,5 @@ abstract class ServiceProvider
      */
     public function boot(): void
     {
-
     }
 }
