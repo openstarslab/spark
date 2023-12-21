@@ -35,16 +35,6 @@ interface ExtensionInterface extends ContainerAwareInterface
     public function boot(): void;
 
     /**
-     * Registers a given extension into kernel.
-     *
-     * @param \Spark\Framework\Container\ContainerInterface $container
-     *   The container instance.
-     *
-     * @return void
-     */
-    public function register(ContainerInterface $container): void;
-
-    /**
      * Returns the name of the extension.
      *
      * @return string
@@ -69,12 +59,9 @@ interface ExtensionInterface extends ContainerAwareInterface
     public function isActive(): bool;
 
     /**
-     * Load routes using a callback function.
-     *
-     * @param \Closure $callback
-     *  A callback function for defining routes.
+     * Load routes from extension.
      *
      * @return void
      */
-    public function loadRoutes(\Closure $callback): void;
+    public function loadRoutes(): void;
 }

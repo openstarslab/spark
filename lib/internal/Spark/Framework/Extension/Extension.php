@@ -34,26 +34,12 @@ abstract class Extension implements ExtensionInterface
     protected string $path;
     protected bool $active = true;
 
-    protected ?\Closure $loadRoutesCallback = null;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function register(ContainerInterface $container): void
-    {
-    }
-
     /**
      * {@inheritDoc}
      */
     public function boot(): void
     {
-        if ($this->loadRoutesCallback !== null) {
-            $routesCallback = $this->loadRoutesCallback;
-            $routesCallback(
-                $this->container->get(RouteCollection::class),
-            );
-        }
+        $this->loadRoutes();
     }
 
     /**
@@ -112,8 +98,23 @@ abstract class Extension implements ExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function loadRoutes(\Closure $callback): void
+    public function loadRoutes(): void
     {
-        $this->loadRoutesCallback = $callback;
+        $routesPath = $this->getPath() . '/Resources/routes.php';
+
+        if (\file_exists($routesPath)) {
+            $routesLoader = require $routesPath;
+
+
+            if (\is_callable($routesLoader)) {
+                $routesLoader(
+                    $this->container->get(RouteCollection::class),
+                );
+
+                return;
+            }
+
+            throw new \RuntimeException("To load routes, the routes.php file must return \Closure");
+        }
     }
 }

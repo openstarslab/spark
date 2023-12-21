@@ -48,12 +48,6 @@ class ExtensionServiceProvider extends ServiceProvider
         $this->app->singleton(ExtensionList::class, fn(ContainerInterface $container) => new ExtensionList(
             $container->get(ExtensionLoaderInterface::class),
         ));
-
-        $extensions = $this->app->get(ExtensionList::class)->loadAll();
-
-        foreach ($extensions as $extension) {
-            $extension->register($this->app);
-        }
     }
 
     /**
