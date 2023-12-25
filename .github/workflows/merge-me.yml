@@ -14,6 +14,6 @@ jobs:
     steps:
       - name: "Auto-merge"
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        uses: "ridedott/merge-me-action@v2.10.56"
+        uses: "ridedott/merge-me-action@v2.10.64"
         with:
           GITHUB_TOKEN: ${{ secrets.MERGE_TOKEN }}
