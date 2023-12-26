@@ -15,13 +15,12 @@ volumes:
 services:
 ### PHP-FPM ############################################
   php-fpm:
-    build:
-      context: dev/containers/php-fpm
-      args:
-        - PHP_VERSION=${PHP_VERSION}
+    image: ghcr.io/nulldark/php-fpm:8.3
     restart: always
     volumes:
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}:${APP_CODE_CONTAINER_FLAGS}
+      - ${APP_CODE_PATH_HOST}/dev/containers/php-fpm/php-fpm.d:/etc/php/8.3/php-fpm.d/
+      - ${APP_CODE_PATH_HOST}/dev/containers/php-fpm/php.ini:/etc/php/8.3/php.ini
       - docker-in-docker:/certs/client
     expose:
       - "9000"
